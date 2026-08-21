@@ -41,21 +41,38 @@ export default defineConfig(async () => {
   process.env.WRANGLER_LOG_PATH ??= '.wrangler/logs';
   process.env.MINIFLARE_REGISTRY_PATH ??= '.wrangler/registry';
 
-  // Wrangler snapshots its log path while the Cloudflare plugin is imported.
-  const { cloudflare } = await import('@cloudflare/vite-plugin');
+  const isNetlifyBuild =
+    process.env.NETLIFY === 'true' || process.env.NITRO_PRESET === 'netlify';
 
-  return {
-    css: { postcss: { plugins: [tailwindcss()] } },
-    server: isCodexSeatbeltSandbox
-      ? { watch: { useFsEvents: false, usePolling: true } }
-      : undefined,
-    plugins: [
-      vinext(),
-      sites(),
+  // Keep the existing Cloudflare target for the local/Sites workflow, while
+  // using Nitro's Netlify adapter when this project is built by Netlify.
+  const plugins = [vinext(), sites()];
+  const cssConfig = isNetlifyBuild
+    ? {}
+    : { css: { postcss: { plugins: [tailwindcss()] } } };
+
+  if (isNetlifyBuild) {
+    const [{ nitro }, { default: tailwindcssVite }] = await Promise.all([
+      import('nitro/vite'),
+      import('@tailwindcss/vite'),
+    ]);
+    plugins.push(tailwindcssVite(), nitro());
+  } else {
+    // Wrangler snapshots its log path while the Cloudflare plugin is imported.
+    const { cloudflare } = await import('@cloudflare/vite-plugin');
+    plugins.push(
       cloudflare({
         viteEnvironment: { name: 'rsc', childEnvironments: ['ssr'] },
         config: localBindingConfig,
       }),
-    ],
+    );
+  }
+
+  return {
+    ...cssConfig,
+    server: isCodexSeatbeltSandbox
+      ? { watch: { useFsEvents: false, usePolling: true } }
+      : undefined,
+    plugins,
   };
 });
