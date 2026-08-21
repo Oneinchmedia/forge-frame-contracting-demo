@@ -5,6 +5,10 @@ export const metadata: Metadata = {
   title: 'Forge & Frame Contracting Co. | Residential Remodeling',
   description: 'Forge & Frame Contracting Co. is a fictional residential contractor specializing in remodeling, renovations, and outdoor living in the Shenandoah Valley and Northern Virginia.',
   keywords: ['residential remodeling', 'kitchen renovation', 'bathroom renovation', 'outdoor living', 'contractor'],
+  icons: {
+    icon: '/assets/ff-mark-transparent.png',
+    apple: '/assets/ff-mark-transparent.png',
+  },
   openGraph: {
     title: 'Forge & Frame Contracting Co. | Residential Remodeling',
     description: 'Thoughtful residential remodeling and outdoor living, built with purpose.',
