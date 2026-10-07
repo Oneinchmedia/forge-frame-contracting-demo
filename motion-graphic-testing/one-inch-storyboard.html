@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>One Inch Intro Storyboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: a dark screening room. One column, max 1120px. The animatic is the hero; the board runs two-up beneath it; notes follow in quieter sections. */
+:root {
+  --bg: #0D0C0A; --bg-2: #15140F; --bg-3: #1E1C17; --line: #2E2B24; --line-2: #3B382F;
+  --fg: #EFE9DE; --fg-2: #B8B1A4; --muted: #8C8A84;
+  --accent: #F2C230; --accent-text: #F2C230; --accent-fg: #0D0C0A; --steel: #8C939B;
+  --display: "Big Shoulders Display", Impact, "Arial Narrow", "Helvetica Neue", sans-serif;
+  --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F0E8; --bg-2: #FBF9F4; --bg-3: #EAE4D8; --line: #D8D1C2; --line-2: #C4BCAB;
+    --fg: #15130F; --fg-2: #4E4A42; --muted: #6E6960;
+    --accent: #F2C230; --accent-text: #8A6600; --accent-fg: #15130F; --steel: #5B636B;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F0E8; --bg-2: #FBF9F4; --bg-3: #EAE4D8; --line: #D8D1C2; --line-2: #C4BCAB;
+  --fg: #15130F; --fg-2: #4E4A42; --muted: #6E6960;
+  --accent: #F2C230; --accent-text: #8A6600; --accent-fg: #15130F; --steel: #5B636B;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 80px; padding-inline: clamp(16px, 4vw, 40px); }
+h1, h2, h3 { font-family: var(--display); text-transform: uppercase; line-height: 0.92; margin: 0; text-wrap: balance; }
+h1 { font-weight: 900; font-size: clamp(88px, 17vw, 220px); letter-spacing: -0.01em; }
+h2 { font-weight: 700; font-size: clamp(30px, 4vw, 46px); letter-spacing: 0.01em; }
+h3 { font-weight: 700; font-size: clamp(22px, 2.6vw, 30px); letter-spacing: 0.01em; }
+p { margin: 0; }
+a { color: var(--accent-text); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.prose { max-width: 66ch; color: var(--fg-2); }
+.prose strong { color: var(--fg); font-weight: 600; }
+section { padding-block: 44px; border-top: 1px solid var(--line); }
+section > header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 22px; }
+section > header p { color: var(--fg-2); max-width: 60ch; }
+button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* masthead */
+.masthead { display: grid; gap: 14px; padding-block: 8px 36px; }
+.masthead h1 { margin-left: -0.04em; }
+.logline { font-size: clamp(18px, 2.2vw, 24px); line-height: 1.35; max-width: 34ch; color: var(--fg); text-wrap: balance; }
+.specs { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.specs li { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; padding: 6px 10px; border: 1px solid var(--line-2); color: var(--fg-2); }
+.specs li.hot { border-color: var(--accent); color: var(--accent-text); }
+
+/* assumptions notice */
+.notice { border: 1px dashed var(--line-2); background: var(--bg-2); padding: 18px 20px; display: grid; gap: 10px; margin-bottom: 36px; }
+.notice ul { margin: 0; padding-left: 18px; color: var(--fg-2); }
+.notice li + li { margin-top: 4px; }
+
+/* player */
+.player { border-top: 0; padding-top: 0; }
+.player-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.toggle { display: inline-flex; border: 1px solid var(--line-2); }
+.toggle button { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; background: transparent; color: var(--fg-2); border: 0; padding: 10px 14px; cursor: pointer; }
+.toggle button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+.screen { position: relative; background: #0D0C0A; border: 1px solid var(--line-2); }
+#animatic { display: block; width: 100%; max-width: 100%; }
+.controls { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+#play { font: 700 14px/1 var(--display); letter-spacing: 0.08em; text-transform: uppercase; background: var(--accent); color: var(--accent-fg); border: 0; padding: 12px 18px; min-width: 92px; cursor: pointer; }
+#scrub { flex: 1; min-width: 0; accent-color: var(--accent); }
+#readout { font-size: 13px; color: var(--fg-2); white-space: nowrap; }
+#frame-label { margin-top: 8px; font-size: 13px; color: var(--accent-text); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.chips button { font: 500 12px/1 var(--mono); background: var(--bg-2); color: var(--fg-2); border: 1px solid var(--line); padding: 8px 10px; cursor: pointer; }
+.chips button.is-active { border-color: var(--accent); color: var(--accent-text); }
+.hint { margin-top: 14px; font-size: 14px; color: var(--muted); max-width: 70ch; }
+
+/* structure timeline */
+.timeline { width: 100%; height: auto; display: block; }
+.timeline text { font-family: var(--mono); fill: var(--fg-2); }
+.timeline .act { fill: var(--bg-3); stroke: var(--line-2); }
+.timeline .seg { stroke: var(--bg); stroke-width: 1; }
+.acts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px 28px; margin-top: 22px; }
+.acts h3 { font-size: 22px; }
+.acts p { color: var(--fg-2); font-size: 15px; margin-top: 6px; }
+.acts .eyebrow { margin-bottom: 6px; }
+
+/* board */
+.board-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 36px 32px; }
+.frame { display: grid; gap: 14px; min-width: 0; }
+.frame canvas { width: 100%; max-width: 100%; display: block; background: #0D0C0A; border: 1px solid var(--line-2); }
+.frame-head { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; align-items: baseline; }
+.frame-head .n { font-family: var(--display); font-weight: 900; font-size: 34px; line-height: 1; color: var(--accent-text); }
+.frame-head .tc { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); }
+.frame-head h3 { grid-column: 2; }
+.frame dl { margin: 0; display: grid; grid-template-columns: 7.5em 1fr; gap: 8px 14px; font-size: 15px; }
+.frame dt { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.frame dd { margin: 0; color: var(--fg-2); min-width: 0; }
+.frame dd.ai { color: var(--fg); }
+.frame dd .q { font-family: var(--mono); color: var(--accent-text); }
+.frame dd.ref { font-style: italic; }
+
+/* notes */
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 28px 40px; }
+.list { margin: 0; padding-left: 18px; color: var(--fg-2); display: grid; gap: 10px; }
+.list li::marker { color: var(--muted); font-family: var(--mono); }
+.list strong { color: var(--fg); font-weight: 600; }
+.caps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.caps li { display: grid; grid-template-columns: 3.2em 1fr; gap: 12px; align-items: baseline; color: var(--fg-2); }
+.caps .f { font-family: var(--mono); font-size: 12px; color: var(--accent-text); letter-spacing: 0.06em; }
+.caps strong { color: var(--fg); font-weight: 600; }
+
+/* palette and type */
+.swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.swatch { border: 1px solid var(--line-2); }
+.swatch i { display: block; height: 72px; }
+.swatch div { padding: 10px 12px; display: grid; gap: 2px; }
+.swatch b { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: 0.06em; }
+.swatch span { font-size: 13px; color: var(--fg-2); }
+.specimen { display: grid; gap: 10px; border: 1px solid var(--line); padding: 18px 20px; background: var(--bg-2); }
+.specimen .d { font-family: var(--display); font-weight: 900; text-transform: uppercase; font-size: clamp(40px, 6vw, 72px); line-height: 0.9; }
+.specimen .m { font-family: var(--mono); font-size: 14px; color: var(--fg-2); }
+.specimen .b { font-size: 15px; color: var(--fg-2); max-width: 46ch; }
+.specimen small { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+/* cutdown */
+.cut { display: grid; gap: 14px; }
+.cut-strip { display: grid; grid-template-columns: 2fr 1fr 0.5fr 2.5fr 1fr; gap: 3px; }
+.cut-strip div { background: var(--bg-3); border: 1px solid var(--line-2); padding: 10px 8px; min-width: 0; }
+.cut-strip b { display: block; font-family: var(--display); font-weight: 700; font-size: 20px; line-height: 1; }
+.cut-strip span { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* stack table */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 12px 14px; border-top: 1px solid var(--line); }
+th { font-family: var(--mono); font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); border-top: 0; background: var(--bg-2); }
+td:first-child { font-weight: 600; white-space: nowrap; }
+td { color: var(--fg-2); }
+
+/* considered */
+.alts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px 28px; }
+.alts div { border-top: 1px solid var(--line-2); padding-top: 12px; }
+.alts h3 { font-size: 22px; }
+.alts p { color: var(--fg-2); font-size: 15px; margin-top: 6px; }
+
+footer { padding-top: 32px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; display: grid; gap: 4px; }
+@media (max-width: 640px) {
+  .frame dl { grid-template-columns: 1fr; gap: 2px 0; }
+  .frame dt { padding-top: 10px; }
+  .cut-strip { grid-template-columns: repeat(5, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<div class="wrap">
+<header class="masthead">
+  <p class="eyebrow">Storyboard · brand ident · One Inch Media · v1</p>
+  <h1>One Inch</h1>
+  <p class="logline">A thirty-second ident that measures one inch of air, closes it, and lets the force travel through every medium AI can touch.</p>
+  <ul class="specs">
+    <li>30 s</li><li>16:9 · 24 fps</li><li>10 frames</li><li>7 s cutdown</li><li class="hot">Bruce Lee homage, no likeness</li><li>Logo, colors and type are slots</li>
+  </ul>
+</header>
+
+<aside class="notice" aria-label="Assumptions">
+  <p class="eyebrow">Assumptions, because the brand kit was not reachable</p>
+  <ul>
+    <li><strong>The brand is One Inch Media.</strong> The name is the Bruce Lee reference: the one-inch punch. The whole piece is built on that distance. If the brand is something else, the spine still works, but the lockup gag in frame 09 is specific to this name.</li>
+    <li><strong>iCloud Drive is not connected to this session</strong>, so the logo, colors and fonts here are placeholders. Every place the real kit drops in is listed under Brand slots. The yellow is a proposal, chosen because it reads as the reference without any costume or stripe.</li>
+    <li><strong>The animatic is a rough previz</strong>, drawn live in the browser. It shows timing, composition and motion. It is not the generated footage the frames describe.</li>
+  </ul>
+</aside>
+
+<section class="player" aria-labelledby="animatic-h">
+  <div class="player-head">
+    <h2 id="animatic-h">Animatic</h2>
+    <div class="toggle" role="group" aria-label="Cut length">
+      <button type="button" id="cut-full" aria-pressed="true">Full 30 s</button>
+      <button type="button" id="cut-short" aria-pressed="false">Cutdown 7 s</button>
+    </div>
+  </div>
+  <div class="screen"><canvas id="animatic" aria-label="Animatic preview of the One Inch intro"></canvas></div>
+  <div class="controls">
+    <button type="button" id="play" aria-pressed="false">Play</button>
+    <input id="scrub" type="range" min="0" max="30" step="0.05" value="0" aria-label="Scrub the timeline">
+    <span id="readout" class="mono">0:00.0 / 0:30.0</span>
+  </div>
+  <p id="frame-label" class="mono">Frame 1 · The tick</p>
+  <div class="chips" id="chips"></div>
+  <p class="hint">Space plays and pauses. Left and right step half a second; up and down jump a frame. The canvas stands in for the generated shots described in the board below.</p>
+</section>
+
+<section aria-labelledby="structure-h">
+  <header><h2 id="structure-h">Structure</h2><p>Four movements. Stillness, one hit, the force traveling, and the name. The edit rhythm itself is the homage: long quiet, then everything at once.</p></header>
+  <svg class="timeline" id="timeline" viewBox="0 0 1000 118" role="img" aria-label="Timeline of the ten frames across thirty seconds"></svg>
+  <div class="acts">
+    <div><p class="eyebrow">I · 0:00–0:09</p><h3>The inch</h3><p>A measurement, a gap, a breath. Nothing is generated yet that the viewer can tell. The piece earns the hit by waiting.</p></div>
+    <div><p class="eyebrow">II · 0:09–0:13</p><h3>The hit</h3><p>One frame of white, a shockwave through steel, and an empty chair sliding back across a studio floor.</p></div>
+    <div><p class="eyebrow">III · 0:13–0:25</p><h3>The force travels</h3><p>The wave passes through a photograph, a flat logo, a page of text and a wireframe, and upgrades each. Then ten thousand takes, and one.</p></div>
+    <div><p class="eyebrow">IV · 0:25–0:30</p><h3>The name</h3><p>The lockup lands exactly one inch wide on the ruler. The line. The ring decays.</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="board-h">
+  <header><h2 id="board-h">The board</h2><p>Ten frames. Each names the AI capability it proves and how the shot would be produced. Timings sum to thirty seconds exactly.</p></header>
+  <div class="board-grid">
+
+    <article class="frame">
+      <canvas data-thumb="1" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">01</span><span class="tc">0:00 – 0:03 · 3 s</span><h3>The tick</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Black. Dead center, a single hairline tick the height of a ruler's inch mark fades up. Beside it, small mono: <span class="q">1 in</span>. Fine grain so the black breathes. Nothing else.</dd>
+        <dt>Motion</dt><dd>Locked off. The tick arrives over twenty frames, never on a cut. No camera.</dd>
+        <dt>On screen</dt><dd><span class="q">1 in</span></dd>
+        <dt>Audio</dt><dd>Room tone only, matched to the studio we land in at frame 05. A sub-audible 40 Hz bed starts at 0:02.</dd>
+        <dt>AI</dt><dd class="ai">Generative sound design: the room tone and bed are synthesized from a description of the space, or from the scan of the real studio if we capture it. The first three seconds deliberately contain nothing visual that AI made. The piece starts with a measurement.</dd>
+        <dt>Out</dt><dd>Hold. The tick becomes one mark of the ruler in frame 02, a match cut.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="2" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">02</span><span class="tc">0:03 – 0:07 · 4 s</span><h3>One inch of air</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Macro. Two machined steel blocks fill the left and right of frame, brushed finish, cool highlights. Between them: exactly one inch of air. A ruler resolves along the bottom around the tick. Dust drifts through a blade of light cutting the gap diagonally. Readout under the gap: <span class="q">1.000 in</span>.</dd>
+        <dt>Motion</dt><dd>Slow push into the gap, 1.0× to 1.25× over four seconds, ease-in. The dust moves on its own physics.</dd>
+        <dt>On screen</dt><dd><span class="q">1.000 in</span></dd>
+        <dt>Audio</dt><dd>Room tone. One soft tick at 0:03 as the ruler resolves. The bed rises slowly.</dd>
+        <dt>AI</dt><dd class="ai">Photoreal text-to-video with camera-path control. The steel, the brushed-metal anisotropy and the dust in volumetric light are generated, with the camera move specified numerically so it carries straight into frame 03 without a cut.</dd>
+        <dt>Out</dt><dd>The push continues into frame 03. No cut.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="3" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">03</span><span class="tc">0:07 – 0:09 · 2 s</span><h3>The breath</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>We are inside the inch. The two steel faces are the left and right edges of frame. The motes hang nearly still. A faint ring breathes at center. The readout counts down: 1.000, 0.750, 0.500, 0.250.</dd>
+        <dt>Motion</dt><dd>Time stretches to the equivalent of 1000 fps. The blocks close slowly at first, then the last quarter inch vanishes in two frames.</dd>
+        <dt>On screen</dt><dd>The countdown readout.</dd>
+        <dt>Audio</dt><dd>Everything drops out except a heartbeat at 48 bpm. Last beat at 0:08.9.</dd>
+        <dt>AI</dt><dd class="ai">Generative frame interpolation (temporal super-resolution): 1000 fps-equivalent slow motion synthesized from 24 fps, with the motes moving correctly in three dimensions rather than crossfading.</dd>
+        <dt>Out</dt><dd>Smash cut to white on the frame the gap reaches zero.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="4" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">04</span><span class="tc">0:09 – 0:10 · 1 s</span><h3>The hit</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>One frame of white. Then black, and a shockwave: concentric rings expanding from the seam where the blocks met, steel debris as fine sparks, radial speed lines. The seam stays, a hairline of light.</dd>
+        <dt>Motion</dt><dd>Rings expand with exponential ease-out. Hard screen shake for three frames. Everything is over by 0:10.</dd>
+        <dt>On screen</dt><dd>None.</dd>
+        <dt>Audio</dt><dd>One dry hit, no reverb. Then a long metallic ring, a struck steel plate, that decays under everything for the next twenty seconds.</dd>
+        <dt>AI</dt><dd class="ai">Neural physics simulation: the shock propagating through steel with real material properties (density, elastic modulus) drives the ring deformation and the spark release. Simulated and rendered, not keyframed.</dd>
+        <dt>Out</dt><dd>Cut on the second ring to the wide shot.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="5" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">05</span><span class="tc">0:10 – 0:13 · 3 s</span><h3>The chair</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Wide. Polished concrete floor in a bare, well-lit studio. A single empty wooden chair, side on. On the hit's echo it skids backward across the floor and stops. Nobody is in frame. A dimension line draws along the floor as it travels: <span class="q">8 ft 2 in</span>.</dd>
+        <dt>Motion</dt><dd>Camera locked, 35 mm, chest height. The chair launches with exponential ease-out and a four-degree yaw. Dust lifts from the floor and settles after it stops.</dd>
+        <dt>On screen</dt><dd><span class="q">8 ft 2 in</span></dd>
+        <dt>Audio</dt><dd>Chair legs on concrete, dust. The steel ring continues. Bed holds.</dd>
+        <dt>AI</dt><dd class="ai">Physics-consistent generative video with object control: the chair's path is specified, the model renders contact, dust and floor reflection. The room is a Gaussian-splat capture of the real One Inch studio if we scan it (a brand slot), otherwise generated.</dd>
+        <dt>Reference</dt><dd class="ref">A nod to the 1964 Long Beach demonstration, where the volunteer's landing chair became part of the legend. No person is shown.</dd>
+        <dt>Out</dt><dd>The camera begins a dolly right that carries into frame 06.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="6" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">06</span><span class="tc">0:13 – 0:18 · 5 s</span><h3>Through every medium</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>The dolly reveals a row of panels standing on the studio floor: a printed photograph on foam board, a flat vinyl logo on the wall, a page of printed text, a wireframe model on a plinth. A translucent band of force sweeps left to right through them. Each panel transforms as the band passes: the photograph starts moving, the flat logo lifts off the wall as machined metal, the text lifts off the page and is spoken, the wireframe renders photoreal.</dd>
+        <dt>Motion</dt><dd>One continuous dolly, five seconds, no cuts. The band moves slightly faster than the camera, so it overtakes each panel in turn.</dd>
+        <dt>On screen</dt><dd>None. The text panel's words are heard, not read.</dd>
+        <dt>Audio</dt><dd>The band's passage is a low whoosh. Each transformation gets one quiet, specific sound: shutter, metal, breath, render chime. A synthesized voice reads the page: <span class="q">Everything within reach.</span></dd>
+        <dt>AI</dt><dd class="ai">Four capabilities in one shot: image-to-video (the photograph), 2D-to-3D lift with material inference (the logo), text-to-speech (the page), and wireframe-to-photoreal re-rendering (the model). The continuous shot is the proof that these are one pipeline, not four demos.</dd>
+        <dt>Out</dt><dd>The band hits the far wall and the wall lights up.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="7" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">07</span><span class="tc">0:18 – 0:22 · 4 s</span><h3>Ten thousand takes</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>The far wall is a grid of small screens, each playing a different take of the chair shot: another lens, another time of day, another floor, some vertical, some square, some wide. They fill the wall faster and faster. A counter climbs from 0 to <span class="q">10,000</span>.</dd>
+        <dt>Motion</dt><dd>Slow push-in. The tiles populate in a wave from the band's impact point.</dd>
+        <dt>On screen</dt><dd><span class="q">10,000 TAKES</span></dd>
+        <dt>Audio</dt><dd>A dense, dry pulse builds, one click per hundred takes, accelerating.</dd>
+        <dt>AI</dt><dd class="ai">Batch generation at scale with controlled variation (seeded, so every tile is genuinely different) plus automatic reframing into vertical, square and wide. In the web version the wall renders live, so no two viewers see the same ten thousand.</dd>
+        <dt>Out</dt><dd>The counter stops on 10,000 and the wall goes silent.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="8" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">08</span><span class="tc">0:22 – 0:25 · 3 s</span><h3>One</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Every tile flies to the center and goes dark except one. That one fills the frame: the chosen take of the chair, the one we used. Below it, the line: <span class="q">TEN THOUSAND TAKES. ONE HIT.</span></dd>
+        <dt>Motion</dt><dd>Tiles converge with exponential ease-out over one second. The survivor scales to full frame. The counter runs down from 10,000 to 1.</dd>
+        <dt>On screen</dt><dd><span class="q">TEN THOUSAND TAKES. ONE HIT.</span></dd>
+        <dt>Audio</dt><dd>The pulse cuts. Silence, then the steel ring is suddenly audible again.</dd>
+        <dt>AI</dt><dd class="ai">Curation is the human beat. An AI ranking pass surfaces candidates and the studio picks. The piece says this out loud: the machine makes ten thousand, the studio makes the call.</dd>
+        <dt>Reference</dt><dd class="ref">A paraphrase of the ten-thousand-kicks idea in the studio's own words. No quotation.</dd>
+        <dt>Out</dt><dd>Smash to black with the ruler already in place.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="9" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">09</span><span class="tc">0:25 – 0:28 · 3 s</span><h3>The lockup</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Black. The ruler from frame 02 runs across center. The One Inch Media lockup slams in and lands so that the wordmark spans exactly one inch on the ruler: the 0 and 1 marks sit on its edges. One shockwave ring on the landing. Readout: <span class="q">1.000 in</span>.</dd>
+        <dt>Motion</dt><dd>The lockup arrives at 1.6× and settles to 1× with a hard overshoot. Two-frame screen shake on contact. The ring expands and fades.</dd>
+        <dt>On screen</dt><dd>Logo lockup (brand slot) and <span class="q">1.000 in</span>.</dd>
+        <dt>Audio</dt><dd>The hit from frame 04 again, identical. Then the ring.</dd>
+        <dt>AI</dt><dd class="ai">Procedural type animation derived from the actual logo geometry (strokes, counters), so the slam-in is built from the mark itself. Physically based materials on the lockup matched to the brand kit.</dd>
+        <dt>Out</dt><dd>Hold.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="10" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">10</span><span class="tc">0:28 – 0:30 · 2 s</span><h3>The line</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>The lockup lifts slightly to make room. Below it the tagline wipes in: <span class="q">ONE INCH. TOTAL IMPACT.</span> Grain. The faintest ring still expanding at the edges.</dd>
+        <dt>Motion</dt><dd>Clip-wipe reveal, left to right, twelve frames. Hold, then fade to black over ten frames.</dd>
+        <dt>On screen</dt><dd><span class="q">ONE INCH. TOTAL IMPACT.</span></dd>
+        <dt>Audio</dt><dd>The voice from frame 06 reads the line. The ring decays to silence.</dd>
+        <dt>AI</dt><dd class="ai">Voice: a cloned founder voice (with consent and one recorded session) or a cast synthetic voice. The ring tail is a generated spectral decay matched to the steel of frame 04.</dd>
+        <dt>Out</dt><dd>Black.</dd>
+      </dl>
+    </article>
+
+  </div>
+</section>
+
+<section aria-labelledby="caps-h">
+  <header><h2 id="caps-h">What the piece proves about AI</h2><p>One capability per beat, in the order a technically literate viewer would clock them. Nothing is decoration: each shot would not exist without the technique that made it.</p></header>
+  <div class="cols">
+    <ul class="caps">
+      <li><span class="f">F01</span><span><strong>Generative sound design</strong> matched to a described or scanned room.</span></li>
+      <li><span class="f">F02</span><span><strong>Photoreal text-to-video</strong> with numerically specified camera paths.</span></li>
+      <li><span class="f">F03</span><span><strong>Temporal super-resolution</strong>: 1000 fps-equivalent slow motion from 24 fps.</span></li>
+      <li><span class="f">F04</span><span><strong>Neural physics</strong>: shock through steel with real material properties.</span></li>
+      <li><span class="f">F05</span><span><strong>Object-controlled generative video</strong> inside a Gaussian-splat capture of a real room.</span></li>
+    </ul>
+    <ul class="caps">
+      <li><span class="f">F06</span><span><strong>Image-to-video, 2D-to-3D lift, text-to-speech, wireframe-to-photoreal</strong>, in one continuous shot.</span></li>
+      <li><span class="f">F07</span><span><strong>Batch generation at scale</strong> with seeded variation and automatic reframing; live rendering on the web.</span></li>
+      <li><span class="f">F08</span><span><strong>AI-assisted ranking, human curation.</strong> The studio's role, stated.</span></li>
+      <li><span class="f">F09</span><span><strong>Procedural type animation</strong> derived from the logo's own geometry.</span></li>
+      <li><span class="f">F10</span><span><strong>Voice synthesis</strong> and generated spectral audio tails.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section aria-labelledby="look-h">
+  <header><h2 id="look-h">Look, type and sound</h2><p>A proposal. The real brand kit replaces the accent, the display face and the lockup. The steel and bone stay because the piece is about measurement.</p></header>
+  <div class="cols">
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Palette · proposal</p>
+      <div class="swatches">
+        <div class="swatch"><i style="background:#0D0C0A"></i><div><b>INK · #0D0C0A</b><span>Screen black, warm bias. The ground for everything.</span></div></div>
+        <div class="swatch"><i style="background:#EFE9DE"></i><div><b>BONE · #EFE9DE</b><span>Ruler, wordmark, dust. Never pure white.</span></div></div>
+        <div class="swatch"><i style="background:#F2C230"></i><div><b>STRIKE · #F2C230</b><span>Readouts, the force band, the ring. Swap for the brand accent.</span></div></div>
+        <div class="swatch"><i style="background:#8C939B"></i><div><b>STEEL · #8C939B</b><span>Machined surfaces, the mono labels.</span></div></div>
+      </div>
+      <p class="prose" style="margin-top:14px">Yellow reads as the reference on its own. It is used as a flat accent only: no stripes, no tracksuit motif, nothing paired with black bands. If the brand kit has its own accent, it replaces Strike everywhere and the homage still holds through the inch, the hit and the chair.</p>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Type · proposal</p>
+      <div class="specimen">
+        <small>Display · for the two lines and the counter</small>
+        <p class="d">Ten thousand takes.<br>One hit.</p>
+        <small>Mono · for every measurement</small>
+        <p class="m">1.000 in &nbsp;·&nbsp; 8 ft 2 in &nbsp;·&nbsp; 10,000 TAKES</p>
+        <small>Body · for nothing on screen; this board only</small>
+        <p class="b">A heavy condensed display face so the few words hit like the cut. A monospaced face for every number, because the piece is a measurement. The lockup itself comes from the brand kit and is not set in either.</p>
+      </div>
+      <p class="eyebrow" style="margin:22px 0 8px">Sound</p>
+      <p class="prose">Near silence, room tone, one dry hit. A long metallic ring from a struck steel plate decays under the whole second half. A dry pulse builds under the ten thousand and cuts dead. One synthesized voice speaks twice. No gong, no film cue, no vocalization, no sample from any Bruce Lee film. The score is generated from a tempo map locked to the cuts.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="slots-h">
+  <header><h2 id="slots-h">Brand slots</h2><p>Where the real kit plugs in once it is shared. Nothing else on the board changes.</p></header>
+  <div class="cols">
+    <ol class="list">
+      <li><strong>Lockup</strong> · frames 09 and 10. Vector logo, ideally with the wordmark separable from the mark, so the one-inch fit uses the wordmark's true width.</li>
+      <li><strong>Accent color</strong> · replaces Strike in every readout, the force band in frame 06 and the rings.</li>
+      <li><strong>Display face</strong> · the two text lines and the counter. If the brand face is not condensed, the lines shrink to two rows and the counter moves to the lower right.</li>
+    </ol>
+    <ol class="list" start="4">
+      <li><strong>The real studio</strong> · frames 05 to 07. A two-minute phone scan of the actual space becomes the Gaussian-splat room the chair slides across.</li>
+      <li><strong>The voice</strong> · frames 06 and 10. Founder voice clone (needs consent and a 20-minute recording) or a cast synthetic voice.</li>
+      <li><strong>The line</strong> · frame 10. "One inch. Total impact." is the proposal. Alternates below.</li>
+    </ol>
+  </div>
+</section>
+
+<section aria-labelledby="cut-h">
+  <header><h2 id="cut-h">The 7-second cutdown</h2><p>Same frames, re-timed. It plays in the animatic under the Cutdown toggle. Built for pre-rolls, reels and the site header.</p></header>
+  <div class="cut">
+    <div class="cut-strip" aria-label="Cutdown timeline">
+      <div><b>02</b><span>0:00–0:02 · faster push</span></div>
+      <div><b>03</b><span>0:02–0:03 · breath</span></div>
+      <div><b>04</b><span>0:03–0:03.5 · hit</span></div>
+      <div><b>09</b><span>0:03.5–0:06 · lockup</span></div>
+      <div><b>10</b><span>0:06–0:07 · line</span></div>
+    </div>
+    <p class="prose">The cutdown skips the chair and the ten thousand entirely. It is the inch, the hit and the name, which is the whole argument in seven seconds. The ring tail is shortened to a second so it does not bleed into whatever plays next.</p>
+  </div>
+</section>
+
+<section aria-labelledby="stack-h">
+  <header><h2 id="stack-h">Production stack</h2><p>How each stage gets made with no budget ceiling. Tools are named by class; the specific model is a pick on the day, because the field moves monthly.</p></header>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Stage</th><th>Tooling</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Previz</td><td>This animatic, then a blocked 3D previz in Blender with the final camera paths exported as data</td><td>The exported camera paths feed the video models directly, so the generated shots cut together.</td></tr>
+        <tr><td>Frames 02–03</td><td>Text-to-video model with camera-path and start-frame control; frame interpolation model for the 1000 fps stretch</td><td>Generate at 48 fps native, stretch in post. Keep the dust as a separate pass for control.</td></tr>
+        <tr><td>Frame 04</td><td>Neural physics (learned material simulation) rendered in a path tracer</td><td>Simulate once at high resolution; the same sim drives the ring in frame 09.</td></tr>
+        <tr><td>Frames 05–06</td><td>Gaussian-splat capture of the studio from a phone scan; object-controlled video generation; 2D-to-3D lift model; TTS</td><td>The splat gives a real, consistent room across both frames and the continuous dolly.</td></tr>
+        <tr><td>Frame 07</td><td>Batch generation with seeded variation; automatic reframing; WebGPU for the live web wall</td><td>Render 10,000 four-second clips at thumbnail size. The web version draws from a pool of 2,000 and shuffles.</td></tr>
+        <tr><td>Frames 09–10</td><td>Procedural type animation from the logo vectors in After Effects or a custom rig; PBR materials</td><td>Measure the wordmark's actual width and calibrate the ruler to it, not the other way round.</td></tr>
+        <tr><td>Sound</td><td>Generative sound design for room tone and tails; generative score locked to a tempo map; voice synthesis</td><td>Record one real hit on a real steel plate as the reference for the generated ring.</td></tr>
+        <tr><td>Finish</td><td>Conform and grade in Resolve; master 4K 16:9, plus 9:16 and 1:1 reframes</td><td>The reframes are generated, then checked by a person, because the inch must stay centered.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="guard-h">
+  <header><h2 id="guard-h">Guardrails and your calls</h2><p>What the piece deliberately avoids so the homage is safe to run commercially, and the few decisions only you can make.</p></header>
+  <div class="cols">
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">What we do not do</p>
+      <ul class="list">
+        <li><strong>No likeness.</strong> No face, body, silhouette or costume of Bruce Lee, in any frame, including as a reflection or shadow.</li>
+        <li><strong>No name.</strong> Not on screen, not in the voice track, not in metadata.</li>
+        <li><strong>No registered phrases.</strong> "Be water, my friend" is a registered mark and is not used. Neither line on screen is a quotation; both are paraphrases in the studio's own words.</li>
+        <li><strong>No trade dress.</strong> Yellow appears only as a flat accent. No black stripe, no tracksuit, no nunchaku.</li>
+        <li><strong>No film material.</strong> No footage, stills, score or vocalizations from any film. The chair references a public demonstration, not a film scene.</li>
+        <li><strong>Original audio only.</strong> The score and every effect are generated or recorded for this piece.</li>
+      </ul>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Decisions for you</p>
+      <ol class="list">
+        <li><strong>Confirm the brand</strong> is One Inch Media and share the kit: logo, colors, fonts. Everything in Brand slots then drops in.</li>
+        <li><strong>Pick the line.</strong> "One inch. Total impact." is the proposal. Alternates: "Everything from one inch." or no tagline, ending on the lockup and the ruler.</li>
+        <li><strong>The voice.</strong> Your own voice cloned (consent and a short recording), a cast synthetic voice, or no voice at all.</li>
+        <li><strong>The chair.</strong> Keep the deep-cut nod, or make the hit land on something abstract. It is the one beat that is recognizable only to people who know the story.</li>
+        <li><strong>The real room.</strong> Scan your studio for frames 05 to 07, or let it be generated.</li>
+        <li><strong>Live variation on the web.</strong> Each visitor sees a different ten thousand, or everyone sees one fixed render.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="alts-h">
+  <header><h2 id="alts-h">Other directions considered</h2><p>Five angles that lost to the inch, and what each one still lends to the board.</p></header>
+  <div class="alts">
+    <div><h3>Formless</h3><p>A fluid taking the shape of every container: phone, billboard, cinema, letterform. Strong idea, but the registered phrase is the first thing a viewer reaches for. It survives as the mixed aspect ratios in frame 07.</p></div>
+    <div><h3>The mirror room</h3><p>Infinite reflections, which one is real, shatter the rest. Spectacular but it belongs to one film scene. It survives as the ten thousand tiles going dark around the one in frame 08.</p></div>
+    <div><h3>Ten thousand</h3><p>Iteration at scale converging on one perfect take. Too much of a montage on its own, and it does not pay off the name. It became the third movement instead.</p></div>
+    <div><h3>Style of no style</h3><p>Every medium absorbed into one fluid motion, render technique changing mid-shot. Rich, hard to read in thirty seconds. It survives as the continuous dolly in frame 06.</p></div>
+    <div><h3>The ascent</h3><p>Floors of increasing difficulty, each a different medium, climbed without a cut. A great structure for a longer film, but the vertical climb never arrives at an inch. Set aside.</p></div>
+  </div>
+</section>
+
+<footer>
+  <p>ONE INCH · storyboard v1 · prepared for One Inch Media · 2026-10-07</p>
+  <p>Previz drawn live in canvas. The frames describe generated shots that do not exist yet.</p>
+</footer>
+</div>
+
+<script>
+// ---------- drawing primitives ----------
+const PR = (function () {
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const ease = {
+    out: t => 1 - Math.pow(1 - t, 3),
+    in: t => t * t * t,
+    inOut: t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+    outExpo: t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t),
+    outBack: t => { const c = 1.70158, d = c + 1; return 1 + d * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); },
+  };
+  function rng(seed) { let s = (seed >>> 0) || 1; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  const win = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
+  const DISPLAY = '"Big Shoulders Display", Impact, "Arial Narrow", "Helvetica Neue", sans-serif';
+  const MONO = '"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace';
+  function font(ctx, size, weight) { ctx.font = `${weight || 800} ${size}px ${DISPLAY}`; }
+  function mono(ctx, size) { ctx.font = `500 ${size}px ${MONO}`; }
+  function vignette(ctx, W, H, strength) {
+    const g = ctx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.95);
+    g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, `rgba(0,0,0,${strength == null ? 0.6 : strength})`);
+    ctx.save(); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();
+  }
+  function grain(ctx, W, H, amount, seed) {
+    const r = rng(seed || 7); ctx.save(); ctx.globalAlpha = amount || 0.05; ctx.fillStyle = '#fff';
+    const n = Math.floor(W * H / 1100);
+    for (let i = 0; i < n; i++) ctx.fillRect(r() * W, r() * H, 1, 1);
+    ctx.restore();
+  }
+  function ruler(ctx, x0, x1, y, inch, color, alpha, labelStart) {
+    ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha; ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke();
+    const sub = inch / 8; let k = 0;
+    for (let x = x0; x <= x1 + 0.5; x += sub, k++) {
+      const h = k % 8 === 0 ? inch * 0.12 : k % 4 === 0 ? inch * 0.075 : k % 2 === 0 ? inch * 0.05 : inch * 0.03;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - h); ctx.stroke();
+      if (labelStart != null && k % 8 === 0) { const v = k / 8 + labelStart; if (v === 0 || v === 1) { mono(ctx, Math.max(9, inch * 0.055)); ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillText(String(v), x, y - inch * 0.15); } }
+    }
+    ctx.restore();
+  }
+  function shockwave(ctx, cx, cy, p, maxR, color, width, count) {
+    const n = count || 1;
+    for (let i = 0; i < n; i++) {
+      const q = clamp(p - i * 0.12, 0, 1); if (q <= 0) continue;
+      const r = maxR * ease.outExpo(q);
+      ctx.save(); ctx.globalAlpha = (1 - q) * 0.9; ctx.strokeStyle = color; ctx.lineWidth = (width || 6) * (1 - q * 0.8) + 0.5;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+    }
+  }
+  function burst(ctx, cx, cy, p, n, maxR, color, seed, size) {
+    const r = rng(seed || 3); ctx.save(); ctx.fillStyle = color;
+    for (let i = 0; i < n; i++) {
+      const a = r() * Math.PI * 2, sp = 0.4 + r() * 0.6, s = (size || 3) * (0.5 + r());
+      const d = maxR * sp * ease.outExpo(p), x = cx + Math.cos(a) * d, y = cy + Math.sin(a) * d + p * p * 60 * r();
+      ctx.globalAlpha = (1 - p) * 0.9; ctx.fillRect(x, y, s, s);
+    }
+    ctx.restore();
+  }
+  function title(ctx, text, x, y, size, color, opts) {
+    const o = opts || {}; ctx.save(); font(ctx, size, o.weight || 900); ctx.fillStyle = color; ctx.textBaseline = 'middle';
+    const chars = Array.from(text); const tr = o.tracking || 0;
+    const w = tr ? chars.reduce((a, ch) => a + ctx.measureText(ch).width + tr, -tr) : ctx.measureText(text).width;
+    const left = o.align === 'left' ? x : o.align === 'right' ? x - w : x - w / 2;
+    if (o.alpha != null) ctx.globalAlpha = o.alpha;
+    if (o.reveal != null && o.reveal < 1) { ctx.beginPath(); ctx.rect(left - 4, y - size, (w + 8) * o.reveal, size * 2); ctx.clip(); }
+    ctx.textAlign = 'left';
+    if (tr) { let cx = left; for (const ch of chars) { ctx.fillText(ch, cx, y); cx += ctx.measureText(ch).width + tr; } }
+    else ctx.fillText(text, left, y);
+    ctx.restore();
+  }
+  function label(ctx, text, x, y, color, size, align, alpha) {
+    ctx.save(); mono(ctx, size || 11); ctx.fillStyle = color; ctx.textAlign = align || 'left'; ctx.textBaseline = 'middle'; if (alpha != null) ctx.globalAlpha = alpha; ctx.fillText(text, x, y); ctx.restore();
+  }
+  function glow(ctx, cx, cy, r, color, alpha) {
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r); g.addColorStop(0, color); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.save(); ctx.globalAlpha = alpha == null ? 0.5 : alpha; ctx.fillStyle = g; ctx.fillRect(cx - r, cy - r, r * 2, r * 2); ctx.restore();
+  }
+  function speedlines(ctx, cx, cy, p, n, color, seed, W, H) {
+    const r = rng(seed || 9); ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 1.2;
+    for (let i = 0; i < n; i++) { const a = r() * Math.PI * 2, r0 = H * 0.12 + r() * H * 0.2, len = H * 0.1 + r() * Math.max(W, H) * p; ctx.globalAlpha = (0.1 + r() * 0.4) * (1 - p); ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0); ctx.lineTo(cx + Math.cos(a) * (r0 + len), cy + Math.sin(a) * (r0 + len)); ctx.stroke(); }
+    ctx.restore();
+  }
+  return { clamp, lerp, ease, rng, win, font, mono, vignette, grain, ruler, shockwave, burst, title, label, glow, speedlines };
+})();
+
+// ---------- the film's own palette (fixed; the page theme does not change the screen) ----------
+const C = { screen: '#0D0C0A', bone: '#EFE9DE', strike: '#F2C230', steel: '#8C939B', steelDark: '#2B2E32', steelMid: '#4A4F55', wood: '#C9A26B' };
+const { ease, win, clamp, lerp } = PR;
+
+// ---------- frames ----------
+function fTick(ctx, p, W, H) {
+  const a = ease.out(win(p, 0.15, 0.55)); const h = H * 0.09;
+  ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = C.bone; ctx.fillRect(W / 2 - 0.5, H / 2 - h / 2, 1, h); ctx.restore();
+  PR.label(ctx, '1 in', W / 2 + 10, H / 2, C.steel, Math.max(10, W * 0.013), 'left', ease.out(win(p, 0.55, 0.9)));
+  PR.grain(ctx, W, H, 0.035, 1);
+}
+function fInch(ctx, p, W, H, zoomFrom, zoomTo) {
+  const z = lerp(zoomFrom == null ? 1 : zoomFrom, zoomTo == null ? 1.25 : zoomTo, ease.in(p));
+  ctx.save(); ctx.translate(W / 2, H / 2); ctx.scale(z, z); ctx.translate(-W / 2, -H / 2);
+  const inch = W * 0.22, gx0 = W / 2 - inch / 2, gx1 = W / 2 + inch / 2, top = H * 0.1, bh = H * 0.8;
+  const g = ctx.createLinearGradient(0, top, 0, top + bh); g.addColorStop(0, '#24272B'); g.addColorStop(0.45, C.steelMid); g.addColorStop(1, '#17191C');
+  ctx.fillStyle = g; ctx.fillRect(-W * 0.3, top, gx0 + W * 0.3, bh); ctx.fillRect(gx1, top, W * 1.3 - gx1, bh);
+  ctx.save(); ctx.globalAlpha = 0.16; ctx.strokeStyle = '#A3A9AF'; ctx.lineWidth = 1; const r = PR.rng(21);
+  for (let i = 0; i < 70; i++) { const y = top + r() * bh; ctx.beginPath(); ctx.moveTo(-W * 0.3, y); ctx.lineTo(gx0, y); ctx.moveTo(gx1, y); ctx.lineTo(W * 1.3, y); ctx.stroke(); }
+  ctx.restore();
+  ctx.save(); ctx.fillStyle = C.bone; ctx.globalAlpha = 0.5; ctx.fillRect(gx0 - 2, top, 2, bh); ctx.fillRect(gx1, top, 2, bh); ctx.restore();
+  ctx.save(); ctx.beginPath(); ctx.rect(gx0, 0, inch, H); ctx.clip();
+  const lg = ctx.createLinearGradient(gx0, H * 0.15, gx1, H * 0.85); lg.addColorStop(0, 'rgba(242,194,48,0)'); lg.addColorStop(0.5, 'rgba(242,194,48,0.26)'); lg.addColorStop(1, 'rgba(242,194,48,0)');
+  ctx.fillStyle = lg; ctx.fillRect(gx0, 0, inch, H);
+  const rr = PR.rng(33); ctx.fillStyle = C.bone;
+  for (let i = 0; i < 70; i++) { const bx = gx0 + rr() * inch, by = rr() * H, s = rr(); const x = bx + Math.sin(p * 6 + i) * 6 * s, y = by - p * 40 * s; ctx.globalAlpha = 0.25 + 0.6 * s; ctx.fillRect(x, y, 1 + s * 1.5, 1 + s * 1.5); }
+  ctx.restore();
+  PR.ruler(ctx, gx0 - inch * 2, gx1 + inch * 2, H * 0.9, inch, C.bone, 0.85, -2);
+  ctx.restore();
+  PR.label(ctx, '1.000 in', W / 2, H * 0.955, C.strike, Math.max(10, W * 0.014), 'center', ease.out(win(p, 0.1, 0.4)));
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 2);
+}
+function fBreath(ctx, p, W, H) {
+  const close = p < 0.75 ? lerp(0, 0.35, ease.in(p / 0.75)) : lerp(0.35, 0.5, (p - 0.75) / 0.25);
+  const gx0 = W * close, gx1 = W * (1 - close);
+  ctx.fillStyle = C.steelDark; ctx.fillRect(0, 0, gx0, H); ctx.fillRect(gx1, 0, W - gx1, H);
+  ctx.save(); ctx.fillStyle = C.bone; ctx.globalAlpha = 0.5; ctx.fillRect(gx0 - 2, 0, 2, H); ctx.fillRect(gx1, 0, 2, H); ctx.restore();
+  const rr = PR.rng(33); ctx.save(); ctx.fillStyle = C.bone;
+  for (let i = 0; i < 120; i++) { const x = rr() * W, y = rr() * H, s = rr(); if (x < gx0 || x > gx1) continue; ctx.globalAlpha = 0.2 + 0.6 * s; ctx.fillRect(x, y, 1 + s * 2, 1 + s * 2); }
+  ctx.restore();
+  const beat = (p * 2) % 1;
+  PR.glow(ctx, W / 2, H / 2, H * 0.3, 'rgba(242,194,48,0.35)', 0.5 * (1 - beat));
+  PR.shockwave(ctx, W / 2, H / 2, beat, H * 0.25, C.strike, 2, 1);
+  PR.label(ctx, Math.max(0, 1 - close * 2).toFixed(3) + ' in', W / 2, H * 0.9, C.strike, Math.max(11, W * 0.02), 'center');
+  PR.vignette(ctx, W, H, 0.7); PR.grain(ctx, W, H, 0.03, 3);
+}
+function fHit(ctx, p, W, H) {
+  if (p < 0.07) { ctx.fillStyle = C.bone; ctx.fillRect(0, 0, W, H); return; }
+  const q = win(p, 0.07, 1); const shake = (1 - q) * 8;
+  ctx.save(); ctx.translate(Math.sin(q * 90) * shake, Math.cos(q * 70) * shake);
+  ctx.fillStyle = '#1B1D20'; ctx.fillRect(-10, -10, W + 20, H + 20);
+  ctx.save(); ctx.fillStyle = C.bone; ctx.globalAlpha = 0.9 * (1 - q * 0.5); ctx.fillRect(W / 2 - 1, 0, 2, H); ctx.restore();
+  PR.glow(ctx, W / 2, H / 2, H * 0.5, 'rgba(242,194,48,0.6)', 0.8 * (1 - q));
+  PR.speedlines(ctx, W / 2, H / 2, q, 60, C.bone, 5, W, H);
+  PR.shockwave(ctx, W / 2, H / 2, q, W * 0.6, C.strike, 10, 3);
+  PR.burst(ctx, W / 2, H / 2, q, 140, W * 0.5, C.bone, 8, 2.5);
+  ctx.restore();
+  PR.vignette(ctx, W, H, 0.5);
+}
+function room(ctx, W, H, hy) {
+  const wall = ctx.createLinearGradient(0, 0, 0, hy); wall.addColorStop(0, '#121314'); wall.addColorStop(1, '#232527'); ctx.fillStyle = wall; ctx.fillRect(0, 0, W, hy);
+  const floor = ctx.createLinearGradient(0, hy, 0, H); floor.addColorStop(0, '#2E3134'); floor.addColorStop(1, '#141619'); ctx.fillStyle = floor; ctx.fillRect(0, hy, W, H - hy);
+  ctx.save(); ctx.fillStyle = C.bone; ctx.globalAlpha = 0.15; ctx.fillRect(0, hy, W, 1); ctx.restore();
+}
+function drawChair(ctx, x, baseY, s, rot, alpha, lw) {
+  ctx.save(); ctx.globalAlpha = alpha; ctx.translate(x, baseY); ctx.rotate(rot); ctx.strokeStyle = C.wood; ctx.lineWidth = lw; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  const path = () => { ctx.beginPath(); ctx.moveTo(-s * 0.5, 0); ctx.lineTo(s * 0.5, 0); ctx.moveTo(-s * 0.45, 0); ctx.lineTo(-s * 0.5, s * 0.55); ctx.moveTo(s * 0.45, 0); ctx.lineTo(s * 0.5, s * 0.55); ctx.moveTo(-s * 0.45, 0); ctx.lineTo(-s * 0.5, -s * 0.75); ctx.moveTo(-s * 0.5, -s * 0.7); ctx.lineTo(-s * 0.28, -s * 0.68); ctx.moveTo(-s * 0.5, -s * 0.4); ctx.lineTo(-s * 0.28, -s * 0.38); ctx.stroke(); };
+  path();
+  ctx.globalAlpha = alpha * 0.16; ctx.translate(0, s * 0.55); ctx.scale(1, -0.55); ctx.translate(0, -s * 0.55); path();
+  ctx.restore();
+}
+function fChair(ctx, p, W, H, noDim) {
+  const hy = H * 0.62; room(ctx, W, H, hy);
+  const x0 = W * 0.3, x1 = W * 0.78, m = ease.outExpo(win(p, 0.05, 0.75)); const cx = lerp(x0, x1, m); const rot = -4 * Math.PI / 180 * Math.sin(m * Math.PI);
+  const s = H * 0.22, lw = Math.max(2, W * 0.004), base = hy + H * 0.06;
+  if (p > 0.05 && p < 0.6) for (let i = 3; i > 0; i--) { const gm = ease.outExpo(win(p - 0.04 * i, 0.05, 0.75)); drawChair(ctx, lerp(x0, x1, gm), base, s, rot, 0.1 * i, lw); }
+  drawChair(ctx, cx, base, s, rot, 1, lw);
+  PR.burst(ctx, cx - s * 0.5, base + s * 0.5, win(p, 0.1, 0.9), 40, H * 0.2, '#6B6E72', 4, 2);
+  if (noDim) { PR.vignette(ctx, W, H, 0.55); PR.grain(ctx, W, H, 0.03, 5); return; }
+  const dA = ease.out(win(p, 0.2, 0.5)); const dy = base + s * 0.85;
+  ctx.save(); ctx.globalAlpha = dA; ctx.strokeStyle = C.strike; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x0, dy); ctx.lineTo(cx, dy); ctx.moveTo(x0, dy - 6); ctx.lineTo(x0, dy + 6); ctx.moveTo(cx, dy - 6); ctx.lineTo(cx, dy + 6); ctx.stroke(); ctx.restore();
+  const ft = m * 8.17, f = Math.floor(ft), inch = Math.round((ft - f) * 12);
+  PR.label(ctx, f + ' ft ' + inch + ' in', (x0 + cx) / 2, dy + 14, C.strike, Math.max(10, W * 0.013), 'center', dA);
+  PR.vignette(ctx, W, H, 0.55); PR.grain(ctx, W, H, 0.03, 5);
+}
+function fMedia(ctx, p, W, H) {
+  const hy = H * 0.64; room(ctx, W, H, hy);
+  const dolly = -p * W * 0.45, waveX = lerp(-W * 0.1, W * 1.1, p), pw = W * 0.2, ph = H * 0.42, top = hy - ph;
+  const r = PR.rng(42);
+  for (let i = 0; i < 4; i++) {
+    const px = W * 0.15 + i * W * 0.32 + dolly; if (px + pw < -20 || px > W + 20) continue;
+    const tf = clamp((waveX - px - pw * 0.5) / (pw * 0.6), 0, 1); // transformed fraction
+    ctx.save(); ctx.translate(px, top);
+    // panel ground shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.fillRect(-4, ph, pw + 8, 6);
+    if (i === 0) { // photograph -> video
+      ctx.fillStyle = '#D9D2C4'; ctx.fillRect(0, 0, pw, ph);
+      ctx.save(); ctx.beginPath(); ctx.rect(pw * 0.06, ph * 0.06, pw * 0.88, ph * 0.74); ctx.clip();
+      const sky = ctx.createLinearGradient(0, 0, 0, ph); sky.addColorStop(0, tf ? '#2C3E55' : '#5A6670'); sky.addColorStop(1, tf ? '#C96A3A' : '#9A9A95'); ctx.fillStyle = sky; ctx.fillRect(0, 0, pw, ph);
+      const sunY = lerp(ph * 0.45, ph * 0.62, tf * (0.5 + 0.5 * Math.sin(p * 9))); ctx.fillStyle = C.strike; ctx.globalAlpha = 0.9; ctx.beginPath(); ctx.arc(pw * 0.62, sunY, pw * 0.06, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
+      ctx.fillStyle = '#1E2126'; ctx.beginPath(); ctx.moveTo(0, ph * 0.8); ctx.lineTo(pw * 0.3, ph * 0.45); ctx.lineTo(pw * 0.5, ph * 0.62); ctx.lineTo(pw * 0.72, ph * 0.38); ctx.lineTo(pw, ph * 0.8); ctx.closePath(); ctx.fill();
+      if (tf > 0) { ctx.fillStyle = 'rgba(255,255,255,0.35)'; const cxl = (pw * 0.2 + p * pw * 1.5 * tf) % (pw * 1.2) - pw * 0.1; ctx.beginPath(); ctx.ellipse(cxl, ph * 0.22, pw * 0.14, ph * 0.05, 0, 0, Math.PI * 2); ctx.fill(); }
+      ctx.restore();
+      if (tf > 0.2) { ctx.fillStyle = '#D23B2E'; ctx.beginPath(); ctx.arc(pw * 0.12, ph * 0.12, 3, 0, Math.PI * 2); ctx.fill(); PR.label(ctx, 'REC', pw * 0.17, ph * 0.12, C.bone, Math.max(8, W * 0.009)); }
+    } else if (i === 1) { // flat logo -> machined metal
+      ctx.fillStyle = '#1A1C1F'; ctx.fillRect(0, 0, pw, ph);
+      const sz = pw * 0.19; PR.font(ctx, sz, 900); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      const lift = tf * ph * 0.08, depth = Math.round(tf * 7);
+      for (let d = depth; d >= 1; d--) { ctx.fillStyle = d % 2 ? '#5D5330' : '#3F3920'; ctx.fillText('ONE', pw / 2 + d, ph * 0.4 - lift + d * 0.6); ctx.fillText('INCH', pw / 2 + d, ph * 0.62 - lift + d * 0.6); }
+      ctx.fillStyle = tf ? C.strike : '#8F8A7C'; ctx.fillText('ONE', pw / 2, ph * 0.4 - lift); ctx.fillText('INCH', pw / 2, ph * 0.62 - lift);
+    } else if (i === 2) { // page of text -> spoken
+      ctx.fillStyle = '#EFE9DE'; ctx.fillRect(0, 0, pw, ph);
+      for (let l = 0; l < 9; l++) { const y = ph * 0.12 + l * ph * 0.085; const float = tf * (l % 3 + 1) * ph * 0.07 * (0.5 + 0.5 * Math.sin(p * 7 + l)); ctx.fillStyle = '#2A2824'; ctx.globalAlpha = 1 - tf * 0.5; ctx.fillRect(pw * 0.12, y - float, pw * (0.5 + (l * 7 % 4) * 0.08), ph * 0.03); }
+      ctx.globalAlpha = 1;
+      if (tf > 0) { ctx.fillStyle = C.strike; for (let b = 0; b < 16; b++) { const h = ph * 0.03 + Math.abs(Math.sin(p * 40 + b * 1.7)) * ph * 0.14 * tf; ctx.fillRect(pw * 0.1 + b * pw * 0.05, ph * 0.9 - h / 2, pw * 0.03, h); } }
+    } else { // wireframe -> photoreal
+      ctx.fillStyle = '#0F1012'; ctx.fillRect(0, 0, pw, ph);
+      const cx = pw / 2, cy = ph * 0.5, s = pw * 0.3, o = s * 0.45;
+      const front = [[cx - s / 2, cy - s / 2], [cx + s / 2, cy - s / 2], [cx + s / 2, cy + s / 2], [cx - s / 2, cy + s / 2]];
+      const back = front.map(([x, y]) => [x + o, y - o]);
+      if (tf > 0) {
+        ctx.globalAlpha = tf;
+        ctx.fillStyle = '#9CA3AB'; ctx.beginPath(); ctx.moveTo(...front[0]); ctx.lineTo(...front[1]); ctx.lineTo(...front[2]); ctx.lineTo(...front[3]); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#C9CED3'; ctx.beginPath(); ctx.moveTo(...front[0]); ctx.lineTo(...back[0]); ctx.lineTo(...back[1]); ctx.lineTo(...front[1]); ctx.closePath(); ctx.fill();
+        ctx.fillStyle = '#6E757C'; ctx.beginPath(); ctx.moveTo(...front[1]); ctx.lineTo(...back[1]); ctx.lineTo(...back[2]); ctx.lineTo(...front[2]); ctx.closePath(); ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+      ctx.strokeStyle = tf ? 'rgba(239,233,222,0.25)' : C.strike; ctx.lineWidth = 1;
+      ctx.beginPath(); for (const q of [front, back]) { ctx.moveTo(...q[0]); for (let k = 1; k < 4; k++) ctx.lineTo(...q[k]); ctx.closePath(); } for (let k = 0; k < 4; k++) { ctx.moveTo(...front[k]); ctx.lineTo(...back[k]); } ctx.stroke();
+    }
+    ctx.restore();
+  }
+  // force band
+  const bw = W * 0.07; const bg = ctx.createLinearGradient(waveX - bw, 0, waveX + bw, 0); bg.addColorStop(0, 'rgba(242,194,48,0)'); bg.addColorStop(0.5, 'rgba(242,194,48,0.35)'); bg.addColorStop(1, 'rgba(242,194,48,0)');
+  ctx.fillStyle = bg; ctx.fillRect(waveX - bw, 0, bw * 2, H);
+  ctx.fillStyle = C.strike; ctx.globalAlpha = 0.9; ctx.fillRect(waveX - 1, 0, 2, H); ctx.globalAlpha = 1;
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 6);
+}
+const GRID = { cols: 40, rows: 22 };
+function tileFace(ctx, x, y, w, h, v, k) {
+  // a tiny variant of the chair shot
+  const hue = v < 0.33 ? '#2B3340' : v < 0.66 ? '#3A322A' : '#2E2E2E';
+  ctx.fillStyle = hue; ctx.fillRect(x, y, w, h);
+  ctx.fillStyle = '#4A4F55'; ctx.fillRect(x, y + h * 0.62, w, h * 0.38);
+  ctx.fillStyle = C.wood; ctx.fillRect(x + w * (0.25 + (k % 5) * 0.1), y + h * 0.4, Math.max(1, w * 0.08), h * 0.3);
+}
+function fTen(ctx, p, W, H) {
+  const z = lerp(1, 1.08, p); ctx.save(); ctx.translate(W / 2, H / 2); ctx.scale(z, z); ctx.translate(-W / 2, -H / 2);
+  const { cols, rows } = GRID, tw = W / cols, th = H / rows, r = PR.rng(13); const fill = ease.out(win(p, 0, 0.85));
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+    const v = r(), a = r(); const d = Math.hypot(i / cols, (j - rows / 2) / rows * 0.6); if (d > fill * 1.25) continue;
+    const k = j * cols + i; const inset = a < 0.3 ? [tw * 0.3, 0, tw * 0.4, th] : a < 0.5 ? [tw * 0.15, th * 0.15, tw * 0.7, th * 0.7] : [0, th * 0.2, tw, th * 0.6];
+    ctx.globalAlpha = 0.55 + v * 0.45; tileFace(ctx, i * tw + inset[0] + 0.5, j * th + inset[1] + 0.5, inset[2] - 1, inset[3] - 1, v, k);
+  }
+  ctx.globalAlpha = 1; ctx.restore();
+  const n = Math.round(ease.out(win(p, 0.02, 0.9)) * 10000);
+  ctx.save(); ctx.fillStyle = 'rgba(13,12,10,0.7)'; ctx.fillRect(W * 0.62, H * 0.78, W * 0.36, H * 0.17); ctx.restore();
+  PR.title(ctx, n.toLocaleString('en-US'), W * 0.96, H * 0.865, Math.max(22, W * 0.07), C.strike, { align: 'right' });
+  PR.label(ctx, 'TAKES', W * 0.64, H * 0.865, C.bone, Math.max(10, W * 0.014), 'left');
+  PR.vignette(ctx, W, H, 0.45); PR.grain(ctx, W, H, 0.03, 7);
+}
+function fOne(ctx, p, W, H) {
+  const { cols, rows } = GRID, tw = W / cols, th = H / rows, r = PR.rng(13); const conv = ease.outExpo(win(p, 0, 0.45));
+  const sk = Math.floor(cols * rows * 0.47) + 13;
+  for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+    const v = r(); r(); const k = j * cols + i; if (k === sk) continue;
+    const x = lerp(i * tw, W / 2, conv), y = lerp(j * th, H / 2, conv);
+    ctx.globalAlpha = (1 - conv) * 0.8; tileFace(ctx, x, y, tw - 1, th - 1, v, k);
+  }
+  ctx.globalAlpha = 1;
+  const g = ease.outExpo(win(p, 0.25, 0.7)); const si = sk % cols, sj = Math.floor(sk / cols);
+  const x = lerp(si * tw, 0, g), y = lerp(sj * th, 0, g), w = lerp(tw, W, g), h = lerp(th, H, g);
+  ctx.save(); ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip(); ctx.translate(x, y); ctx.scale(w / W, h / H); fChair(ctx, 0.95, W, H, true); ctx.restore();
+  if (g < 1) { ctx.save(); ctx.strokeStyle = C.strike; ctx.lineWidth = 2; ctx.globalAlpha = 1 - g; ctx.strokeRect(x, y, w, h); ctx.restore(); }
+  const n = Math.max(1, Math.round(10000 - ease.out(win(p, 0, 0.5)) * 9999));
+  if (p < 0.62) { PR.title(ctx, n.toLocaleString('en-US'), W * 0.96, H * 0.865, Math.max(22, W * 0.07), C.strike, { align: 'right', alpha: 1 - win(p, 0.5, 0.62) }); }
+  const band = win(p, 0.6, 0.75); if (band > 0) { const bg = ctx.createLinearGradient(0, H * 0.68, 0, H); bg.addColorStop(0, 'rgba(13,12,10,0)'); bg.addColorStop(1, 'rgba(13,12,10,0.9)'); ctx.save(); ctx.globalAlpha = band; ctx.fillStyle = bg; ctx.fillRect(0, H * 0.68, W, H * 0.32); ctx.restore(); }
+  PR.title(ctx, 'TEN THOUSAND TAKES. ONE HIT.', W / 2, H * 0.84, Math.max(16, W * 0.052), C.bone, { reveal: ease.out(win(p, 0.65, 0.92)), tracking: W * 0.003 });
+  PR.grain(ctx, W, H, 0.03, 8);
+}
+function wordmark(ctx, width, alpha) {
+  ctx.save(); ctx.globalAlpha = alpha; PR.font(ctx, 100, 900); const m = ctx.measureText('ONE INCH').width; const sz = 100 * width / m; PR.font(ctx, sz, 900);
+  ctx.fillStyle = C.bone; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillText('ONE INCH', 0, 0);
+  PR.mono(ctx, Math.max(9, sz * 0.15)); ctx.fillStyle = C.strike; ctx.textAlign = 'right'; ctx.fillText('M E D I A', width / 2, sz * 0.24);
+  ctx.restore();
+}
+function fLockup(ctx, p, W, H) {
+  const inch = W * 0.42, x0 = W / 2 - inch / 2, x1 = W / 2 + inch / 2, ry = H * 0.66;
+  PR.ruler(ctx, x0 - inch, x1 + inch, ry, inch, C.bone, 0.8, -1);
+  const s = win(p, 0, 0.18), scale = lerp(1.6, 1, ease.outBack(s)), alpha = ease.out(win(p, 0, 0.1));
+  const shake = p > 0.18 && p < 0.26 ? (0.26 - p) / 0.08 * 6 : 0;
+  ctx.save(); ctx.translate(W / 2 + Math.sin(p * 200) * shake, H * 0.42); ctx.scale(scale, scale); wordmark(ctx, inch, alpha); ctx.restore();
+  if (p > 0.18) PR.shockwave(ctx, W / 2, H * 0.42, win(p, 0.18, 0.8), W * 0.45, C.strike, 6, 2);
+  PR.label(ctx, '1.000 in', W / 2, ry + H * 0.07, C.strike, Math.max(10, W * 0.014), 'center', ease.out(win(p, 0.3, 0.5)));
+  PR.label(ctx, 'LOGO SLOT · the real lockup replaces this placeholder', 16, H - 16, C.steel, Math.max(9, W * 0.011), 'left', 0.7);
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 9);
+}
+function fLine(ctx, p, W, H) {
+  const inch = W * 0.42, lift = ease.inOut(win(p, 0, 0.3)) * H * 0.1;
+  ctx.save(); ctx.translate(W / 2, H * 0.42 - lift); wordmark(ctx, inch, 1); ctx.restore();
+  PR.title(ctx, 'ONE INCH. TOTAL IMPACT.', W / 2, H * 0.62, Math.max(16, W * 0.046), C.strike, { reveal: ease.out(win(p, 0.25, 0.6)), tracking: W * 0.004 });
+  PR.shockwave(ctx, W / 2, H * 0.42, p, W * 0.9, C.strike, 1.5, 1);
+  PR.label(ctx, 'LOGO SLOT · the real lockup replaces this placeholder', 16, H - 16, C.steel, Math.max(9, W * 0.011), 'left', 0.7);
+  const fade = win(p, 0.86, 1); if (fade > 0) { ctx.save(); ctx.fillStyle = C.screen; ctx.globalAlpha = fade; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 10);
+}
+
+const DRAW = { 1: fTick, 2: (c, p, W, H) => fInch(c, p, W, H), 3: fBreath, 4: fHit, 5: fChair, 6: fMedia, 7: fTen, 8: fOne, 9: fLockup, 10: fLine };
+const TITLES = { 1: 'The tick', 2: 'One inch of air', 3: 'The breath', 4: 'The hit', 5: 'The chair', 6: 'Through every medium', 7: 'Ten thousand takes', 8: 'One', 9: 'The lockup', 10: 'The line' };
+const THUMB_AT = { 1: 0.9, 2: 0.5, 3: 0.6, 4: 0.3, 5: 0.6, 6: 0.62, 7: 0.85, 8: 0.85, 9: 0.5, 10: 0.7 };
+function build(list) { let t = 0; return list.map(([n, d, draw]) => { const f = { n, t0: t, t1: t + d, title: TITLES[n], draw: draw || DRAW[n] }; t += d; return f; }); }
+const CUTS = {
+  full: build([[1, 3], [2, 4], [3, 2], [4, 1], [5, 3], [6, 5], [7, 4], [8, 3], [9, 3], [10, 2]]),
+  short: build([[2, 2, (c, p, W, H) => fInch(c, p, W, H, 1.05, 1.3)], [3, 1], [4, 0.5], [9, 2.5], [10, 1]]),
+};
+
+// ---------- player ----------
+(function () {
+  const canvas = document.getElementById('animatic'), ctx = canvas.getContext('2d');
+  const playBtn = document.getElementById('play'), scrub = document.getElementById('scrub'), readout = document.getElementById('readout'), frameLabel = document.getElementById('frame-label'), chipsEl = document.getElementById('chips');
+  let FR = CUTS.full, TOTAL = 30, T = 0, playing = false, last = 0, raf = 0, W = 0, H = 0, poster = true;
+  const leavePoster = () => { poster = false; };
+  const fmt = s => { const m = Math.floor(s / 60), r = s - m * 60; return m + ':' + (r < 10 ? '0' : '') + r.toFixed(1); };
+  const frameAt = t => { for (let i = 0; i < FR.length; i++) if (t < FR[i].t1) return i; return FR.length - 1; };
+  function chips() { chipsEl.innerHTML = ''; FR.forEach(f => { const b = document.createElement('button'); b.type = 'button'; b.dataset.jump = f.n; b.textContent = (f.n < 10 ? '0' : '') + f.n + ' ' + f.title; b.addEventListener('click', () => { leavePoster(); pause(); T = f.t0 + 0.01; render(); }); chipsEl.appendChild(b); }); }
+  function size() { const r = canvas.getBoundingClientRect(); const dpr = Math.min(2, window.devicePixelRatio || 1); W = Math.max(1, Math.round(r.width)); H = Math.round(W * 9 / 16); canvas.width = W * dpr; canvas.height = H * dpr; canvas.style.height = H + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); render(); }
+  function render() {
+    ctx.save(); ctx.fillStyle = C.screen; ctx.fillRect(0, 0, W, H); ctx.restore();
+    if (poster) {
+      ctx.save(); fLockup(ctx, 0.5, W, H); ctx.restore();
+      scrub.value = '0'; readout.textContent = fmt(0) + ' / ' + fmt(TOTAL); frameLabel.textContent = 'Poster · frame 9, the lockup. Play runs the cut from 0:00.';
+      chipsEl.querySelectorAll('button').forEach(c => c.classList.remove('is-active'));
+      return;
+    }
+    const i = frameAt(T), f = FR[i], p = clamp((T - f.t0) / (f.t1 - f.t0), 0, 1);
+    ctx.save(); f.draw(ctx, p, W, H); ctx.restore();
+    scrub.value = String(T); readout.textContent = fmt(T) + ' / ' + fmt(TOTAL); frameLabel.textContent = 'Frame ' + f.n + ' · ' + f.title + ' · ' + fmt(f.t0) + ' to ' + fmt(f.t1);
+    chipsEl.querySelectorAll('button').forEach(c => c.classList.toggle('is-active', Number(c.dataset.jump) === f.n));
+  }
+  function tick(now) { if (!playing) return; const dt = Math.min(0.1, (now - last) / 1000); last = now; T += dt; if (T >= TOTAL) { T = TOTAL; playing = false; playBtn.textContent = 'Replay'; playBtn.setAttribute('aria-pressed', 'false'); render(); return; } render(); raf = requestAnimationFrame(tick); }
+  function play() { leavePoster(); if (T >= TOTAL) T = 0; playing = true; last = performance.now(); playBtn.textContent = 'Pause'; playBtn.setAttribute('aria-pressed', 'true'); cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); }
+  function pause() { playing = false; playBtn.textContent = 'Play'; playBtn.setAttribute('aria-pressed', 'false'); cancelAnimationFrame(raf); }
+  function setCut(key) { pause(); poster = true; FR = CUTS[key]; TOTAL = FR[FR.length - 1].t1; T = 0; scrub.max = String(TOTAL); document.getElementById('cut-full').setAttribute('aria-pressed', String(key === 'full')); document.getElementById('cut-short').setAttribute('aria-pressed', String(key === 'short')); chips(); render(); }
+  playBtn.addEventListener('click', () => playing ? pause() : play());
+  scrub.addEventListener('input', () => { leavePoster(); pause(); T = Number(scrub.value); render(); });
+  document.getElementById('cut-full').addEventListener('click', () => setCut('full'));
+  document.getElementById('cut-short').addEventListener('click', () => setCut('short'));
+  document.addEventListener('keydown', e => {
+    if (e.target && /input|textarea|select|button/i.test(e.target.tagName) && e.key !== ' ') return;
+    if (/^(Arrow(Left|Right|Up|Down)| )$/.test(e.key)) leavePoster();
+    if (e.key === ' ' && !(e.target && /input|textarea|select/i.test(e.target.tagName))) { e.preventDefault(); playing ? pause() : play(); }
+    if (e.key === 'ArrowRight') { pause(); T = Math.min(TOTAL, T + 0.5); render(); }
+    if (e.key === 'ArrowLeft') { pause(); T = Math.max(0, T - 0.5); render(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); pause(); T = FR[Math.min(FR.length - 1, frameAt(T) + 1)].t0 + 0.01; render(); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); pause(); const i = frameAt(T), f = FR[i]; T = (T - f.t0 > 0.6 ? f.t0 : FR[Math.max(0, i - 1)].t0) + 0.01; render(); }
+  });
+  function thumbs() {
+    document.querySelectorAll('canvas[data-thumb]').forEach(c => {
+      const n = Number(c.dataset.thumb), draw = DRAW[n]; if (!draw) return;
+      const r = c.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1), w = Math.max(1, Math.round(r.width)), h = Math.round(w * 9 / 16);
+      c.width = w * dpr; c.height = h * dpr; c.style.height = h + 'px';
+      const cx = c.getContext('2d'); cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.fillStyle = C.screen; cx.fillRect(0, 0, w, h); cx.save(); draw(cx, THUMB_AT[n], w, h); cx.restore();
+    });
+  }
+  function timelineSvg() {
+    const svg = document.getElementById('timeline'); if (!svg) return; const NS = 'http://www.w3.org/2000/svg'; const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+    const L = 40, R = 990, y0 = 34, h = 36, sx = s => L + (R - L) * s / 30;
+    const acts = [['I', 0, 9], ['II', 9, 13], ['III', 13, 25], ['IV', 25, 30]];
+    acts.forEach(([n, a, b]) => { svg.appendChild(el('rect', { class: 'act', x: sx(a), y: y0 - 16, width: sx(b) - sx(a), height: h + 32, rx: 0 })); const t = el('text', { x: sx(a) + 6, y: y0 - 4, 'font-size': 10 }); t.textContent = n; svg.appendChild(t); });
+    CUTS.full.forEach((f, i) => { svg.appendChild(el('rect', { class: 'seg', x: sx(f.t0), y: y0, width: sx(f.t1) - sx(f.t0), height: h, fill: i % 2 ? '#F2C230' : '#8C939B', opacity: i % 2 ? 0.9 : 0.55 })); const t = el('text', { x: sx(f.t0) + 4, y: y0 + h - 6, 'font-size': 11, fill: '#0D0C0A', 'font-weight': 600 }); t.textContent = (f.n < 10 ? '0' : '') + f.n; svg.appendChild(t); });
+    for (let s = 0; s <= 30; s += 5) { svg.appendChild(el('line', { x1: sx(s), y1: y0 + h + 18, x2: sx(s), y2: y0 + h + 26, stroke: 'currentColor', opacity: 0.5 })); const t = el('text', { x: sx(s), y: y0 + h + 40, 'font-size': 10, 'text-anchor': 'middle' }); t.textContent = '0:' + (s < 10 ? '0' : '') + s; svg.appendChild(t); }
+  }
+  window.addEventListener('resize', () => { size(); thumbs(); });
+  chips(); size(); thumbs(); timelineSvg();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { render(); thumbs(); });
+})();
+</script>
+
+</body>
+</html>
