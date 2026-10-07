@@ -1,0 +1,934 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>The Arena Storyboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bodoni+Moda:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a dark screening room in the brand's black, white and red. One column, max 1120px. The animatic is the hero; the board runs two-up beneath it; notes follow in quieter sections. */
+:root {
+  --bg: #0B0B0B; --bg-2: #141414; --bg-3: #1C1C1C; --line: #2A2A2A; --line-2: #3A3A3A;
+  --fg: #F2F0EC; --fg-2: #B5B2AC; --muted: #807D78;
+  --accent: #E72722; --accent-text: #F25C55; --accent-fg: #FFFFFF; --steel: #8C939B;
+  --show-light: none; --show-dark: block;
+  --display: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --numeral: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EE; --bg-2: #FBFAF8; --bg-3: #E9E6E0; --line: #D9D5CE; --line-2: #C6C1B8;
+    --fg: #0B0B0B; --fg-2: #4A4845; --muted: #6E6B66;
+    --accent: #E72722; --accent-text: #C11E19; --accent-fg: #FFFFFF; --steel: #5B636B;
+    --show-light: block; --show-dark: none;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EE; --bg-2: #FBFAF8; --bg-3: #E9E6E0; --line: #D9D5CE; --line-2: #C6C1B8;
+  --fg: #0B0B0B; --fg-2: #4A4845; --muted: #6E6B66;
+  --accent: #E72722; --accent-text: #C11E19; --accent-fg: #FFFFFF; --steel: #5B636B;
+  --show-light: block; --show-dark: none;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 80px; padding-inline: clamp(16px, 4vw, 40px); }
+h1, h2, h3 { font-family: var(--display); text-transform: uppercase; margin: 0; text-wrap: balance; }
+h1 { font-weight: 800; font-size: clamp(44px, 11vw, 150px); letter-spacing: 0.16em; line-height: 1; }
+h2 { font-weight: 700; font-size: clamp(20px, 2.6vw, 30px); letter-spacing: 0.14em; line-height: 1.2; }
+h3 { font-weight: 600; font-size: 16px; letter-spacing: 0.12em; line-height: 1.3; }
+p { margin: 0; }
+a { color: var(--accent-text); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.prose { max-width: 62ch; color: var(--fg-2); }
+.prose strong { color: var(--fg); font-weight: 600; }
+section { padding-block: 44px; border-top: 1px solid var(--line); }
+section > header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 22px; }
+section > header p { color: var(--fg-2); max-width: 58ch; }
+button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* masthead */
+.masthead { display: grid; gap: 16px; padding-block: 8px 36px; }
+.logo { width: 170px; height: auto; max-width: 100%; }
+.logo--light { display: var(--show-light); }
+.logo--dark { display: var(--show-dark); }
+.logline { font-size: clamp(17px, 2vw, 22px); line-height: 1.4; max-width: 36ch; color: var(--fg); text-wrap: balance; }
+.specs { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.specs li { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; padding: 6px 10px; border: 1px solid var(--line-2); color: var(--fg-2); }
+.specs li.hot { border-color: var(--accent); color: var(--accent-text); }
+
+/* notice */
+.notice { border: 1px dashed var(--line-2); background: var(--bg-2); padding: 18px 20px; display: grid; gap: 10px; margin-bottom: 36px; }
+.notice ul { margin: 0; padding-left: 18px; color: var(--fg-2); }
+.notice li + li { margin-top: 4px; }
+.notice strong { color: var(--fg); font-weight: 600; }
+
+/* player */
+.player { border-top: 0; padding-top: 0; }
+.player-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.toggle { display: inline-flex; border: 1px solid var(--line-2); }
+.toggle button { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; background: transparent; color: var(--fg-2); border: 0; padding: 10px 14px; cursor: pointer; }
+.toggle button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+.screen { position: relative; background: #0B0B0B; border: 1px solid var(--line-2); }
+#animatic { display: block; width: 100%; max-width: 100%; }
+.controls { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+#play { font: 700 12px/1 var(--display); letter-spacing: 0.14em; text-transform: uppercase; background: var(--accent); color: var(--accent-fg); border: 0; padding: 13px 18px; min-width: 96px; cursor: pointer; }
+#scrub { flex: 1; min-width: 0; accent-color: var(--accent); }
+#readout { font-size: 13px; color: var(--fg-2); white-space: nowrap; }
+#frame-label { margin-top: 8px; font-size: 13px; color: var(--accent-text); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.chips button { font: 500 12px/1 var(--mono); background: var(--bg-2); color: var(--fg-2); border: 1px solid var(--line); padding: 8px 10px; cursor: pointer; }
+.chips button.is-active { border-color: var(--accent); color: var(--accent-text); }
+.hint { margin-top: 14px; font-size: 13px; color: var(--muted); max-width: 70ch; }
+
+/* structure timeline */
+.timeline { width: 100%; height: auto; display: block; }
+.timeline text { font-family: var(--mono); fill: var(--fg-2); }
+.timeline .act { fill: var(--bg-3); stroke: var(--line-2); }
+.timeline .seg { stroke: var(--bg); stroke-width: 1; }
+.acts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px 28px; margin-top: 22px; }
+.acts p { color: var(--fg-2); font-size: 14px; margin-top: 6px; }
+.acts .eyebrow { margin-bottom: 6px; }
+
+/* board */
+.board-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 36px 32px; }
+.frame { display: grid; gap: 14px; min-width: 0; }
+.frame canvas { width: 100%; max-width: 100%; display: block; background: #0B0B0B; border: 1px solid var(--line-2); }
+.frame-head { display: grid; grid-template-columns: auto 1fr; gap: 2px 16px; align-items: baseline; }
+.frame-head .n { font-family: var(--numeral); font-weight: 700; font-size: 40px; line-height: 1; color: var(--accent-text); font-variant-numeric: lining-nums; }
+.frame-head .tc { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); }
+.frame-head h3 { grid-column: 2; }
+.frame dl { margin: 0; display: grid; grid-template-columns: 7.5em 1fr; gap: 8px 14px; font-size: 14px; }
+.frame dt { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.frame dd { margin: 0; color: var(--fg-2); min-width: 0; }
+.frame dd.ai { color: var(--fg); }
+.frame dd .q { font-family: var(--mono); color: var(--accent-text); }
+.frame dd.ref { font-style: italic; }
+
+/* notes */
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 28px 40px; }
+.list { margin: 0; padding-left: 18px; color: var(--fg-2); display: grid; gap: 10px; font-size: 14px; }
+.list li::marker { color: var(--muted); font-family: var(--mono); }
+.list strong { color: var(--fg); font-weight: 600; }
+.caps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 14px; }
+.caps li { display: grid; grid-template-columns: 3.2em 1fr; gap: 12px; align-items: baseline; color: var(--fg-2); }
+.caps .f { font-family: var(--mono); font-size: 12px; color: var(--accent-text); letter-spacing: 0.06em; }
+.caps strong { color: var(--fg); font-weight: 600; }
+
+/* palette and type */
+.swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.swatch { border: 1px solid var(--line-2); }
+.swatch i { display: block; height: 64px; }
+.swatch div { padding: 10px 12px; display: grid; gap: 2px; }
+.swatch b { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: 0.06em; }
+.swatch span { font-size: 12px; color: var(--fg-2); line-height: 1.45; }
+.specimen { display: grid; gap: 12px; border: 1px solid var(--line); padding: 18px 20px; background: var(--bg-2); }
+.specimen .d { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3em; font-size: clamp(22px, 3.4vw, 40px); line-height: 1.1; }
+.specimen .one { font-family: var(--numeral); font-weight: 700; font-size: clamp(72px, 10vw, 120px); line-height: 0.9; }
+.specimen .m { font-family: var(--mono); font-size: 14px; color: var(--fg-2); }
+.specimen .b { font-size: 14px; color: var(--fg-2); max-width: 46ch; }
+.specimen small { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+/* cutdown */
+.cut { display: grid; gap: 14px; }
+.cut-strip { display: grid; grid-template-columns: 2fr 1fr 0.5fr 2.5fr 1fr; gap: 3px; }
+.cut-strip div { background: var(--bg-3); border: 1px solid var(--line-2); padding: 10px 8px; min-width: 0; }
+.cut-strip b { display: block; font-family: var(--numeral); font-weight: 700; font-size: 22px; line-height: 1; }
+.cut-strip span { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* stack table */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 12px 14px; border-top: 1px solid var(--line); }
+th { font-family: var(--mono); font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); border-top: 0; background: var(--bg-2); }
+td:first-child { font-weight: 600; white-space: nowrap; color: var(--fg); }
+td { color: var(--fg-2); }
+
+/* considered */
+.alts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px 28px; }
+.alts div { border-top: 1px solid var(--line-2); padding-top: 12px; }
+.alts p { color: var(--fg-2); font-size: 14px; margin-top: 6px; }
+
+footer { padding-top: 32px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; display: grid; gap: 4px; }
+@media (max-width: 640px) {
+  .frame dl { grid-template-columns: 1fr; gap: 2px 0; }
+  .frame dt { padding-top: 10px; }
+  .cut-strip { grid-template-columns: repeat(5, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<style>.caps li { grid-template-columns: 6em 1fr; }</style>
+<div class="wrap">
+<header class="masthead">
+  <img class="logo logo--light" src="assets/lockup-light-full.png" alt="One Inch Media. Small details. Big impact." width="900" height="840">
+  <img class="logo logo--dark" src="assets/lockup-dark-full.png" alt="" width="900" height="840">
+  <p class="eyebrow">Storyboard · brand film · One Inch Media · why you refresh your brand</p>
+  <h1>The Arena</h1>
+  <p class="logline">Forty seconds through the eyes of a brand: three bouts in a stick-figure arena, a crowd that decides, a throne of old logos, and the one thing a refresh earns you back.</p>
+  <ul class="specs">
+    <li>40 s</li><li>16:9 · 24 fps</li><li>10 frames</li><li>8 s cutdown</li><li class="hot">First person, no blood, nobody falls</li><li class="hot">Built on the real lockup</li><li>Stick figures</li>
+  </ul>
+</header>
+
+<aside class="notice" aria-label="What changed and why">
+  <p class="eyebrow">What changed and why</p>
+  <ul>
+    <li><strong>The war is scrapped.</strong> Its dawn frame put rows of identical figures with raised arms under a red banner with a round emblem. That composition reads as rally imagery whatever the copy says, and it is gone from the artifact gallery and the repo.</li>
+    <li><strong>This one has no armies, no flags, no salutes.</strong> One hero, three opponents, a stadium crowd that is uneven and loud, and a camera that is the hero's eyes. The rule is written into the board: nothing marches, nothing is held over a crowd, nobody lines up.</li>
+    <li><strong>The argument is the same.</strong> A brand fights for attention in public. The opponents are what a stale brand faces: its own 2019 self, the template it settled for, and the algorithm that stopped liking it. The crowd decides with a thumb. A refresh is how you earn the thumb again.</li>
+    <li><strong>The flavors are the arena and the throne.</strong> Gladiator gives the sand, the gate, the stands and the thumb. The other show gives the long first-person take through a fight and a throne made of what you conquered. Ours is made of old logos.</li>
+  </ul>
+</aside>
+
+<section class="player" aria-labelledby="animatic-h">
+  <div class="player-head">
+    <h2 id="animatic-h">Animatic</h2>
+    <div class="toggle" role="group" aria-label="Cut length">
+      <button type="button" id="cut-full" aria-pressed="true">Full 40 s</button>
+      <button type="button" id="cut-short" aria-pressed="false">Cutdown 8 s</button>
+    </div>
+  </div>
+  <div class="screen"><canvas id="animatic" aria-label="Animatic preview of The Arena"></canvas></div>
+  <div class="controls">
+    <button type="button" id="play" aria-pressed="false">Play</button>
+    <input id="scrub" type="range" min="0" max="40" step="0.05" value="0" aria-label="Scrub the timeline">
+    <span id="readout" class="mono">0:00.0 / 0:40.0</span>
+  </div>
+  <p id="frame-label" class="mono">Poster · frame 4, the bout. Play runs the cut from 0:00.</p>
+  <div class="chips" id="chips"></div>
+  <p class="hint">Space plays and pauses. Left and right step half a second; up and down jump a frame. The canvas is a previz drawn live in the browser; the finished film has a crowd of thousands and real sand.</p>
+</section>
+
+<section aria-labelledby="pov-h">
+  <header><h2 id="pov-h">The POV</h2><p>The camera is the hero. You see the arm, the slash, the sand and whatever is coming at you. The loop runs one bout: approach, strike, refresh.</p></header>
+  <div class="cols">
+    <div class="screen" style="align-self:start"><canvas id="povloop" style="display:block;width:100%;max-width:100%" aria-label="First-person loop of one bout"></canvas></div>
+    <div>
+      <ul class="caps">
+        <li><span class="f">The arm</span><span><strong>One bone arm from the bottom right</strong>, swaying with the walk, holding the slash as a blade. It rises when something closes in and drops when the fight is done.</span></li>
+        <li><span class="f">The strike</span><span><strong>The slash sweeps right to left across the whole frame</strong> in nineteen frames with a red smear behind it. It is the only weapon in the film and it never cuts anyone: it refreshes them.</span></li>
+        <li><span class="f">The camera</span><span><strong>Dodges, drops and spins.</strong> A sidestep is a lateral shove and a 6° roll. Going low for the template is a 22% drop of the horizon. The algorithm spins you once around.</span></li>
+        <li><span class="f">Opponents</span><span><strong>Three, each a shape</strong>: your 2019 self with a pixel shield, the template as a tower of lorem bars with a stock-photo head, the algorithm as a figure with six arms holding thumbs-down signs.</span></li>
+        <li><span class="f">The crowd</span><span><strong>Uneven on purpose.</strong> Random heights, random gestures (waves, claps, one arm up, none), random timing. It jumps when it likes something. It never lines up.</span></li>
+        <li><span class="f">The thumb</span><span><strong>A sign in the box</strong>: a line for undecided, a chevron down, a chevron up in red. It is a like, not a sentence.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="structure-h">
+  <header><h2 id="structure-h">Structure</h2><p>The gate, three bouts, the crowd's decision, the throne, the mark. One continuous first-person take from the gate to the throne in the finished film.</p></header>
+  <svg class="timeline" id="timeline" viewBox="0 0 1000 118" role="img" aria-label="Timeline of the ten frames across forty seconds"></svg>
+  <div class="acts">
+    <div><p class="eyebrow">I · 0:00–0:08</p><h3>The gate</h3><p>The arena builds itself out of clockwork. The gate opens on the crowd and the box. The thumb is undecided.</p></div>
+    <div><p class="eyebrow">II · 0:08–0:24</p><h3>Three bouts</h3><p>Your 2019 self, the template, the algorithm. Each gets one strike and each is refreshed, not beaten.</p></div>
+    <div><p class="eyebrow">III · 0:24–0:36</p><h3>The crowd turns</h3><p>The thumb goes up. The climb to the box, the throne of old logos split, the slash planted. A lap past the stands.</p></div>
+    <div><p class="eyebrow">IV · 0:36–0:40</p><h3>The mark</h3><p>The planted slash becomes the mark. The line, and the service line.</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="board-h">
+  <header><h2 id="board-h">The board</h2><p>Ten frames of four seconds. Each names the action, the AI capability it proves and how the shot would be produced.</p></header>
+  <div class="board-grid">
+
+    <article class="frame">
+      <canvas data-thumb="1" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">01</span><span class="tc">0:00 – 0:04 · 4 s</span><h3>The arena builds</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Black. Five gears turn along the bottom of frame and the arena rises out of them: three tiers of stands, the box at the top center with a throne made of grey pixel squares, torches catching along the tiers. The stands fill with stick figures as they rise. Top of frame: <span class="q">EVERY BRAND FIGHTS FOR ATTENTION.</span></dd>
+        <dt>Motion</dt><dd>Gears at two speeds in opposite directions. The tiers rise on an ease-out over 2.4 seconds; the crowd fills on an ease-in; the gears fade as the sand settles.</dd>
+        <dt>Audio</dt><dd>Clockwork ticking. A horn, long. The first murmur of a crowd.</dd>
+        <dt>AI</dt><dd class="ai">Generative environment assembled procedurally, so the build-up is the model's own construction order played forward. A crowd of five thousand agents seeded at rest with idle variation.</dd>
+        <dt>Reference</dt><dd class="ref">The clockwork build, by technique. No map, no sigils, no theme.</dd>
+        <dt>Out</dt><dd>Cut to behind the gate.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="2" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">02</span><span class="tc">0:04 – 0:08 · 4 s</span><h3>The gate</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>First person, behind heavy bars. Beyond them, bright: sand, the stands, the box with the throne and a figure holding a sign that shows a flat line. Our arm comes into frame low, holding the slash, and the gate slides open. The roar hits. Bottom of frame: <span class="q">THE CROWD DECIDES.</span></dd>
+        <dt>Motion</dt><dd>Push forward 6% over the shot. The bars part over 1.2 seconds. The light blooms as they open.</dd>
+        <dt>Audio</dt><dd>Chains. The gate. The roar arriving like weather.</dd>
+        <dt>AI</dt><dd class="ai">The first-person rig: a virtual camera with a procedural arm, breathing and gait sway generated rather than keyframed, so every POV shot shares one body.</dd>
+        <dt>Reference</dt><dd class="ref">The gate and the sand, by setting. No emperor, no helmet, no line.</dd>
+        <dt>Out</dt><dd>A shape in the sand ahead.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="3" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">03</span><span class="tc">0:08 – 0:12 · 4 s</span><h3>2019 you</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>It walks at us across the sand: a grey, hollow-headed figure bigger than we are, a pixel-grid shield on its arm. Over its head, small: <span class="q">2019 YOU</span>. Every step bumps the camera. Our arm comes up.</dd>
+        <dt>Motion</dt><dd>The figure scales from a quarter of the frame to larger than it over four seconds on an ease-in. A three-pixel camera bump per footfall. The arm rises in the last second.</dd>
+        <dt>Audio</dt><dd>Heavy steps. The crowd quiets. One drum.</dd>
+        <dt>AI</dt><dd class="ai">The opponent is the client's own old brand made into a character: its shield is their old logo downsampled, its walk is a heavier, slower variant of the hero's cycle from a motion prior.</dd>
+        <dt>Out</dt><dd>It swings.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="4" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">04</span><span class="tc">0:12 – 0:16 · 4 s</span><h3>The bout</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>One take. We sidestep: the world shoves right and rolls, and the shield swings through where we were, a grey smear. We strike: the slash sweeps the frame right to left and the shield bursts into pixels. The figure fills in bone, bows, and its label changes to <span class="q">REFRESHED</span>. The crowd jumps.</dd>
+        <dt>Motion</dt><dd>Sidestep in seven frames, 14% of frame width, a 6° roll. Shield pass in six frames with motion smear. Strike in nineteen frames. Bow over a second. Crowd jump on the last beat.</dd>
+        <dt>Audio</dt><dd>A whoosh past the ear. The hit. Pixels scattering like gravel. The crowd.</dd>
+        <dt>AI</dt><dd class="ai">The POV take is a generated camera path solved against the opponent's motion so the dodge is physically plausible; the shield burst is rigid-body; the refresh is a per-character state change.</dd>
+        <dt>Reference</dt><dd class="ref">The long first-person take through a fight, by technique only.</dd>
+        <dt>Out</dt><dd>A shadow falls across the sand.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="5" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">05</span><span class="tc">0:16 – 0:20 · 4 s</span><h3>The template</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>It is taller than the stands: a figure built from stacked grey bars of placeholder text with a square stock-photo head, an X through it, on two column legs. Label: <span class="q">THE TEMPLATE</span>. We drop low and slide under it, speed lines streaking, and strike the legs. The bars tumble and land as a clean bone grid. Label: <span class="q">RESET</span>.</dd>
+        <dt>Motion</dt><dd>The horizon rises 22% as we drop. Speed lines for a second. Strike low. The bars re-flow into a grid over 1.1 seconds on an ease-out.</dd>
+        <dt>Audio</dt><dd>A creak, high above. Sand sliding. The hit. Bars clicking into place.</dd>
+        <dt>AI</dt><dd class="ai">The template is built from the client's actual old page, its text as bars and its stock image as the head. The reset is layout generation shown as physics: the same content re-flowing into a real grid.</dd>
+        <dt>Out</dt><dd>The sand starts to blow.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="6" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">06</span><span class="tc">0:20 – 0:24 · 4 s</span><h3>The algorithm</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Sand storm. A figure circles us with six arms, each holding a sign with a chevron down. Label: <span class="q">THE ALGORITHM</span>. The camera sways with it. We spin once and the slash goes all the way round as a red ring. The chevrons flip up and turn red. The extra arms are gone; it is a bone figure clapping. Label: <span class="q">LIKED</span>.</dd>
+        <dt>Motion</dt><dd>A slow sway for two seconds, then a one-second 360° spin with a 10% zoom pulse. Signs flip in two frames. Arms retract over six.</dd>
+        <dt>Audio</dt><dd>Wind full of grit. Six small clicks as the signs go down. The hit, stretched into a ring. Six clicks up.</dd>
+        <dt>AI</dt><dd class="ai">The six arms are a procedural rig; the storm is particles; the spin is a generated camera move. The joke underneath is real: a refreshed site is what the ranking systems reward.</dd>
+        <dt>Out</dt><dd>We look up.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="7" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">07</span><span class="tc">0:24 – 0:28 · 4 s</span><h3>The thumb</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Close on the box from below. The throne of old logos, the grey figure on it, and the sign in its hand: flat line. The crowd on either side waits. The sign tilts, wobbles, and flips: chevron up, red. The stands erupt and pixel confetti falls. Bottom of frame: <span class="q">AND THE CROWD TURNS.</span></dd>
+        <dt>Motion</dt><dd>Hold on the flat line for 1.2 seconds. Tilt and wobble for 1.4. Flip in two frames. Eruption on an ease-out.</dd>
+        <dt>Audio</dt><dd>Silence. A creak as the sign tilts. The crowd, all at once.</dd>
+        <dt>AI</dt><dd class="ai">Crowd eruption as a single broadcast state change with per-agent delay; the confetti is the old logo's pixels, recycled as particles.</dd>
+        <dt>Reference</dt><dd class="ref">The thumb, by gesture. It is a like, and nobody is sentenced to anything.</dd>
+        <dt>Out</dt><dd>We start up the steps.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="8" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">08</span><span class="tc">0:28 – 0:32 · 4 s</span><h3>The throne</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Up the steps, first person, the crowd's arms reaching in from both edges. The box arrives. The throne of old logos, close. We do not sit. We strike it, and it splits: pixel squares pour down the steps like sand. We plant the slash upright in the box floor and let go. Bottom of frame: <span class="q">YOU DON'T KEEP THE CROWD. YOU EARN IT AGAIN.</span></dd>
+        <dt>Motion</dt><dd>The climb is a 2.2-second push with step lines passing under. Strike in nineteen frames. The heap bursts and falls under gravity. The slash plants with a glow.</dd>
+        <dt>Audio</dt><dd>Steps. Hands. The hit. A long pour of pixels. A single note as the slash plants.</dd>
+        <dt>AI</dt><dd class="ai">The throne is a heap of the client's old logos as rigid bodies; the split is simulated. The planted slash is the brand's own vector, lit as emissive.</dd>
+        <dt>Reference</dt><dd class="ref">A throne made of what you conquered, by concept. Ours is old logos, not swords, and the hero refuses it.</dd>
+        <dt>Out</dt><dd>Turn to the stands.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="9" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">09</span><span class="tc">0:32 – 0:36 · 4 s</span><h3>The lap</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>A slow first-person pan along the stands. Thousands of figures, no two alike: waving, clapping, jumping, one arm up, none. Confetti everywhere. The arm hangs low. No text.</dd>
+        <dt>Motion</dt><dd>A pan across 120% of the stands over four seconds with a 2° sway. The crowd's timing is random per agent.</dd>
+        <dt>Audio</dt><dd>The roar, then a voice over it: the line.</dd>
+        <dt>AI</dt><dd class="ai">Idle and cheer variation at scale, every agent on its own clock, so the crowd never reads as a pattern. Voice synthesis for the line.</dd>
+        <dt>Out</dt><dd>Push into the planted slash.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="10" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">10</span><span class="tc">0:36 – 0:40 · 4 s</span><h3>The mark</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Red fills the frame and the mark grows in it. Cut to black, and the six blades rotate in and lock around the 1. The slash. ONE INCH, MEDIA, the line, and under it, in red: <span class="q">BRAND REFRESH</span>.</dd>
+        <dt>Motion</dt><dd>Push over a second. Blades with overshoot, the slash in one frame, the type over eight, the wipe over twelve.</dd>
+        <dt>Audio</dt><dd>The hit. The ring. Silence.</dd>
+        <dt>AI</dt><dd class="ai">Procedural animation from the logo vectors, shared with the other four films, plus end-cards for every aspect ratio.</dd>
+        <dt>Out</dt><dd>Hold, then black.</dd>
+      </dl>
+    </article>
+
+  </div>
+</section>
+
+<section aria-labelledby="caps-h">
+  <header><h2 id="caps-h">What the piece proves about AI</h2><p>A first-person rig, three procedural opponents and a crowd that never repeats, from a studio of one.</p></header>
+  <div class="cols">
+    <ul class="caps">
+      <li><span class="f">F01</span><span><strong>Procedural environment</strong> whose construction order is the opening shot; a five-thousand-agent crowd at rest.</span></li>
+      <li><span class="f">F02</span><span><strong>A first-person rig</strong> with generated breathing and gait sway shared by every POV shot.</span></li>
+      <li><span class="f">F03</span><span><strong>The client's old brand as a character</strong>, its logo as a shield, its walk from a motion prior.</span></li>
+      <li><span class="f">F04</span><span><strong>A camera path solved against an opponent's motion</strong>; rigid-body shield burst; per-character state change.</span></li>
+      <li><span class="f">F05</span><span><strong>Layout generation shown as physics</strong>: the old page's content re-flowing into a real grid.</span></li>
+    </ul>
+    <ul class="caps">
+      <li><span class="f">F06</span><span><strong>A procedural six-arm rig</strong>, particle storm and a generated 360° camera move.</span></li>
+      <li><span class="f">F07</span><span><strong>Broadcast state change with per-agent delay</strong>; the old logo's pixels as confetti.</span></li>
+      <li><span class="f">F08</span><span><strong>Rigid-body simulation</strong> of a heap of old logos; the brand's vector lit as emissive.</span></li>
+      <li><span class="f">F09</span><span><strong>Cheer variation at scale</strong>, every agent on its own clock; voice synthesis.</span></li>
+      <li><span class="f">F10</span><span><strong>Procedural logo animation</strong> shared across the films.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section aria-labelledby="look-h">
+  <header><h2 id="look-h">Look, type and sound</h2><p>Bone line on black, warm sand, grey for the stale, red for the strike and the thumb.</p></header>
+  <div class="cols">
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Palette · from the kit</p>
+      <div class="swatches">
+        <div class="swatch"><i style="background:#0B0B0B"></i><div><b>BLACK · #0B0B0B</b><span>Night, the stands, the ground for everything.</span></div></div>
+        <div class="swatch"><i style="background:#E72722"></i><div><b>RED · #E72722</b><span>The slash, the torches, the thumb up, the ring.</span></div></div>
+        <div class="swatch"><i style="background:#FFFFFF; border-bottom:1px solid #D9D5CE"></i><div><b>WHITE · #FFFFFF</b><span>The bloom through the gate.</span></div></div>
+      </div>
+      <p class="eyebrow" style="margin:18px 0 10px">Added for the film · proposal</p>
+      <div class="swatches">
+        <div class="swatch"><i style="background:#EFE9DE"></i><div><b>BONE · #EFE9DE</b><span>The crowd, the arm, the refreshed.</span></div></div>
+        <div class="swatch"><i style="background:#7F868D"></i><div><b>STALE · #7F868D</b><span>The three opponents, the throne, the old logo. Never on the brand.</span></div></div>
+        <div class="swatch"><i style="background:#3A2E22"></i><div><b>SAND · #3A2E22</b><span>The floor of the arena.</span></div></div>
+      </div>
+      <p class="prose" style="margin-top:14px">Grey is what time does, bone is what a brand is, red is the strike and the like. Sand is the only warm thing in the film, so the arena feels like a place.</p>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Type · matched to the lockup</p>
+      <div class="specimen">
+        <small>Wordmark face · the four lines · stand-in: Montserrat</small>
+        <p class="d">The crowd decides.</p>
+        <small>Mono · the labels over opponents</small>
+        <p class="m">2019 YOU · THE TEMPLATE · THE ALGORITHM · RESET · LIKED</p>
+        <small>The numeral · the mark · stand-in: Bodoni Moda</small>
+        <p class="one">1</p>
+        <p class="b">Four lines on screen, set like the wordmark. Opponents are labeled in small mono, the way a fight card would. The hero is never shown, so the numeral appears only when the slash becomes the mark.</p>
+      </div>
+      <p class="eyebrow" style="margin:22px 0 8px">Sound</p>
+      <p class="prose">Clockwork, a horn, a crowd that arrives like weather. Breathing and footsteps in first person. One drum before each bout, the hit for each strike, pixels scattering like gravel. Silence before the thumb, then everything at once. A voice for the line. The hit and the ring. No film score, no show theme, no library crowd.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="slots-h">
+  <header><h2 id="slots-h">Brand slots</h2><p>What the lockups filled, and what a client version needs.</p></header>
+  <div class="cols">
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Filled</p>
+      <ol class="list">
+        <li><strong>Lockup</strong> · frame 10 is the primary lockup, reversed for black; the slash the hero carries is the mark's own diagonal.</li>
+        <li><strong>Accent</strong> · the red from the kit is the strike and the like.</li>
+        <li><strong>The line</strong> · "Small details. Big impact." closes the piece.</li>
+      </ol>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Open</p>
+      <ol class="list" start="4">
+        <li><strong>The client's old logo and old page</strong> · the shield, the throne and the template are built from them. Generic grey stand-ins for the studio reel.</li>
+        <li><strong>The service line</strong> · "Brand refresh" under the lockup, or nothing.</li>
+        <li><strong>Fonts and voice</strong> · as on the other boards. One voice line on the lap.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="cut-h">
+  <header><h2 id="cut-h">The 8-second cutdown</h2><p>Gate, bout, algorithm, thumb, mark. First person throughout, so it works as a reel on its own.</p></header>
+  <div class="cut">
+    <div class="cut-strip" aria-label="Cutdown timeline" style="grid-template-columns: 1fr 2fr 1.5fr 1fr 2.5fr;">
+      <div><b>02</b><span>0:00–0:01 · gate</span></div>
+      <div><b>04</b><span>0:01–0:03 · bout</span></div>
+      <div><b>06</b><span>0:03–0:04.5 · algorithm</span></div>
+      <div><b>07</b><span>0:04.5–0:05.5 · thumb</span></div>
+      <div><b>10</b><span>0:05.5–0:08 · mark</span></div>
+    </div>
+    <p class="prose">The gate opens, one strike refreshes an opponent, the ring flips the signs, the thumb goes up, the mark. Eight seconds and the argument is intact.</p>
+  </div>
+</section>
+
+<section aria-labelledby="stack-h">
+  <header><h2 id="stack-h">Production stack</h2><p>A first-person rig, three opponent rigs and a crowd. Most of the work is camera and simulation.</p></header>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Stage</th><th>Tooling</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>POV rig</td><td>A virtual camera with a procedural arm in a game engine; breathing, gait sway, dodge, drop and spin as generated camera paths solved against the opponents</td><td>One body for every shot, so the film cuts as a single take.</td></tr>
+        <tr><td>Opponents</td><td>Three procedural rigs: a heavy stick figure with a shield, a tower of text bars with a column walk, a six-arm figure; cycles from a motion prior</td><td>Built from the client's old logo and page where a client version is made.</td></tr>
+        <tr><td>Crowd</td><td>Crowd simulation, five thousand agents with idle, wave, clap, jump and cheer, every agent on its own clock</td><td>No shared timing, no rows, no uniform gesture. The brief forbids it.</td></tr>
+        <tr><td>Environment</td><td>Arena generated from line sketches in the brand's stroke weight, with real sand, torches and a procedural construction order for the opening</td><td>Line-art look rendered as geometry, so the camera is free to move through it.</td></tr>
+        <tr><td>Simulations</td><td>Rigid bodies for the shield, the throne and the confetti; particles for the storm and the sand; a cloth-free film</td><td>Nothing in the film needs a flag.</td></tr>
+        <tr><td>Sound</td><td>Generated crowd from one recorded cheer; recorded footsteps and breathing; the shared hit and ring; voice synthesis</td><td>No film score, no show theme.</td></tr>
+        <tr><td>Finish</td><td>Conform and grade; master 4K 16:9, plus 9:16 and 1:1; end-cards per ratio</td><td>Vertical keeps the arm and the opponent and crops the stands.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="guard-h">
+  <header><h2 id="guard-h">Guardrails and your calls</h2><p>The rules this board is built under, including the one the last board broke. Then the decisions.</p></header>
+  <div class="cols">
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">What we do not do</p>
+      <ul class="list">
+        <li><strong>No rally imagery.</strong> No rows of figures, no uniform gesture, no raised arms in unison, no flags, no emblem held over a crowd, no leader addressing a mass. The crowd is uneven, loud and random. This is the rule the last board broke.</li>
+        <li><strong>No blood, nobody falls.</strong> The strike refreshes. The thumb is a like. Every opponent is standing and bone at the end.</li>
+        <li><strong>No likeness, no quotes.</strong> No characters, costumes, names or lines from either film or show. No emperor, no helmet, no sigils, no dragons, no theme music.</li>
+        <li><strong>No swords in the throne.</strong> Ours is made of old logos, and the hero refuses to sit in it.</li>
+        <li><strong>No real brands.</strong> The opponents are the client's own past and generic categories, never a competitor.</li>
+        <li><strong>Original audio only.</strong> Everything generated or recorded for this piece.</li>
+      </ul>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Decisions for you</p>
+      <ol class="list">
+        <li><strong>The four lines.</strong> "Every brand fights for attention." "The crowd decides." "And the crowd turns." "You don't keep the crowd. You earn it again." Keep, cut, or voice-over.</li>
+        <li><strong>The slash as a blade.</strong> The board carries it as the only weapon and it never cuts. If even that is too much for a client, the hero can strike open-handed and the slash can be the light that follows.</li>
+        <li><strong>Which opponents.</strong> 2019 you, the template, the algorithm are the proposal. A client version could swap one for their real pain point.</li>
+        <li><strong>Specific or generic.</strong> The shield, the throne and the template built from a real client's old brand, or kept generic for the studio reel.</li>
+        <li><strong>The service line.</strong> "Brand refresh" under the lockup, or nothing.</li>
+        <li><strong>The voice.</strong> One line on the lap in your voice, a cast voice, or none.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="alts-h">
+  <header><h2 id="alts-h">Other directions considered</h2><p>Two other arenas that lost to this one, and the one that was scrapped.</p></header>
+  <div class="alts">
+    <div><h3>The tournament</h3><p>A bracket of eight brands with the client climbing it. Clear structure, but it spends the film on other people's logos and it needs a loser in every round. The three-bout version keeps every opponent standing.</p></div>
+    <div><h3>The training yard</h3><p>No crowd: the brand drills alone before the fight, and the arena is only glimpsed at the end. Quieter and cheaper, but the argument lives in the crowd, and the crowd deciding is the whole point.</p></div>
+    <div><h3>The war (scrapped)</h3><p>Two stick-figure armies and a refreshed line. The dawn frame read as rally imagery, and no edit of the copy fixes a composition. Replaced by this board, whose first rule is that nothing lines up.</p></div>
+  </div>
+</section>
+
+<footer>
+  <p>THE ARENA · storyboard v1 · fifth of five · prepared for One Inch Media · 2026-10-07</p>
+  <p>Previz drawn live in canvas. The frames describe a film that does not exist yet.</p>
+</footer>
+</div>
+
+<script>
+// ---------- drawing primitives ----------
+const PR = (function () {
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const ease = {
+    out: t => 1 - Math.pow(1 - t, 3),
+    in: t => t * t * t,
+    inOut: t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+    outExpo: t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t),
+    outBack: t => { const c = 1.70158, d = c + 1; return 1 + d * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); },
+  };
+  function rng(seed) { let s = (seed >>> 0) || 1; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  const win = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
+  const SANS = 'Montserrat, "Helvetica Neue", Arial, sans-serif';
+  const DIDONE = '"Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif';
+  const MONO = '"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace';
+  function font(ctx, size, weight) { ctx.font = `${weight || 700} ${size}px ${SANS}`; }
+  function numeral(ctx, size, weight) { ctx.font = `${weight || 700} ${size}px ${DIDONE}`; }
+  function mono(ctx, size) { ctx.font = `500 ${size}px ${MONO}`; }
+  function vignette(ctx, W, H, strength) {
+    const g = ctx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.95);
+    g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, `rgba(0,0,0,${strength == null ? 0.6 : strength})`);
+    ctx.save(); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();
+  }
+  function grain(ctx, W, H, amount, seed) {
+    const r = rng(seed || 7); ctx.save(); ctx.globalAlpha = amount || 0.05; ctx.fillStyle = '#fff';
+    const n = Math.floor(W * H / 1100);
+    for (let i = 0; i < n; i++) ctx.fillRect(r() * W, r() * H, 1, 1);
+    ctx.restore();
+  }
+  function ruler(ctx, x0, x1, y, inch, color, alpha, labelStart, below) {
+    ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha; ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke();
+    const sub = inch / 8; let k = 0;
+    for (let x = x0; x <= x1 + 0.5; x += sub, k++) {
+      const h = k % 8 === 0 ? inch * 0.12 : k % 4 === 0 ? inch * 0.075 : k % 2 === 0 ? inch * 0.05 : inch * 0.03;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - h); ctx.stroke();
+      if (labelStart != null && k % 8 === 0) { const v = k / 8 + labelStart; if (v === 0 || v === 1) { numeral(ctx, Math.max(11, inch * 0.085)); ctx.textAlign = 'center'; if (below) { ctx.textBaseline = 'top'; ctx.fillText(String(v), x, y + inch * 0.04); } else { ctx.textBaseline = 'alphabetic'; ctx.fillText(String(v), x, y - inch * 0.16); } } }
+    }
+    ctx.restore();
+  }
+  function shockwave(ctx, cx, cy, p, maxR, color, width, count) {
+    const n = count || 1;
+    for (let i = 0; i < n; i++) {
+      const q = clamp(p - i * 0.12, 0, 1); if (q <= 0) continue;
+      const r = maxR * ease.outExpo(q);
+      ctx.save(); ctx.globalAlpha = (1 - q) * 0.9; ctx.strokeStyle = color; ctx.lineWidth = (width || 6) * (1 - q * 0.8) + 0.5;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+    }
+  }
+  function burst(ctx, cx, cy, p, n, maxR, color, seed, size) {
+    const r = rng(seed || 3); ctx.save(); ctx.fillStyle = color;
+    for (let i = 0; i < n; i++) {
+      const a = r() * Math.PI * 2, sp = 0.4 + r() * 0.6, s = (size || 3) * (0.5 + r());
+      const d = maxR * sp * ease.outExpo(p), x = cx + Math.cos(a) * d, y = cy + Math.sin(a) * d + p * p * 60 * r();
+      ctx.globalAlpha = (1 - p) * 0.9; ctx.fillRect(x, y, s, s);
+    }
+    ctx.restore();
+  }
+  // wide-tracked caps in the wordmark's manner; reveal clips left to right
+  function title(ctx, text, x, y, size, color, opts) {
+    const o = opts || {}; ctx.save(); font(ctx, size, o.weight || 600); ctx.fillStyle = color; ctx.textBaseline = 'middle';
+    const chars = Array.from(text); const tr = o.tracking == null ? size * 0.28 : o.tracking;
+    const w = chars.reduce((a, ch) => a + ctx.measureText(ch).width + tr, -tr);
+    const left = o.align === 'left' ? x : o.align === 'right' ? x - w : x - w / 2;
+    if (o.alpha != null) ctx.globalAlpha = o.alpha;
+    if (o.reveal != null && o.reveal < 1) { ctx.beginPath(); ctx.rect(left - 4, y - size, (w + 8) * o.reveal, size * 2); ctx.clip(); }
+    ctx.textAlign = 'left'; let cx = left; for (const ch of chars) { ctx.fillText(ch, cx, y); cx += ctx.measureText(ch).width + tr; }
+    ctx.restore();
+  }
+  function bigNumber(ctx, text, x, y, size, color, opts) {
+    const o = opts || {}; ctx.save(); numeral(ctx, size, 700); ctx.fillStyle = color; ctx.textBaseline = 'middle'; ctx.textAlign = o.align || 'center'; if (o.alpha != null) ctx.globalAlpha = o.alpha; ctx.fillText(text, x, y); ctx.restore();
+  }
+  function label(ctx, text, x, y, color, size, align, alpha) {
+    ctx.save(); mono(ctx, size || 11); ctx.fillStyle = color; ctx.textAlign = align || 'left'; ctx.textBaseline = 'middle'; if (alpha != null) ctx.globalAlpha = alpha; ctx.fillText(text, x, y); ctx.restore();
+  }
+  function glow(ctx, cx, cy, r, color, alpha) {
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r); g.addColorStop(0, color); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.save(); ctx.globalAlpha = alpha == null ? 0.5 : alpha; ctx.fillStyle = g; ctx.fillRect(cx - r, cy - r, r * 2, r * 2); ctx.restore();
+  }
+  function speedlines(ctx, cx, cy, p, n, color, seed, W, H) {
+    const r = rng(seed || 9); ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 1.2;
+    for (let i = 0; i < n; i++) { const a = r() * Math.PI * 2, r0 = H * 0.12 + r() * H * 0.2, len = H * 0.1 + r() * Math.max(W, H) * p; ctx.globalAlpha = (0.1 + r() * 0.4) * (1 - p); ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0); ctx.lineTo(cx + Math.cos(a) * (r0 + len), cy + Math.sin(a) * (r0 + len)); ctx.stroke(); }
+    ctx.restore();
+  }
+  // the brand's slash: a translucent band plus a crisp line, rotated to the mark's angle, centered on (cx, cy)
+  function slash(ctx, cx, cy, ang, bandW, len, color, bandAlpha, lineAlpha, lineW) {
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(ang);
+    if (bandAlpha > 0) { const g = ctx.createLinearGradient(0, -bandW, 0, bandW); g.addColorStop(0, 'rgba(231,39,34,0)'); g.addColorStop(0.5, `rgba(231,39,34,${bandAlpha})`); g.addColorStop(1, 'rgba(231,39,34,0)'); ctx.fillStyle = g; ctx.fillRect(-len, -bandW, len * 2, bandW * 2); }
+    if (lineAlpha > 0) { ctx.globalAlpha = lineAlpha; ctx.fillStyle = color; ctx.fillRect(-len, -(lineW || 1.5) / 2, len * 2, lineW || 1.5); }
+    ctx.restore();
+  }
+  return { clamp, lerp, ease, rng, win, font, numeral, mono, vignette, grain, ruler, shockwave, burst, title, bigNumber, label, glow, speedlines, slash };
+})();
+
+// ---------- the film's palette (fixed; the page theme does not change the screen) ----------
+const C = { screen: '#0B0B0B', bone: '#EFE9DE', red: '#E72722', steel: '#8C939B', steelDark: '#2B2E32', steelMid: '#4A4F55', wood: '#C9A26B' };
+const GEO = { hw: 0.82958, markCy: 0.26295, tagLeft: 0.047845, tagW: 0.90431, tagTop: 0.89838, tagH: 0.035192, ang: -42 * Math.PI / 180 };
+const { ease, win, clamp, lerp } = PR;
+const LOGO = new Image(), TAG = new Image();
+const ready = img => img.complete && img.naturalWidth > 0;
+
+function drawLockup(ctx, g, alpha) {
+  ctx.save(); ctx.globalAlpha = alpha;
+  if (ready(LOGO)) ctx.drawImage(LOGO, g.imgX, g.imgY, g.imgW, g.imgH);
+  else { PR.title(ctx, 'ONE INCH', g.cx, g.imgY + g.imgW * 0.6, g.imgW * 0.11, C.bone, { weight: 600, tracking: g.imgW * 0.045 }); PR.title(ctx, 'MEDIA', g.cx, g.imgY + g.imgW * 0.75, g.imgW * 0.07, C.red, { weight: 500, tracking: g.imgW * 0.045 }); }
+  ctx.restore();
+}
+function drawTagline(ctx, g, reveal, alpha) {
+  const x = g.imgX + GEO.tagLeft * g.imgW, y = g.imgY + GEO.tagTop * g.imgW, w = GEO.tagW * g.imgW, h = GEO.tagH * g.imgW;
+  ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha; ctx.beginPath(); ctx.rect(x - 2, y - 2, (w + 4) * reveal, h + 4); ctx.clip();
+  if (ready(TAG)) ctx.drawImage(TAG, x, y, w, h);
+  else PR.title(ctx, 'SMALL DETAILS. BIG IMPACT.', g.cx, y + h / 2, h * 0.85, C.bone, { weight: 600 });
+  ctx.restore();
+}
+function lockupGeomB(W, H) {
+  const inch = W * 0.4, x0 = W / 2 - inch / 2; const imgW = inch, imgH = imgW * GEO.hw, imgX = x0, imgY = H * 0.15;
+  return { inch, x0, x1: x0 + inch, imgW, imgH, imgX, imgY, markCy: imgY + GEO.markCy * imgW, cx: W / 2, cy: imgY + imgH / 2 };
+}
+function fLockupB(ctx, p, W, H) {
+  const g = lockupGeomB(W, H); const r = 0.272 * g.imgW, cx = g.cx, cy = g.markCy;
+  const conv = ease.outBack(win(p, 0.04, 0.4)), xf = win(p, 0.42, 0.6);
+  if (p > 0.3) PR.shockwave(ctx, cx, cy, win(p, 0.3, 0.9), W * 0.45, C.red, 6, 2);
+  if (xf < 1) {
+    ctx.save(); ctx.globalAlpha = 1 - xf; ctx.translate(cx, cy);
+    for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3 + (1 - conv) * Math.PI * (i % 2 ? 1 : -1) * 0.8, d = (1 - conv) * r * 2.2; ctx.save(); ctx.rotate(a); ctx.translate(0, -d); ctx.strokeStyle = C.bone; ctx.lineWidth = r * 0.3; ctx.beginPath(); ctx.arc(0, 0, r * 0.85, -Math.PI / 2 - 0.42, -Math.PI / 2 + 0.42); ctx.stroke(); ctx.restore(); }
+    drawOne(ctx, 0, r * 0.55, r * 1.15, 0, C.bone, ease.out(win(p, 0.1, 0.3)));
+    ctx.restore();
+  }
+  if (xf > 0) drawLockup(ctx, g, ease.out(xf));
+  const sl = win(p, 0.4, 0.62); if (sl > 0 && sl < 1) PR.slash(ctx, cx, cy, GEO.ang, H * 0.05, ease.out(sl) * g.imgW * 0.7, C.red, 0.25 * (1 - sl), 0.95 * (1 - sl), 2);
+  if (p < 0.06) { ctx.save(); ctx.fillStyle = C.bone; ctx.globalAlpha = 1 - p / 0.06; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 18);
+}
+function drawOne(ctx, x, y, size, lean, color, alpha) {
+  ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha; ctx.translate(x, y); ctx.transform(1, 0, -(lean || 0), 1, 0, 0);
+  PR.numeral(ctx, size, 700); ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillText('1', 0, 0); ctx.restore();
+}
+function blades(ctx, cx, cy, r, rot, color, width, alpha) {
+  ctx.save(); ctx.globalAlpha = alpha; ctx.translate(cx, cy); ctx.rotate(rot); ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineCap = 'butt';
+  for (let i = 0; i < 6; i++) { ctx.beginPath(); ctx.arc(0, 0, r, i * Math.PI / 3 - 0.44, i * Math.PI / 3 + 0.44); ctx.stroke(); }
+  ctx.restore();
+}
+
+// ---------- THE ARENA frames ----------
+C.ink = '#0B0B0B';
+const STALE = '#7F868D';
+function stick(ctx, x, y, h, phase, o) {
+  o = o || {}; const color = o.color || C.bone, face = o.face == null ? 1 : o.face, lw = Math.max(1, h * 0.06);
+  const legL = h * 0.42, bodyL = h * 0.33, headR = h * 0.1, walk = o.walk == null ? 1 : o.walk, run = o.run || 0;
+  const bob = Math.abs(Math.sin(phase)) * h * (0.03 + run * 0.04) * walk;
+  ctx.save(); ctx.globalAlpha = o.alpha == null ? 1 : o.alpha; ctx.translate(x, y - bob); ctx.scale(face, 1); ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = lw; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const lean = (o.lean || 0) + run * 0.35, hipY = -legL;
+  for (const s of [1, -1]) { const ph = phase + (s > 0 ? 0 : Math.PI), a = Math.sin(ph) * (0.5 + run * 0.4) * walk, bend = Math.max(0, Math.cos(ph)) * (0.8 + run * 0.6) * walk;
+    const kx = Math.sin(a) * legL * 0.5, ky = hipY + Math.cos(a) * legL * 0.5, fx = kx + Math.sin(a - bend) * legL * 0.5, fy = ky + Math.cos(a - bend) * legL * 0.5;
+    ctx.beginPath(); ctx.moveTo(0, hipY); ctx.lineTo(kx, ky); ctx.lineTo(fx, fy); ctx.stroke(); }
+  const shX = Math.sin(lean) * bodyL, shY = hipY - Math.cos(lean) * bodyL;
+  ctx.beginPath(); ctx.moveTo(0, hipY); ctx.lineTo(shX, shY); ctx.stroke();
+  const hx = shX + Math.sin(lean) * headR * 1.3, hy = shY - Math.cos(lean) * headR * 1.3;
+  ctx.beginPath(); ctx.arc(hx, hy, headR, 0, Math.PI * 2); if (o.hollow) ctx.stroke(); else ctx.fill();
+  const armL = h * 0.3, mode = o.arms || 'swing', wp = o.wavePhase == null ? phase : o.wavePhase;
+  for (const s of [1, -1]) { let a; const ph = phase + (s > 0 ? Math.PI : 0);
+    if (mode === 'swing') a = Math.sin(ph) * (0.5 + run * 0.6) * walk; else if (mode === 'up') a = (Math.PI * 0.85 + Math.sin(wp) * 0.08) * s; else if (mode === 'wave') a = s > 0 ? Math.PI * 0.8 + Math.sin(wp) * 0.3 : -0.15; else if (mode === 'clap') a = s * (0.9 + Math.max(0, Math.sin(wp)) * 0.5); else if (mode === 'slump') a = 0.15 * s; else if (mode === 'guard') a = s > 0 ? Math.PI * 0.55 : 0.35; else a = 0;
+    const ex = shX + Math.sin(a) * armL, ey = shY + Math.cos(a) * armL; ctx.beginPath(); ctx.moveTo(shX, shY); ctx.lineTo(ex, ey); ctx.stroke(); }
+  ctx.restore();
+}
+function pixelSquare(ctx, x, y, s, seed, alpha) { const r = PR.rng(seed || 5), n = 5, c = s / n; ctx.save(); for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) { const v = r(); if (v < 0.22) continue; ctx.globalAlpha = (alpha == null ? 1 : alpha) * (0.45 + v * 0.55); ctx.fillStyle = STALE; ctx.fillRect(x + i * c, y + j * c, c - 1, c - 1); } ctx.restore(); }
+function markGlyph(ctx, cx, cy, r, color) { blades(ctx, cx, cy, r * 0.85, 0, color, r * 0.3, 1); drawOne(ctx, cx, cy + r * 0.5, r * 1.05, 0, color, 1); }
+const wrapX = (x, span) => ((x % span) + span) % span;
+function sign(ctx, x, y, w, h, state) {
+  ctx.save(); ctx.fillStyle = state === 'up' ? C.red : '#262626'; ctx.fillRect(x - w / 2, y - h / 2, w, h); ctx.strokeStyle = C.bone; ctx.lineWidth = Math.max(1.5, h * 0.12); ctx.lineCap = 'round'; ctx.beginPath();
+  const a = w * 0.28, b = h * 0.2;
+  if (state === 'neutral') { ctx.moveTo(x - a, y); ctx.lineTo(x + a, y); } else if (state === 'down') { ctx.moveTo(x - a, y - b); ctx.lineTo(x, y + b); ctx.lineTo(x + a, y - b); } else if (state === 'tilt') { ctx.moveTo(x - a, y + b * 0.5); ctx.lineTo(x + a, y - b * 0.5); } else { ctx.moveTo(x - a, y + b); ctx.lineTo(x, y - b); ctx.lineTo(x + a, y + b); }
+  ctx.stroke(); ctx.restore();
+}
+function throne(ctx, cx, by, h, t, thumb) {
+  const r = PR.rng(220); ctx.save();
+  for (let i = 0; i < 26; i++) { const back = r() < 0.55, x = cx + (r() - 0.5) * h * (back ? 0.9 : 1.6), y = by - (back ? r() * h * 1.1 : r() * h * 0.35), s = h * (0.1 + r() * 0.12); ctx.globalAlpha = 0.5 + r() * 0.5; ctx.fillStyle = STALE; ctx.fillRect(x - s / 2, y - s / 2, s, s); }
+  ctx.restore();
+  stick(ctx, cx, by - h * 0.25, h * 0.75, 0, { color: STALE, hollow: true, walk: 0, arms: 'slump', lean: 0.15 });
+  if (thumb && thumb !== 'none') { const sx = cx + h * 0.6, sy = by - h * 1.05; ctx.save(); ctx.strokeStyle = STALE; ctx.lineWidth = Math.max(1.5, h * 0.05); ctx.beginPath(); ctx.moveTo(cx + h * 0.15, by - h * 0.72); ctx.lineTo(sx, sy + h * 0.15); ctx.stroke(); ctx.restore(); sign(ctx, sx, sy, h * 0.5, h * 0.34, thumb); }
+}
+function arena(ctx, W, H, t, o) {
+  o = o || {}; const rise = o.tiersRise == null ? 1 : o.tiersRise, fill = o.fill == null ? 1 : o.fill, cheer = o.cheer || 0, pan = o.pan || 0;
+  ctx.fillStyle = '#0B0B0B'; ctx.fillRect(0, 0, W, H);
+  for (let k = 2; k >= 0; k--) { const y0 = H * (0.14 + k * 0.13) + (1 - rise) * H * 0.7, bh = H * 0.11;
+    ctx.save(); ctx.fillStyle = k % 2 ? '#141414' : '#191919'; ctx.fillRect(0, y0, W, bh); ctx.strokeStyle = 'rgba(239,233,222,0.25)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, y0 + bh); ctx.lineTo(W, y0 + bh); ctx.stroke(); ctx.restore();
+    const r = PR.rng(200 + k), n = Math.floor(40 * fill);
+    for (let i = 0; i < n; i++) { const x = wrapX(r() * W + pan * (0.6 + k * 0.2), W), s = bh * (0.5 + r() * 0.4), ph = r() * 7, kind = r(); const jump = cheer * Math.max(0, Math.sin(t * 6 + ph)) * s * 0.35; const arms = kind < 0.3 ? 'wave' : kind < 0.5 ? 'up' : kind < 0.7 ? 'clap' : 'swing'; stick(ctx, x, y0 + bh - 2 - jump, s, ph, { color: C.bone, walk: 0, arms, alpha: 0.7 + r() * 0.3, wavePhase: t * 8 + ph, lean: (r() - 0.5) * 0.2 }); }
+    if (o.torches) for (let j = 0; j < 7; j++) { const tx = W * (j + 0.5) / 7; PR.glow(ctx, tx, y0 + 2, H * 0.05, 'rgba(231,39,34,0.7)', 0.8 * o.torches * (0.8 + 0.2 * Math.sin(t * 9 + j))); } }
+  if (o.box !== false) { const bx = W / 2, by = H * 0.14 + (1 - rise) * H * 0.7; ctx.save(); ctx.fillStyle = '#101010'; ctx.fillRect(bx - W * 0.09, by - H * 0.1, W * 0.18, H * 0.11); ctx.strokeStyle = C.bone; ctx.lineWidth = 1.5; ctx.strokeRect(bx - W * 0.09, by - H * 0.1, W * 0.18, H * 0.11); ctx.restore(); throne(ctx, bx, by, H * 0.075, t, o.thumb || 'none'); }
+  const sy = H * 0.53 + (1 - rise) * H * 0.4; const g = ctx.createLinearGradient(0, sy, 0, H); g.addColorStop(0, '#3A2E22'); g.addColorStop(1, '#17120D'); ctx.fillStyle = g; ctx.fillRect(0, sy, W, H - sy);
+  ctx.save(); ctx.strokeStyle = 'rgba(239,233,222,0.12)'; ctx.lineWidth = 1; const rr = PR.rng(210); for (let i = 0; i < 14; i++) { const y = sy + rr() * (H - sy); const x = rr() * W; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + rr() * W * 0.1, y + (rr() - 0.5) * 6); ctx.stroke(); } ctx.restore();
+}
+// first-person arm holding the slash. strike: 0..1 sweeps the blade right to left. lowered: 0..1 rests the arm lower.
+function povArm(ctx, W, H, t, strike, lowered) {
+  lowered = lowered || 0; const sway = Math.sin(t * 2) * W * 0.01;
+  const hx = W * 0.8 + sway + strike * -W * 0.12 * Math.sin(Math.PI * strike), hy = H * (0.72 + lowered * 0.18) + Math.cos(t * 2) * H * 0.01;
+  ctx.save(); ctx.strokeStyle = C.bone; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = Math.max(4, W * 0.012);
+  ctx.beginPath(); ctx.moveTo(W * 1.03, H * 1.1); ctx.lineTo(W * 0.93 + sway * 0.5, H * 0.95); ctx.lineTo(hx, hy); ctx.stroke();
+  ctx.fillStyle = C.bone; ctx.beginPath(); ctx.arc(hx, hy, W * 0.012, 0, Math.PI * 2); ctx.fill();
+  const rest = -2.2 + Math.sin(t) * 0.05, len = H * 0.5; const ang = strike > 0 && strike < 1 ? lerp(-0.4, -3.1, ease.inOut(strike)) : rest;
+  if (strike > 0 && strike < 1) for (let k = 1; k <= 6; k++) { const a2 = lerp(-0.4, -3.1, ease.inOut(clamp(strike - k * 0.035, 0, 1))); ctx.save(); ctx.globalAlpha = 0.28 - k * 0.04; ctx.strokeStyle = C.red; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(hx + Math.cos(a2) * len, hy + Math.sin(a2) * len); ctx.stroke(); ctx.restore(); }
+  ctx.strokeStyle = C.red; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(hx + Math.cos(ang) * len, hy + Math.sin(ang) * len); ctx.stroke();
+  PR.glow(ctx, hx + Math.cos(ang) * len, hy + Math.sin(ang) * len, H * 0.05, 'rgba(231,39,34,0.6)', 0.5);
+  ctx.restore(); return { hx, hy, ang };
+}
+function cam(ctx, W, H, dx, dy, rot, z, fn) { ctx.save(); ctx.translate(W / 2 + dx, H / 2 + dy); ctx.rotate(rot || 0); ctx.scale(z || 1, z || 1); ctx.translate(-W / 2, -H / 2); fn(); ctx.restore(); }
+function gear(ctx, cx, cy, r, ang, color, alpha) { ctx.save(); ctx.globalAlpha = alpha; ctx.translate(cx, cy); ctx.rotate(ang); ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.stroke(); ctx.beginPath(); ctx.arc(0, 0, r * 0.3, 0, Math.PI * 2); ctx.stroke(); for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2; ctx.beginPath(); ctx.moveTo(Math.cos(a) * r, Math.sin(a) * r); ctx.lineTo(Math.cos(a) * r * 1.18, Math.sin(a) * r * 1.18); ctx.stroke(); } ctx.restore(); }
+function confetti(ctx, W, H, p, n, seed) { const r = PR.rng(seed); ctx.save(); for (let i = 0; i < n; i++) { const x = r() * W, y = (r() * H + p * H * (0.6 + r())) % H, s = 3 + r() * 4; ctx.fillStyle = r() < 0.3 ? C.red : C.bone; ctx.globalAlpha = 0.6 + r() * 0.4; ctx.fillRect(x, y, s, s * 0.6); } ctx.restore(); }
+function label(ctx, text, x, y, W) { PR.label(ctx, text, x, y, C.bone, Math.max(8, W * 0.011), 'center', 0.9); }
+
+function fBuild(ctx, p, W, H) {
+  const t = p * 4; arena(ctx, W, H, t, { tiersRise: ease.out(win(p, 0.1, 0.7)), fill: ease.out(win(p, 0.4, 0.9)), torches: ease.out(win(p, 0.7, 1)), thumb: 'none' });
+  const ga = 1 - ease.in(win(p, 0.6, 0.95)); if (ga > 0) [[0.18, 0.16], [0.36, 0.11], [0.52, 0.14], [0.68, 0.1], [0.84, 0.15]].forEach(([fx, fr], i) => gear(ctx, W * fx, H * 0.84, H * fr, p * 7 * (i % 2 ? -1 : 1), C.bone, ga * 0.8));
+  PR.title(ctx, 'EVERY BRAND FIGHTS FOR ATTENTION.', W / 2, H * 0.08, Math.max(10, W * 0.02), C.bone, { weight: 600, reveal: ease.out(win(p, 0.2, 0.6)) });
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 71);
+}
+function fGate(ctx, p, W, H) {
+  const t = p * 4, open = ease.inOut(win(p, 0.3, 0.8));
+  cam(ctx, W, H, 0, 0, 0, lerp(1, 1.06, p), () => { arena(ctx, W, H, t, { torches: 1, thumb: 'neutral', cheer: 0.3 }); });
+  PR.glow(ctx, W / 2, H * 0.4, H * 0.8, 'rgba(239,233,222,0.35)', 0.5 * ease.out(win(p, 0.3, 0.9)));
+  ctx.save(); ctx.fillStyle = '#0B0B0B'; ctx.fillRect(0, 0, W * (0.5 - open * 0.6), H); ctx.fillRect(W * (0.5 + open * 0.6), 0, W, H); ctx.strokeStyle = C.bone; ctx.lineWidth = Math.max(6, W * 0.014);
+  for (const side of [-1, 1]) for (let i = 0; i < 4; i++) { const x = W / 2 + side * (W * 0.03 + i * W * 0.11) + side * open * W * 0.6; if (x < -20 || x > W + 20) continue; ctx.beginPath(); ctx.moveTo(x, -10); ctx.lineTo(x, H + 10); ctx.stroke(); }
+  ctx.restore();
+  povArm(ctx, W, H, t, 0, 0.45);
+  PR.title(ctx, 'THE CROWD DECIDES.', W / 2, H * 0.9, Math.max(10, W * 0.02), C.bone, { weight: 600, reveal: ease.out(win(p, 0.75, 1)) });
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 72);
+}
+function opponentOne(ctx, x, y, h, phase, o) {
+  o = o || {}; stick(ctx, x, y, h, phase, { color: o.color || STALE, hollow: o.hollow == null ? true : o.hollow, face: -1, walk: o.walk == null ? 1 : o.walk, arms: 'guard', lean: o.lean || 0 });
+  if (!o.noShield) pixelSquare(ctx, x - h * 0.55, y - h * 0.85, h * 0.45, 5, o.shieldAlpha == null ? 1 : o.shieldAlpha);
+  if (o.label) label(ctx, o.label, x, y - h * 1.15, o.W);
+}
+function fFirst(ctx, p, W, H) {
+  const t = p * 4, q = ease.in(p), bump = Math.max(0, Math.sin(t * 9)) * 3 * p;
+  cam(ctx, W, H, 0, -bump, 0, 1, () => { arena(ctx, W, H, t, { torches: 1, thumb: 'neutral', cheer: 0.4 });
+    const h = lerp(H * 0.14, H * 0.62, q), y = lerp(H * 0.6, H * 1.0, q), x = W * 0.46; opponentOne(ctx, x, y, h, t * 5, { label: '2019 YOU', W }); });
+  povArm(ctx, W, H, t, 0, 0.6 * (1 - ease.out(win(p, 0.5, 0.9))));
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 73);
+}
+function fBout(ctx, p, W, H) {
+  const t = p * 4, dodge = ease.out(win(p, 0, 0.3)) * (1 - ease.in(win(p, 0.3, 0.5))), strike = win(p, 0.35, 0.55), fresh = p > 0.58, bow = ease.out(win(p, 0.58, 0.8));
+  cam(ctx, W, H, dodge * W * 0.14, dodge * H * 0.03, -dodge * 0.1, 1, () => { arena(ctx, W, H, t, { torches: 1, thumb: 'neutral', cheer: p > 0.8 ? 1 : 0.4 });
+    const x = W * 0.42, y = H * 1.0, h = H * 0.62; opponentOne(ctx, x, y, h, t * 5, { walk: 0, color: fresh ? C.bone : STALE, hollow: !fresh, lean: bow * 0.7, noShield: p > 0.47, shieldAlpha: 1, label: fresh ? 'REFRESHED' : '2019 YOU', W });
+    const sw = win(p, 0.08, 0.34); if (sw > 0 && sw < 1) { const sx = lerp(-W * 0.3, W * 1.2, sw); pixelSquare(ctx, sx, H * 0.35, H * 0.3, 5, 1); ctx.save(); ctx.globalAlpha = 0.3; pixelSquare(ctx, sx - W * 0.08, H * 0.35, H * 0.3, 5, 0.5); ctx.restore(); }
+    if (p > 0.47) PR.burst(ctx, x - h * 0.3, y - h * 0.6, win(p, 0.47, 0.8), 60, W * 0.4, STALE, 74, 7); });
+  povArm(ctx, W, H, t, strike, 0);
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 74);
+}
+function fTemplate(ctx, p, W, H) {
+  const t = p * 4, low = ease.inOut(win(p, 0.1, 0.4)), strike = win(p, 0.45, 0.62), reset = ease.out(win(p, 0.62, 0.9));
+  cam(ctx, W, H, 0, low * H * 0.22, 0, 1, () => { arena(ctx, W, H, t, { torches: 1, thumb: 'neutral', cheer: 0.3 });
+    const cx = W * 0.5, r = PR.rng(75); const bars = [];
+    for (let i = 0; i < 9; i++) { const w = W * (0.1 + r() * 0.16), y = H * (0.2 + i * 0.085), jig = (r() - 0.5) * W * 0.06; bars.push({ x: cx - w / 2 + jig, y, w, h: H * 0.035 }); }
+    bars.forEach((b, i) => { const gx = W * 0.3 + (i % 3) * W * 0.14, gy = H * 0.3 + Math.floor(i / 3) * H * 0.12; const x = lerp(b.x, gx, reset), y = lerp(b.y, gy, reset), w = lerp(b.w, W * 0.12, reset); ctx.save(); ctx.fillStyle = reset > 0.5 ? C.bone : STALE; ctx.globalAlpha = 0.9; if (reset > 0.5) { ctx.strokeStyle = C.bone; ctx.lineWidth = 1.5; ctx.strokeRect(x, y, w, H * 0.08); } else ctx.fillRect(x, y, w, b.h); ctx.restore(); });
+    if (reset < 0.5) { ctx.save(); ctx.strokeStyle = STALE; ctx.lineWidth = 3; ctx.strokeRect(cx - H * 0.09, H * 0.02, H * 0.18, H * 0.16); ctx.beginPath(); ctx.moveTo(cx - H * 0.09, H * 0.02); ctx.lineTo(cx + H * 0.09, H * 0.18); ctx.moveTo(cx + H * 0.09, H * 0.02); ctx.lineTo(cx - H * 0.09, H * 0.18); ctx.stroke(); ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(cx - W * 0.05, H * 0.95); ctx.lineTo(cx - W * 0.05, H * 1.1); ctx.moveTo(cx + W * 0.05, H * 0.95); ctx.lineTo(cx + W * 0.05, H * 1.1); ctx.stroke(); ctx.restore(); }
+    label(ctx, reset > 0.5 ? 'RESET' : 'THE TEMPLATE', cx, H * 0.24 - (reset > 0.5 ? H * 0.08 : 0) , W);
+    if (low > 0.2 && p < 0.6) PR.speedlines(ctx, W / 2, H * 0.9, 0.4, 40, C.bone, 76, W, H); });
+  povArm(ctx, W, H, t, strike, 0.2 + low * 0.2);
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 75);
+}
+function fAlgo(ctx, p, W, H) {
+  const t = p * 4, spin = win(p, 0.55, 0.75), rot = Math.sin(p * 5) * 0.08 * (1 - spin) + ease.inOut(spin) * Math.PI * 2 * 0 ;
+  cam(ctx, W, H, 0, 0, rot, 1 + Math.sin(spin * Math.PI) * 0.1, () => { arena(ctx, W, H, t, { torches: 1, thumb: 'neutral', cheer: p > 0.8 ? 1 : 0.4 });
+    const r = PR.rng(77); ctx.save(); ctx.strokeStyle = 'rgba(200,180,150,0.35)'; ctx.lineWidth = 1; for (let i = 0; i < 60; i++) { const x = (r() * W + p * W * 1.5 * (0.5 + r())) % W, y = r() * H, l = 10 + r() * 60; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - l, y + l * 0.1); ctx.stroke(); } ctx.restore();
+    const ax = W / 2 + Math.cos(p * 5) * W * 0.12, ay = H * 0.95, h = H * 0.5, done = p > 0.68;
+    stick(ctx, ax, ay, h, t * 5, { color: done ? C.bone : STALE, hollow: !done, walk: done ? 0 : 1, arms: done ? 'clap' : 'guard', wavePhase: t * 10, face: -1 });
+    const arms = done ? 0 : 6; for (let i = 0; i < arms; i++) { const a = -Math.PI * 0.15 - i * Math.PI * 0.14 + Math.sin(t * 3 + i) * 0.1; const sx = ax, sy = ay - h * 0.75, ex = sx + Math.cos(a) * h * 0.45, ey = sy + Math.sin(a) * h * 0.45; ctx.save(); ctx.strokeStyle = STALE; ctx.lineWidth = Math.max(2, h * 0.05); ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke(); ctx.restore(); sign(ctx, ex, ey - h * 0.08, h * 0.16, h * 0.11, p > 0.64 ? 'up' : 'down'); }
+    if (done) { for (let i = 0; i < 3; i++) sign(ctx, ax + (i - 1) * h * 0.4, ay - h * 1.25 - Math.max(0, Math.sin(t * 6 + i)) * h * 0.1, h * 0.16, h * 0.11, 'up'); }
+    label(ctx, done ? 'LIKED' : 'THE ALGORITHM', ax, ay - h * 1.4, W); });
+  if (spin > 0 && spin < 1) PR.shockwave(ctx, W / 2, H * 0.6, spin, W * 0.7, C.red, 10, 2);
+  povArm(ctx, W, H, t, spin, 0);
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 76);
+}
+function fThumb(ctx, p, W, H) {
+  const t = p * 4, state = p < 0.3 ? 'neutral' : p < 0.65 ? 'tilt' : 'up', erupt = ease.out(win(p, 0.65, 0.85));
+  cam(ctx, W, H, 0, H * 0.55, 0, 2.2, () => { arena(ctx, W, H, t, { torches: 1, thumb: state, cheer: erupt }); });
+  if (state === 'tilt') { const wob = Math.sin(t * 7) * 2; ctx.save(); ctx.translate(wob, 0); ctx.restore(); }
+  if (erupt > 0) confetti(ctx, W, H, p, Math.floor(120 * erupt), 78);
+  povArm(ctx, W, H, t, 0, 0.5);
+  PR.title(ctx, 'AND THE CROWD TURNS.', W / 2, H * 0.9, Math.max(10, W * 0.02), C.bone, { weight: 600, reveal: ease.out(win(p, 0.7, 0.95)) });
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 77);
+}
+function fThrone(ctx, p, W, H) {
+  const t = p * 4, climb = ease.inOut(win(p, 0, 0.55)), strike = win(p, 0.6, 0.76), planted = ease.out(win(p, 0.78, 0.95));
+  const z = lerp(1.1, 2.4, climb);
+  cam(ctx, W, H, 0, lerp(H * 0.1, H * 0.62, climb), 0, z, () => { arena(ctx, W, H, t, { torches: 1, thumb: p > 0.7 ? 'none' : 'up', cheer: 1, box: p <= 0.7 }); if (p > 0.7) { ctx.save(); ctx.fillStyle = '#101010'; ctx.fillRect(W / 2 - W * 0.09, H * 0.04, W * 0.18, H * 0.11); ctx.strokeStyle = C.bone; ctx.lineWidth = 1.5; ctx.strokeRect(W / 2 - W * 0.09, H * 0.04, W * 0.18, H * 0.11); ctx.restore(); } });
+  if (climb < 1) { ctx.save(); ctx.strokeStyle = 'rgba(239,233,222,0.5)'; ctx.lineWidth = 2; for (let k = 0; k < 7; k++) { const y = ((k * H * 0.13 + climb * H * 0.9) % (H * 0.9)) + H * 0.1; const w = W * (0.3 + (y / H) * 0.6); ctx.beginPath(); ctx.moveTo(W / 2 - w / 2, y); ctx.lineTo(W / 2 + w / 2, y); ctx.stroke(); } ctx.restore();
+    const r = PR.rng(79); ctx.save(); ctx.strokeStyle = C.bone; ctx.lineWidth = Math.max(2, W * 0.004); ctx.lineCap = 'round'; for (let i = 0; i < 14; i++) { const side = i % 2 ? 1 : -1, y = r() * H, len = W * (0.05 + r() * 0.08), x0 = side > 0 ? W + 2 : -2; const wig = Math.sin(t * 7 + i) * len * 0.2; ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x0 - side * len, y - len * 0.5 + wig); ctx.stroke(); } ctx.restore(); }
+  if (p > 0.66) PR.burst(ctx, W / 2, H * 0.52, win(p, 0.66, 0.95), 70, W * 0.5, STALE, 80, 8);
+  if (planted > 0) { ctx.save(); ctx.strokeStyle = C.red; ctx.lineWidth = 3; ctx.globalAlpha = planted; ctx.beginPath(); ctx.moveTo(W / 2, H * 0.3); ctx.lineTo(W / 2, H * 0.78); ctx.stroke(); ctx.restore(); PR.glow(ctx, W / 2, H * 0.78, H * 0.12, 'rgba(231,39,34,0.6)', 0.7 * planted); }
+  povArm(ctx, W, H, t, strike, planted * 0.6);
+  PR.title(ctx, "YOU DON'T KEEP THE CROWD. YOU EARN IT AGAIN.", W / 2, H * 0.9, Math.max(9, W * 0.017), C.bone, { weight: 600, reveal: ease.out(win(p, 0.8, 1)) });
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 78);
+}
+function fLap(ctx, p, W, H) {
+  const t = p * 4; cam(ctx, W, H, 0, H * 0.15, Math.sin(p * 4) * 0.02, 1.5, () => { arena(ctx, W, H, t, { torches: 1, cheer: 1, pan: -p * W * 1.2, box: false }); });
+  confetti(ctx, W, H, p, 140, 81);
+  povArm(ctx, W, H, t, 0, 0.55);
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 79);
+}
+function fMarkA(ctx, p, W, H) {
+  if (p < 0.3) { const q = ease.in(p / 0.3); ctx.fillStyle = C.red; ctx.fillRect(0, 0, W, H); markGlyph(ctx, W / 2, H / 2, H * (0.12 + q * 0.5), C.bone); if (p > 0.26) { ctx.save(); ctx.fillStyle = C.screen; ctx.globalAlpha = (p - 0.26) / 0.04; ctx.fillRect(0, 0, W, H); ctx.restore(); } PR.grain(ctx, W, H, 0.03, 80); return; }
+  const q = (p - 0.3) / 0.7; fLockupB(ctx, Math.min(1, q / 0.6), W, H);
+  if (q > 0.62) { const g = lockupGeomB(W, H); drawTagline(ctx, g, ease.out(win(q, 0.62, 0.82)), 1); PR.label(ctx, 'BRAND REFRESH', W / 2, g.imgY + (GEO.tagTop + GEO.tagH) * g.imgW + H * 0.06, C.red, Math.max(9, W * 0.012), 'center', ease.out(win(q, 0.85, 1))); }
+}
+
+const DRAW = { 1: fBuild, 2: fGate, 3: fFirst, 4: fBout, 5: fTemplate, 6: fAlgo, 7: fThumb, 8: fThrone, 9: fLap, 10: fMarkA };
+const TITLES = { 1: 'The arena builds', 2: 'The gate', 3: '2019 you', 4: 'The bout', 5: 'The template', 6: 'The algorithm', 7: 'The thumb', 8: 'The throne', 9: 'The lap', 10: 'The mark' };
+const THUMB_AT = { 1: 0.75, 2: 0.7, 3: 0.75, 4: 0.45, 5: 0.5, 6: 0.5, 7: 0.8, 8: 0.7, 9: 0.5, 10: 0.85 };
+const POSTER = { draw: (ctx, W, H) => fBout(ctx, 0.45, W, H), label: 'Poster · frame 4, the bout. Play runs the cut from 0:00.' };
+const ACTS = [['I', 0, 8], ['II', 8, 24], ['III', 24, 36], ['IV', 36, 40]];
+const DUR = 40, TICK = 5;
+function build(list) { let t = 0; return list.map(([n, d, draw]) => { const f = { n, t0: t, t1: t + d, title: TITLES[n], draw: draw || DRAW[n] }; t += d; return f; }); }
+const CUTS = {
+  full: build([[1, 4], [2, 4], [3, 4], [4, 4], [5, 4], [6, 4], [7, 4], [8, 4], [9, 4], [10, 4]]),
+  short: build([[2, 1], [4, 2], [6, 1.5], [7, 1], [10, 2.5]]),
+};
+
+// ---------- player ----------
+(function () {
+  const canvas = document.getElementById('animatic'), ctx = canvas.getContext('2d');
+  const playBtn = document.getElementById('play'), scrub = document.getElementById('scrub'), readout = document.getElementById('readout'), frameLabel = document.getElementById('frame-label'), chipsEl = document.getElementById('chips');
+  let FR = CUTS.full, TOTAL = CUTS.full[CUTS.full.length - 1].t1, T = 0, playing = false, last = 0, raf = 0, W = 0, H = 0, poster = true;
+  const leavePoster = () => { poster = false; };
+  const fmt = s => { const m = Math.floor(s / 60), r = s - m * 60; return m + ':' + (r < 10 ? '0' : '') + r.toFixed(1); };
+  const frameAt = t => { for (let i = 0; i < FR.length; i++) if (t < FR[i].t1) return i; return FR.length - 1; };
+  function chips() { chipsEl.innerHTML = ''; FR.forEach(f => { const b = document.createElement('button'); b.type = 'button'; b.dataset.jump = f.n; b.textContent = (f.n < 10 ? '0' : '') + f.n + ' ' + f.title; b.addEventListener('click', () => { leavePoster(); pause(); T = f.t0 + 0.01; render(); }); chipsEl.appendChild(b); }); }
+  function size() { const r = canvas.getBoundingClientRect(); const dpr = Math.min(2, window.devicePixelRatio || 1); W = Math.max(1, Math.round(r.width)); H = Math.round(W * 9 / 16); canvas.width = W * dpr; canvas.height = H * dpr; canvas.style.height = H + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); render(); }
+  function render() {
+    ctx.save(); ctx.fillStyle = C.screen; ctx.fillRect(0, 0, W, H); ctx.restore();
+    if (poster) {
+      ctx.save(); POSTER.draw(ctx, W, H); ctx.restore();
+      scrub.value = '0'; readout.textContent = fmt(0) + ' / ' + fmt(TOTAL); frameLabel.textContent = POSTER.label;
+      chipsEl.querySelectorAll('button').forEach(c => c.classList.remove('is-active'));
+      return;
+    }
+    const i = frameAt(T), f = FR[i], p = clamp((T - f.t0) / (f.t1 - f.t0), 0, 1);
+    ctx.save(); f.draw(ctx, p, W, H); ctx.restore();
+    scrub.value = String(T); readout.textContent = fmt(T) + ' / ' + fmt(TOTAL); frameLabel.textContent = 'Frame ' + f.n + ' · ' + f.title + ' · ' + fmt(f.t0) + ' to ' + fmt(f.t1);
+    chipsEl.querySelectorAll('button').forEach(c => c.classList.toggle('is-active', Number(c.dataset.jump) === f.n));
+  }
+  function tick(now) { if (!playing) return; const dt = Math.min(0.1, (now - last) / 1000); last = now; T += dt; if (T >= TOTAL) { T = TOTAL; playing = false; playBtn.textContent = 'Replay'; playBtn.setAttribute('aria-pressed', 'false'); render(); return; } render(); raf = requestAnimationFrame(tick); }
+  function play() { leavePoster(); if (T >= TOTAL) T = 0; playing = true; last = performance.now(); playBtn.textContent = 'Pause'; playBtn.setAttribute('aria-pressed', 'true'); cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); }
+  function pause() { playing = false; playBtn.textContent = 'Play'; playBtn.setAttribute('aria-pressed', 'false'); cancelAnimationFrame(raf); }
+  function setCut(key) { pause(); poster = true; FR = CUTS[key]; TOTAL = FR[FR.length - 1].t1; T = 0; scrub.max = String(TOTAL); document.getElementById('cut-full').setAttribute('aria-pressed', String(key === 'full')); document.getElementById('cut-short').setAttribute('aria-pressed', String(key === 'short')); chips(); render(); }
+  playBtn.addEventListener('click', () => playing ? pause() : play());
+  scrub.addEventListener('input', () => { leavePoster(); pause(); T = Number(scrub.value); render(); });
+  document.getElementById('cut-full').addEventListener('click', () => setCut('full'));
+  document.getElementById('cut-short').addEventListener('click', () => setCut('short'));
+  document.addEventListener('keydown', e => {
+    if (e.target && /input|textarea|select|button/i.test(e.target.tagName) && e.key !== ' ') return;
+    if (/^(Arrow(Left|Right|Up|Down)| )$/.test(e.key)) leavePoster();
+    if (e.key === ' ' && !(e.target && /input|textarea|select/i.test(e.target.tagName))) { e.preventDefault(); playing ? pause() : play(); }
+    if (e.key === 'ArrowRight') { pause(); T = Math.min(TOTAL, T + 0.5); render(); }
+    if (e.key === 'ArrowLeft') { pause(); T = Math.max(0, T - 0.5); render(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); pause(); T = FR[Math.min(FR.length - 1, frameAt(T) + 1)].t0 + 0.01; render(); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); pause(); const i = frameAt(T), f = FR[i]; T = (T - f.t0 > 0.6 ? f.t0 : FR[Math.max(0, i - 1)].t0) + 0.01; render(); }
+  });
+  function thumbs() {
+    document.querySelectorAll('canvas[data-thumb]').forEach(c => {
+      const n = Number(c.dataset.thumb), draw = DRAW[n]; if (!draw) return;
+      const r = c.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1), w = Math.max(1, Math.round(r.width)), h = Math.round(w * 9 / 16);
+      c.width = w * dpr; c.height = h * dpr; c.style.height = h + 'px';
+      const cx = c.getContext('2d'); cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.fillStyle = C.screen; cx.fillRect(0, 0, w, h); cx.save(); draw(cx, THUMB_AT[n], w, h); cx.restore();
+    });
+  }
+  function timelineSvg() {
+    const svg = document.getElementById('timeline'); if (!svg) return; const NS = 'http://www.w3.org/2000/svg'; const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+    const L = 40, R = 990, y0 = 34, h = 36, sx = s => L + (R - L) * s / DUR;
+    const acts = ACTS;
+    acts.forEach(([n, a, b]) => { svg.appendChild(el('rect', { class: 'act', x: sx(a), y: y0 - 16, width: sx(b) - sx(a), height: h + 32 })); const t = el('text', { x: sx(a) + 6, y: y0 - 4, 'font-size': 10 }); t.textContent = n; svg.appendChild(t); });
+    CUTS.full.forEach((f, i) => { const red = i % 2 === 1; svg.appendChild(el('rect', { class: 'seg', x: sx(f.t0), y: y0, width: sx(f.t1) - sx(f.t0), height: h, fill: red ? '#E72722' : '#8C939B', opacity: red ? 0.95 : 0.6 })); const t = el('text', { x: sx(f.t0) + 4, y: y0 + h - 6, 'font-size': 11, fill: red ? '#FFFFFF' : '#0B0B0B', 'font-weight': 600 }); t.textContent = (f.n < 10 ? '0' : '') + f.n; svg.appendChild(t); });
+    for (let s = 0; s <= DUR; s += TICK) { svg.appendChild(el('line', { x1: sx(s), y1: y0 + h + 18, x2: sx(s), y2: y0 + h + 26, stroke: 'currentColor', opacity: 0.5 })); const t = el('text', { x: sx(s), y: y0 + h + 40, 'font-size': 10, 'text-anchor': 'middle' }); t.textContent = '0:' + (s < 10 ? '0' : '') + s; svg.appendChild(t); }
+  }
+  const refresh = () => { render(); thumbs(); };
+  LOGO.addEventListener('load', refresh); TAG.addEventListener('load', refresh);
+  LOGO.src = 'assets/lockup-dark.png'; TAG.src = 'assets/tagline-dark.png';
+  window.addEventListener('resize', () => { size(); thumbs(); });
+  scrub.max = String(TOTAL); chips(); size(); thumbs(); timelineSvg();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+})();
+
+// ---------- the POV loop: approach, strike, refresh ----------
+(function () {
+  const c = document.getElementById('povloop'); if (!c) return; const ctx = c.getContext('2d');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; let W = 0, H = 0, t0 = 0;
+  function size() { const r = c.getBoundingClientRect(); const dpr = Math.min(2, window.devicePixelRatio || 1); W = Math.max(1, Math.round(r.width)); H = Math.round(W * 9 / 16); c.width = W * dpr; c.height = H * dpr; c.style.height = H + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  function draw(t) {
+    const T = t % 6, p = T / 6; ctx.fillStyle = C.screen; ctx.fillRect(0, 0, W, H);
+    const q = ease.in(Math.min(1, T / 2.4)), strike = win(T, 2.8, 3.6), fresh = T > 3.7, bow = ease.out(win(T, 3.7, 4.6));
+    arena(ctx, W, H, t, { torches: 1, thumb: 'neutral', cheer: fresh ? 1 : 0.3 });
+    const h = lerp(H * 0.14, H * 0.6, q), y = lerp(H * 0.6, H * 1.0, q);
+    opponentOne(ctx, W * 0.44, y, h, t * 5, { walk: fresh ? 0 : 1 - win(T, 2.4, 2.8), color: fresh ? C.bone : STALE, hollow: !fresh, lean: bow * 0.7, noShield: T > 3.3, label: fresh ? 'REFRESHED' : '2019 YOU', W });
+    if (T > 3.3) PR.burst(ctx, W * 0.3, H * 0.55, win(T, 3.3, 4.6), 50, W * 0.4, STALE, 74, 7);
+    povArm(ctx, W, H, t, strike, T < 2.4 ? 0.5 * (1 - T / 2.4) : 0);
+    PR.label(ctx, T < 2.8 ? 'APPROACH · the arm comes up as it closes' : T < 3.7 ? 'STRIKE · the slash sweeps right to left · 19 frames' : 'REFRESHED · it fills in, bows, the crowd jumps', 16, 20, C.steel, Math.max(9, W * 0.013));
+    PR.grain(ctx, W, H, 0.03, 82);
+  }
+  size(); window.addEventListener('resize', size);
+  if (reduce) { draw(3.1); return; }
+  function loop(now) { if (!t0) t0 = now; draw((now - t0) / 1000); requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => draw(0));
+})();
+</script>
+
+</body>
+</html>

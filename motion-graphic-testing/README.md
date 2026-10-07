@@ -1,6 +1,6 @@
 # Motion graphic testing
 
-Exploratory motion work for the One Inch Media brand. Four companion storyboards, all built on the real lockup and all ending on the same logo and line. Nothing in this folder is part of the Forge & Frame site build; the folder is ignored by the Next.js app.
+Exploratory motion work for the One Inch Media brand. Five companion storyboards, all built on the real lockup and all ending on the same logo and line. Nothing in this folder is part of the Forge & Frame site build; the folder is ignored by the Next.js app.
 
 ## one-inch-storyboard.html
 
@@ -21,3 +21,7 @@ Storyboard v1 for **THE ONE**, a forty-five-second process film: a website built
 ## one-shot-storyboard.html
 
 Storyboard v1 for **ONE SHOT**, a twelve-second logo opening for the website redesign service, in the shape of the famous gun barrel sequence with every element replaced by the brand's: the barrel is the aperture, the figure is the serif 1 rigged with legs and an arm (Agent 1), the shot is the slash, the blood is the brand red, and the closing iris is the mark. Includes a looping walk, turn and fire cycle for the character, a four-second sting, and the 007-specific guardrails. Shares the `assets` folder.
+
+## the-arena-storyboard.html
+
+Storyboard v1 for **THE ARENA**, a forty-second brand film in first person about why a brand refreshes: a stick-figure arena, three bouts against what a stale brand faces (its 2019 self, the template, the algorithm), a crowd that decides with a thumb, a throne of old logos the hero refuses to sit in, and the planted slash becoming the mark. Nobody falls; every strike refreshes. Written under one rule: no armies, no flags, no salutes, nothing lines up. Includes a first-person loop of one bout and an eight-second cutdown. Shares the `assets` folder.
