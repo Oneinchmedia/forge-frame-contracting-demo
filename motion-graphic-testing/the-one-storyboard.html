@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>The One Storyboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bodoni+Moda:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a dark screening room in the brand's black, white and red. One column, max 1120px. The animatic is the hero; the board runs two-up beneath it; notes follow in quieter sections. */
+:root {
+  --bg: #0B0B0B; --bg-2: #141414; --bg-3: #1C1C1C; --line: #2A2A2A; --line-2: #3A3A3A;
+  --fg: #F2F0EC; --fg-2: #B5B2AC; --muted: #807D78;
+  --accent: #E72722; --accent-text: #F25C55; --accent-fg: #FFFFFF; --steel: #8C939B;
+  --show-light: none; --show-dark: block;
+  --display: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --numeral: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EE; --bg-2: #FBFAF8; --bg-3: #E9E6E0; --line: #D9D5CE; --line-2: #C6C1B8;
+    --fg: #0B0B0B; --fg-2: #4A4845; --muted: #6E6B66;
+    --accent: #E72722; --accent-text: #C11E19; --accent-fg: #FFFFFF; --steel: #5B636B;
+    --show-light: block; --show-dark: none;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EE; --bg-2: #FBFAF8; --bg-3: #E9E6E0; --line: #D9D5CE; --line-2: #C6C1B8;
+  --fg: #0B0B0B; --fg-2: #4A4845; --muted: #6E6B66;
+  --accent: #E72722; --accent-text: #C11E19; --accent-fg: #FFFFFF; --steel: #5B636B;
+  --show-light: block; --show-dark: none;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 80px; padding-inline: clamp(16px, 4vw, 40px); }
+h1, h2, h3 { font-family: var(--display); text-transform: uppercase; margin: 0; text-wrap: balance; }
+h1 { font-weight: 800; font-size: clamp(44px, 11vw, 150px); letter-spacing: 0.16em; line-height: 1; }
+h2 { font-weight: 700; font-size: clamp(20px, 2.6vw, 30px); letter-spacing: 0.14em; line-height: 1.2; }
+h3 { font-weight: 600; font-size: 16px; letter-spacing: 0.12em; line-height: 1.3; }
+p { margin: 0; }
+a { color: var(--accent-text); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.prose { max-width: 62ch; color: var(--fg-2); }
+.prose strong { color: var(--fg); font-weight: 600; }
+section { padding-block: 44px; border-top: 1px solid var(--line); }
+section > header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 22px; }
+section > header p { color: var(--fg-2); max-width: 58ch; }
+button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* masthead */
+.masthead { display: grid; gap: 16px; padding-block: 8px 36px; }
+.logo { width: 170px; height: auto; max-width: 100%; }
+.logo--light { display: var(--show-light); }
+.logo--dark { display: var(--show-dark); }
+.logline { font-size: clamp(17px, 2vw, 22px); line-height: 1.4; max-width: 36ch; color: var(--fg); text-wrap: balance; }
+.specs { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.specs li { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; padding: 6px 10px; border: 1px solid var(--line-2); color: var(--fg-2); }
+.specs li.hot { border-color: var(--accent); color: var(--accent-text); }
+
+/* notice */
+.notice { border: 1px dashed var(--line-2); background: var(--bg-2); padding: 18px 20px; display: grid; gap: 10px; margin-bottom: 36px; }
+.notice ul { margin: 0; padding-left: 18px; color: var(--fg-2); }
+.notice li + li { margin-top: 4px; }
+.notice strong { color: var(--fg); font-weight: 600; }
+
+/* player */
+.player { border-top: 0; padding-top: 0; }
+.player-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.toggle { display: inline-flex; border: 1px solid var(--line-2); }
+.toggle button { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; background: transparent; color: var(--fg-2); border: 0; padding: 10px 14px; cursor: pointer; }
+.toggle button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+.screen { position: relative; background: #0B0B0B; border: 1px solid var(--line-2); }
+#animatic { display: block; width: 100%; max-width: 100%; }
+.controls { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+#play { font: 700 12px/1 var(--display); letter-spacing: 0.14em; text-transform: uppercase; background: var(--accent); color: var(--accent-fg); border: 0; padding: 13px 18px; min-width: 96px; cursor: pointer; }
+#scrub { flex: 1; min-width: 0; accent-color: var(--accent); }
+#readout { font-size: 13px; color: var(--fg-2); white-space: nowrap; }
+#frame-label { margin-top: 8px; font-size: 13px; color: var(--accent-text); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.chips button { font: 500 12px/1 var(--mono); background: var(--bg-2); color: var(--fg-2); border: 1px solid var(--line); padding: 8px 10px; cursor: pointer; }
+.chips button.is-active { border-color: var(--accent); color: var(--accent-text); }
+.hint { margin-top: 14px; font-size: 13px; color: var(--muted); max-width: 70ch; }
+
+/* structure timeline */
+.timeline { width: 100%; height: auto; display: block; }
+.timeline text { font-family: var(--mono); fill: var(--fg-2); }
+.timeline .act { fill: var(--bg-3); stroke: var(--line-2); }
+.timeline .seg { stroke: var(--bg); stroke-width: 1; }
+.acts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px 28px; margin-top: 22px; }
+.acts p { color: var(--fg-2); font-size: 14px; margin-top: 6px; }
+.acts .eyebrow { margin-bottom: 6px; }
+
+/* board */
+.board-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 36px 32px; }
+.frame { display: grid; gap: 14px; min-width: 0; }
+.frame canvas { width: 100%; max-width: 100%; display: block; background: #0B0B0B; border: 1px solid var(--line-2); }
+.frame-head { display: grid; grid-template-columns: auto 1fr; gap: 2px 16px; align-items: baseline; }
+.frame-head .n { font-family: var(--numeral); font-weight: 700; font-size: 40px; line-height: 1; color: var(--accent-text); font-variant-numeric: lining-nums; }
+.frame-head .tc { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); }
+.frame-head h3 { grid-column: 2; }
+.frame dl { margin: 0; display: grid; grid-template-columns: 7.5em 1fr; gap: 8px 14px; font-size: 14px; }
+.frame dt { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.frame dd { margin: 0; color: var(--fg-2); min-width: 0; }
+.frame dd.ai { color: var(--fg); }
+.frame dd .q { font-family: var(--mono); color: var(--accent-text); }
+.frame dd.ref { font-style: italic; }
+
+/* notes */
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 28px 40px; }
+.list { margin: 0; padding-left: 18px; color: var(--fg-2); display: grid; gap: 10px; font-size: 14px; }
+.list li::marker { color: var(--muted); font-family: var(--mono); }
+.list strong { color: var(--fg); font-weight: 600; }
+.caps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 14px; }
+.caps li { display: grid; grid-template-columns: 3.2em 1fr; gap: 12px; align-items: baseline; color: var(--fg-2); }
+.caps .f { font-family: var(--mono); font-size: 12px; color: var(--accent-text); letter-spacing: 0.06em; }
+.caps strong { color: var(--fg); font-weight: 600; }
+
+/* palette and type */
+.swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.swatch { border: 1px solid var(--line-2); }
+.swatch i { display: block; height: 64px; }
+.swatch div { padding: 10px 12px; display: grid; gap: 2px; }
+.swatch b { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: 0.06em; }
+.swatch span { font-size: 12px; color: var(--fg-2); line-height: 1.45; }
+.specimen { display: grid; gap: 12px; border: 1px solid var(--line); padding: 18px 20px; background: var(--bg-2); }
+.specimen .d { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3em; font-size: clamp(22px, 3.4vw, 40px); line-height: 1.1; }
+.specimen .one { font-family: var(--numeral); font-weight: 700; font-size: clamp(72px, 10vw, 120px); line-height: 0.9; }
+.specimen .m { font-family: var(--mono); font-size: 14px; color: var(--fg-2); }
+.specimen .b { font-size: 14px; color: var(--fg-2); max-width: 46ch; }
+.specimen small { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+/* cutdown */
+.cut { display: grid; gap: 14px; }
+.cut-strip { display: grid; grid-template-columns: 2fr 1fr 0.5fr 2.5fr 1fr; gap: 3px; }
+.cut-strip div { background: var(--bg-3); border: 1px solid var(--line-2); padding: 10px 8px; min-width: 0; }
+.cut-strip b { display: block; font-family: var(--numeral); font-weight: 700; font-size: 22px; line-height: 1; }
+.cut-strip span { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* stack table */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 12px 14px; border-top: 1px solid var(--line); }
+th { font-family: var(--mono); font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); border-top: 0; background: var(--bg-2); }
+td:first-child { font-weight: 600; white-space: nowrap; color: var(--fg); }
+td { color: var(--fg-2); }
+
+/* considered */
+.alts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px 28px; }
+.alts div { border-top: 1px solid var(--line-2); padding-top: 12px; }
+.alts p { color: var(--fg-2); font-size: 14px; margin-top: 6px; }
+
+footer { padding-top: 32px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; display: grid; gap: 4px; }
+@media (max-width: 640px) {
+  .frame dl { grid-template-columns: 1fr; gap: 2px 0; }
+  .frame dt { padding-top: 10px; }
+  .cut-strip { grid-template-columns: repeat(5, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<div class="wrap">
+<header class="masthead">
+  <img class="logo logo--light" src="assets/lockup-light-full.png" alt="One Inch Media. Small details. Big impact." width="900" height="840">
+  <img class="logo logo--dark" src="assets/lockup-dark-full.png" alt="" width="900" height="840">
+  <p class="eyebrow">Storyboard · process film · One Inch Media · how a website gets built</p>
+  <h1>The One</h1>
+  <p class="logline">A forty-five-second film that takes a client from a tired template to a live site, start to finish, through the green rain and out the other side.</p>
+  <ul class="specs">
+    <li>45 s</li><li>16:9 · 24 fps</li><li>12 frames</li><li>10 s cutdown</li><li class="hot">Matrix homage, no likeness</li><li class="hot">Built on the real lockup</li><li>Green only in the old world</li>
+  </ul>
+</header>
+
+<aside class="notice" aria-label="How this one works">
+  <p class="eyebrow">How this one works</p>
+  <ul>
+    <li><strong>The subject is the process.</strong> Audit, the choice, a design system, learning the brand, design, code, review, QA, deploy, results. Every frame is a real step in how a site gets built, and every step names the AI that does the heavy lifting.</li>
+    <li><strong>The film is the lens.</strong> The old site is the simulation, rendered in green rain. The brand red is the choice. The blank white room is the canvas. The rain reversed is the code being written. Bullet time is the design review. The agents are the bugs. And the One is your 1.</li>
+    <li><strong>Color tells the story.</strong> Green exists only in the old world and on the bugs. The moment the client chooses, the piece is black, bone and red for good. A version with no green at all is possible; the green is the recognizable signal.</li>
+    <li><strong>Still open:</strong> the client to feature (the Forge &amp; Frame demo site in this repo is a ready candidate, with its photos), the real results numbers, the fonts, and the voice. Everything shown in the real-world frame is a placeholder until then.</li>
+  </ul>
+</aside>
+
+<section class="player" aria-labelledby="animatic-h">
+  <div class="player-head">
+    <h2 id="animatic-h">Animatic</h2>
+    <div class="toggle" role="group" aria-label="Cut length">
+      <button type="button" id="cut-full" aria-pressed="true">Full 45 s</button>
+      <button type="button" id="cut-short" aria-pressed="false">Cutdown 10 s</button>
+    </div>
+  </div>
+  <div class="screen"><canvas id="animatic" aria-label="Animatic preview of The One"></canvas></div>
+  <div class="controls">
+    <button type="button" id="play" aria-pressed="false">Play</button>
+    <input id="scrub" type="range" min="0" max="45" step="0.05" value="0" aria-label="Scrub the timeline">
+    <span id="readout" class="mono">0:00.0 / 0:45.0</span>
+  </div>
+  <p id="frame-label" class="mono">Poster · frame 8, bullet time. Play runs the cut from 0:00.</p>
+  <div class="chips" id="chips"></div>
+  <p class="hint">Space plays and pauses. Left and right step half a second; up and down jump a frame. The canvas is a previz drawn live in the browser; it stands in for the generated shots described below.</p>
+</section>
+
+<section aria-labelledby="structure-h">
+  <header><h2 id="structure-h">Structure</h2><p>Four acts that follow the real order of a build. The green dies at nine seconds and never comes back except on the bugs.</p></header>
+  <svg class="timeline" id="timeline" viewBox="0 0 1000 118" role="img" aria-label="Timeline of the twelve frames across forty-five seconds"></svg>
+  <div class="acts">
+    <div><p class="eyebrow">I · 0:00–0:09</p><h3>The old world</h3><p>A terminal wakes the client up, the template site dissolves into rain, and two buttons appear. One is red.</p></div>
+    <div><p class="eyebrow">II · 0:09–0:21</p><h3>The construct</h3><p>A white room, racks of components, the brand loaded in seconds, and a sparring session that tightens the design.</p></div>
+    <div><p class="eyebrow">III · 0:21–0:33</p><h3>The build</h3><p>The rain reversed: code rising into a page. A frozen review in bullet time. Four agents, four strikes.</p></div>
+    <div><p class="eyebrow">IV · 0:33–0:45</p><h3>Launch</h3><p>One command, live on every device, the real world in daylight, and the One.</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="board-h">
+  <header><h2 id="board-h">The board</h2><p>Twelve frames. Each names the step in the build, the AI capability it proves, and how the shot would be produced. Timings sum to forty-five seconds exactly.</p></header>
+  <div class="board-grid">
+
+    <article class="frame">
+      <canvas data-thumb="1" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">01</span><span class="tc">0:00 – 0:03 · 3 s</span><h3>Wake up</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>A black terminal. A green cursor blinks. Text types itself, one character at a time: <span class="q">Wake up.</span> A beat. <span class="q">Your website is from 2016.</span> Scanlines, a soft green bloom, the faint curve of an old monitor.</dd>
+        <dt>Motion</dt><dd>Locked off. Typing at 18 characters a second with human-looking jitter. The cursor blinks at 1 Hz.</dd>
+        <dt>Step</dt><dd>The audit. The first line is the diagnosis.</dd>
+        <dt>Audio</dt><dd>A key click per character. Room hum. A low drone starts under the second line.</dd>
+        <dt>AI</dt><dd class="ai">An audit agent crawls the client's existing site, scores it (performance, accessibility, copy, structure) and writes the one-line diagnosis. The typing is that agent's real output, not a script.</dd>
+        <dt>Reference</dt><dd class="ref">The terminal wake-up, by form. Two words that any screen could say; the second line is ours.</dd>
+        <dt>Out</dt><dd>The text falls apart into glyphs and starts to rain.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="2" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">02</span><span class="tc">0:03 – 0:06 · 3 s</span><h3>The old site</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Green rain. Behind it, the template: a generic hero with a stock-photo placeholder, three identical columns, a footer nobody reads, all drawn as a green wireframe. The rain falls through it and the wireframe dissolves line by line. The glyphs are not the film's: they are HTML tags, CSS tokens and the numeral 1.</dd>
+        <dt>Motion</dt><dd>Slow push-in, 1.0× to 1.15×. The rain runs at three speeds in three depths.</dd>
+        <dt>Step</dt><dd>Mapping what exists.</dd>
+        <dt>Audio</dt><dd>The rain as a soft hiss of clicks. The drone holds.</dd>
+        <dt>AI</dt><dd class="ai">Site ingestion: an agent reads every page, every image and every line of copy into a structured brief in seconds. The rain is that read, visualized: the old site becoming data.</dd>
+        <dt>Reference</dt><dd class="ref">The digital rain, by image. Our own glyph set, no katakana.</dd>
+        <dt>Out</dt><dd>The last of the wireframe goes. Two buttons fade up.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="3" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">03</span><span class="tc">0:06 – 0:09 · 3 s</span><h3>The choice</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Two buttons on black. Left, a green outline: <span class="q">KEEP THE TEMPLATE</span>. Right, a solid red block, the brand's first appearance: <span class="q">BUILD IT RIGHT</span>. Under the red one, small: <span class="q">6 pages · 10 days · one team</span>. A cursor drifts, hovers, clicks red. The green button and the last rain die to black. The red holds.</dd>
+        <dt>Motion</dt><dd>The red button pops in with overshoot. The cursor takes a full second to decide. The click is a one-frame flash to bone.</dd>
+        <dt>Step</dt><dd>The scope and the decision.</dd>
+        <dt>Audio</dt><dd>The drone thins. One click. Silence as the green goes.</dd>
+        <dt>AI</dt><dd class="ai">Scoping: from the brief, an agent proposes the page list, the timeline and the estimate shown under the red button. The decision itself stays human; the piece makes a point of the cursor's pause.</dd>
+        <dt>Reference</dt><dd class="ref">The choice, by color only. No pills, no hands. Two buttons on a screen.</dd>
+        <dt>Out</dt><dd>Cut to white.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="4" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">04</span><span class="tc">0:09 – 0:13 · 4 s</span><h3>The construct</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>An infinite white room. The 1 stands alone, small, black. Then racks slide in from the horizon on both sides, faster and faster: navigation bars, heroes, cards, forms, footers, tables, galleries, every component in black line, labeled. Top of frame: <span class="q">WE NEED COMPONENTS.</span></dd>
+        <dt>Motion</dt><dd>The racks arrive on a curve, slow then fast, each overshooting slightly before it settles. The 1 does not move.</dd>
+        <dt>Step</dt><dd>The design system.</dd>
+        <dt>Audio</dt><dd>Silence, then a rack whoosh per component, a clean synth pulse underneath.</dd>
+        <dt>AI</dt><dd class="ai">Generative design system: from the brief and the brand kit, an agent produces a complete component library in the client's brand in one pass, tokens included. The racks are that library, rendered.</dd>
+        <dt>Reference</dt><dd class="ref">The loading construct, by concept. The line is a paraphrase, not a quotation.</dd>
+        <dt>Out</dt><dd>White snaps to black.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="5" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">05</span><span class="tc">0:13 – 0:17 · 4 s</span><h3>Loaded</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Black. The 1, large, center. The red slash cuts through it and stays: the jack. Lines of mono text stream in from the left and vanish into the numeral: <span class="q">LOADING brand voice</span>, <span class="q">LOADING 212 photos</span>, <span class="q">LOADING type and spacing</span>, <span class="q">LOADING tone</span>. A red bar fills. Then, in the wordmark's spaced caps: <span class="q">I KNOW YOUR BRAND.</span></dd>
+        <dt>Motion</dt><dd>Each line accelerates into the 1 and is gone. The bar fills in two seconds. The last line lands hard.</dd>
+        <dt>Step</dt><dd>Learning the brand.</dd>
+        <dt>Audio</dt><dd>A data-stream texture, rising. A chime on the bar. A dry hit on the line.</dd>
+        <dt>AI</dt><dd class="ai">Brand learning: voice, photography and typographic habits distilled from everything the client has ever published, in seconds, into a style the agents write and design against. The piece says it plainly.</dd>
+        <dt>Reference</dt><dd class="ref">The upload, by idea. The line is a paraphrase and it is your call.</dd>
+        <dt>Out</dt><dd>Hard cut to the dojo.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="6" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">06</span><span class="tc">0:17 – 0:21 · 4 s</span><h3>The sparring program</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>A bare wooden floor, planks converging. The 1 on the left, leaning. On the right, the new site's wireframe stands up like an opponent, slightly loose: boxes a few pixels off, lines not quite level. Three strikes. Each one snaps something tight: the grid, the type scale, the spacing. Red guide lines flash on every hit. Top left: <span class="q">DESIGN · grid 12 · 8 px · scale 1.25</span>.</dd>
+        <dt>Motion</dt><dd>Locked wide. Three strikes on three beats; the wireframe jitter reduces to zero by the third.</dd>
+        <dt>Step</dt><dd>Design, and the designer's corrections.</dd>
+        <dt>Audio</dt><dd>Wood floor. Three strikes, three snaps. The pulse continues.</dd>
+        <dt>AI</dt><dd class="ai">Layout generation with a human in the loop: the agent proposes the page, the designer strikes, the agent re-flows. Three rounds, under a minute. The strikes are the human beat of the piece.</dd>
+        <dt>Reference</dt><dd class="ref">The sparring program, and the dojo is the Bruce Lee wink the other two boards carry. A wooden floor, nothing more.</dd>
+        <dt>Out</dt><dd>The wireframe, now tight, falls away into glyphs that start to rise.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="7" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">07</span><span class="tc">0:21 – 0:25 · 4 s</span><h3>The rain, reversed</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>The rain again, but rising, in bone with red heads. This is code being written, not read. As the glyphs climb they assemble a page from the bottom up: footer, sections, hero, navigation, each locking in as the rain passes it. The camera tilts up with the build.</dd>
+        <dt>Motion</dt><dd>Continuous tilt-up over four seconds. Sections lock on beat subdivisions.</dd>
+        <dt>Step</dt><dd>The build.</dd>
+        <dt>Audio</dt><dd>The rain reversed as a rising arpeggio. A lock click per section.</dd>
+        <dt>AI</dt><dd class="ai">Code generation: components to production code, typed, tested and committed by an agent. The rain is the literal diff from the client's build streaming past, so the effect is real data.</dd>
+        <dt>Reference</dt><dd class="ref">The rain, inverted. Ours rises.</dd>
+        <dt>Out</dt><dd>Freeze.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="8" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">08</span><span class="tc">0:25 – 0:29 · 4 s</span><h3>Bullet time</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>The page freezes mid-build and the camera orbits it. Its layers separate in depth: background, hero image, headline, button, navigation, each a plane hanging in black. Red annotations appear in the frozen space with leader lines: <span class="q">CONTRAST 4.6:1</span>, <span class="q">LCP 1.2 S</span>, <span class="q">COPY: SHORTER</span>. Time resumes, the planes snap flat, the notes become checks.</dd>
+        <dt>Motion</dt><dd>A 120° orbit over three seconds, ease in and out, then a one-frame snap back to flat.</dd>
+        <dt>Step</dt><dd>Review.</dd>
+        <dt>Audio</dt><dd>A time-stretch whoosh into near silence. Pen scratches for the notes. A snap.</dd>
+        <dt>AI</dt><dd class="ai">Automated review: accessibility, performance and copy checks run on the real page and annotated in 3D, then fixed by the agent. The layers are the actual DOM, captured as depth, so the orbit is a real camera move through a real page.</dd>
+        <dt>Reference</dt><dd class="ref">Bullet time, by technique. No bodies, no bullets.</dd>
+        <dt>Out</dt><dd>Snap to the corridor.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="9" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">09</span><span class="tc">0:29 – 0:33 · 4 s</span><h3>Agents</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>A corridor. The old world fights back: four black blocks advance, labeled in green: <span class="q">SAFARI 15</span>, <span class="q">3.8 S LOAD</span>, <span class="q">BROKEN FORM</span>, <span class="q">404 × 12</span>. The 1 takes them one at a time, a strike each, and every block becomes a bone check that recedes. Top left: <span class="q">QA · AGENTS 4/4</span>.</dd>
+        <dt>Motion</dt><dd>The blocks scale up from the vanishing point; each strike is a slash flash and a one-frame shake. Four beats.</dd>
+        <dt>Step</dt><dd>QA.</dd>
+        <dt>Audio</dt><dd>Footsteps. Four strikes, four dings.</dd>
+        <dt>AI</dt><dd class="ai">QA agents: cross-browser runs, performance budgets, form tests and link checks, each finding its own bug and fixing it. The word agents means both things at once, and the piece enjoys that.</dd>
+        <dt>Reference</dt><dd class="ref">The agents, by name only. Blocks with labels, no suits, no faces.</dd>
+        <dt>Out</dt><dd>The last check recedes. Cut to the terminal.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="10" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">10</span><span class="tc">0:33 – 0:37 · 4 s</span><h3>Deploy</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>The terminal from frame 01, but in bone now, the prompt in red. <span class="q">$ deploy</span>. <span class="q">building · 212 files</span>. A red bar. <span class="q">DEPLOY? [y/N] y</span>. Then, large, in spaced caps: <span class="q">LIVE.</span> Devices pop in on the right, a phone, a laptop, a billboard, each with the new site inside.</dd>
+        <dt>Motion</dt><dd>Typing, a two-second bar, a hard landing on LIVE. The devices pop with overshoot on three beats.</dd>
+        <dt>Step</dt><dd>Launch.</dd>
+        <dt>Audio</dt><dd>Keys. A build whoosh. One hit on LIVE. Three pops.</dd>
+        <dt>AI</dt><dd class="ai">One-command deployment: build, DNS, certificates, CDN and device previews, all automated. The y is the last thing a human types.</dd>
+        <dt>Reference</dt><dd class="ref">The exit, by idea. A prompt, not a phone.</dd>
+        <dt>Out</dt><dd>Cut to daylight.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="11" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">11</span><span class="tc">0:37 – 0:41 · 4 s</span><h3>The real world</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Daylight. Bone background. The finished site fills the frame: a real photograph in the hero, a real headline, a red button, clean navigation. No green anywhere. Along the bottom in mono: <span class="q">LIGHTHOUSE 100 · 0.9 S · +38% LEADS</span>. Across the top, in spaced caps: <span class="q">THERE IS NO TEMPLATE.</span></dd>
+        <dt>Motion</dt><dd>A slow drift across the hero, 2% over four seconds. The ticker counts up to its numbers.</dd>
+        <dt>Step</dt><dd>Results.</dd>
+        <dt>Audio</dt><dd>Air. A voice reads the line.</dd>
+        <dt>AI</dt><dd class="ai">An analytics agent reports the numbers and keeps optimizing after launch. The numbers shown are placeholders; the film only ships with real ones.</dd>
+        <dt>Reference</dt><dd class="ref">The spoon line, paraphrased into the thesis of the piece. Your call to keep it.</dd>
+        <dt>Out</dt><dd>Cut to white.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="12" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">12</span><span class="tc">0:41 – 0:45 · 4 s</span><h3>The One</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>White to black. The six blades of the mark rotate in and lock around the 1. The slash cuts through. ONE INCH and MEDIA resolve, then <span class="q">SMALL DETAILS. BIG IMPACT.</span> wipes in beneath. The last frame is the complete primary lockup.</dd>
+        <dt>Motion</dt><dd>Blades with overshoot, a one-frame slash, type tracking out, a twelve-frame wipe, hold.</dd>
+        <dt>Step</dt><dd>The signature.</dd>
+        <dt>Audio</dt><dd>The hit. The ring. Silence.</dd>
+        <dt>AI</dt><dd class="ai">Procedural animation from the logo vectors, as in the other two boards, so all three films sign off identically.</dd>
+        <dt>Reference</dt><dd class="ref">The One. Your numeral has been that all along.</dd>
+        <dt>Out</dt><dd>Black.</dd>
+      </dl>
+    </article>
+
+  </div>
+</section>
+
+<section aria-labelledby="caps-h">
+  <header><h2 id="caps-h">What the piece proves about AI</h2><p>One capability per step of a real build, in the order a client would meet them. The film doubles as the service explained.</p></header>
+  <div class="cols">
+    <ul class="caps">
+      <li><span class="f">F01</span><span><strong>Audit agent</strong>: crawl, score and diagnose an existing site in one line.</span></li>
+      <li><span class="f">F02</span><span><strong>Site ingestion</strong>: every page, image and sentence into a structured brief.</span></li>
+      <li><span class="f">F03</span><span><strong>Scoping</strong>: page list, timeline and estimate proposed; the decision stays human.</span></li>
+      <li><span class="f">F04</span><span><strong>Generative design system</strong>: a full component library in the brand, tokens included.</span></li>
+      <li><span class="f">F05</span><span><strong>Brand learning</strong>: voice, photography and type habits distilled in seconds.</span></li>
+      <li><span class="f">F06</span><span><strong>Layout generation with a human in the loop</strong>: propose, strike, re-flow.</span></li>
+    </ul>
+    <ul class="caps">
+      <li><span class="f">F07</span><span><strong>Code generation</strong>: components to production code, typed, tested, committed.</span></li>
+      <li><span class="f">F08</span><span><strong>Automated review</strong>: accessibility, performance and copy checks, annotated and fixed.</span></li>
+      <li><span class="f">F09</span><span><strong>QA agents</strong>: browsers, budgets, forms and links, each bug found and fixed.</span></li>
+      <li><span class="f">F10</span><span><strong>One-command deployment</strong> with device previews.</span></li>
+      <li><span class="f">F11</span><span><strong>Analytics agent</strong>: results reported, optimization continued.</span></li>
+      <li><span class="f">F12</span><span><strong>Procedural logo animation</strong> shared across all three films.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section aria-labelledby="look-h">
+  <header><h2 id="look-h">Look, type and sound</h2><p>The brand palette, plus one borrowed color that is only allowed in the old world.</p></header>
+  <div class="cols">
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Palette · from the kit</p>
+      <div class="swatches">
+        <div class="swatch"><i style="background:#0B0B0B"></i><div><b>BLACK · #0B0B0B</b><span>The terminal, the void, the ground for everything.</span></div></div>
+        <div class="swatch"><i style="background:#E72722"></i><div><b>RED · #E72722</b><span>The choice, the slash, the annotations, the prompt, the button on the finished site.</span></div></div>
+        <div class="swatch"><i style="background:#FFFFFF; border-bottom:1px solid #D9D5CE"></i><div><b>WHITE · #FFFFFF</b><span>The construct. Daylight. The reverse lockup.</span></div></div>
+      </div>
+      <p class="eyebrow" style="margin:18px 0 10px">Borrowed and added · proposal</p>
+      <div class="swatches">
+        <div class="swatch"><i style="background:#33E05C"></i><div><b>OLD WORLD · #33E05C</b><span>The rain, the template, the bugs. Never on the brand, never after the choice.</span></div></div>
+        <div class="swatch"><i style="background:#EFE9DE"></i><div><b>BONE · #EFE9DE</b><span>The rising code, the wireframes, the 1.</span></div></div>
+      </div>
+      <p class="prose" style="margin-top:14px">The rule is simple enough to feel: green is what the client has, red is what they choose, and the rest is what they get.</p>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Type · matched to the lockup</p>
+      <div class="specimen">
+        <small>Mono · the terminal, the rain, the readouts</small>
+        <p class="m">Wake up. &nbsp;·&nbsp; DEPLOY? [y/N] y &nbsp;·&nbsp; LIGHTHOUSE 100</p>
+        <small>Wordmark face · spaced caps · stand-in: Montserrat</small>
+        <p class="d">There is no template.</p>
+        <small>The numeral · the One · stand-in: Bodoni Moda</small>
+        <p class="one">1</p>
+        <p class="b">The terminal carries most of the words, so the mono face does more work here than in the other two boards. The three big lines are set like the wordmark. The lockup itself is the artwork, never re-set.</p>
+      </div>
+      <p class="eyebrow" style="margin:22px 0 8px">Sound</p>
+      <p class="prose">Key clicks and a hum, a drone that dies with the green. A clean synth pulse from the construct onward. The rain as a rising arpeggio, bullet time as a stretch into silence, four strikes and four dings for the agents, one hit on LIVE, air and a voice in daylight, the hit and the ring at the end. No film score, no film effects, nothing sampled.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="slots-h">
+  <header><h2 id="slots-h">Brand slots</h2><p>What the lockups filled, and what this board needs that the others did not.</p></header>
+  <div class="cols">
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Filled</p>
+      <ol class="list">
+        <li><strong>Lockup</strong> · frame 12 uses the primary stacked mark, reversed for black, built the same way as the other two films.</li>
+        <li><strong>Accent</strong> · the red from the kit is the choice and every action after it.</li>
+        <li><strong>The line</strong> · "Small details. Big impact." closes the piece.</li>
+      </ol>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Open</p>
+      <ol class="list" start="4">
+        <li><strong>The client</strong> · frames 02, 07, 08, 10 and 11 want a real before and after. The Forge &amp; Frame demo in this repo has the photos and the finished site ready to use.</li>
+        <li><strong>The numbers</strong> · frame 11 ships only with real results.</li>
+        <li><strong>Fonts and voice</strong> · as on the other boards.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="cut-h">
+  <header><h2 id="cut-h">The 10-second cutdown</h2><p>Same frames, re-timed. It plays in the animatic under the Cutdown toggle. Wake up, choose, build, review, live, the One.</p></header>
+  <div class="cut">
+    <div class="cut-strip" aria-label="Cutdown timeline">
+      <div><b>01</b><span>0:00–0:01 · wake up</span></div>
+      <div><b>03</b><span>0:01–0:02.5 · choice</span></div>
+      <div><b>07–08</b><span>0:02.5–0:06 · rain, bullet time</span></div>
+      <div><b>10</b><span>0:06–0:07.5 · live</span></div>
+      <div><b>12</b><span>0:07.5–0:10 · the One</span></div>
+    </div>
+    <p class="prose">Ten seconds is enough for the whole arc because the color does the storytelling: green, red, black, daylight, lockup.</p>
+  </div>
+</section>
+
+<section aria-labelledby="stack-h">
+  <header><h2 id="stack-h">Production stack</h2><p>How each stage gets made. Where a frame shows an AI step, the shot is produced by running that step for real and recording it.</p></header>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Stage</th><th>Tooling</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Previz</td><td>This animatic, then a blocked previz in a game engine for frames 04, 06, 08 and 09</td><td>The rain and the terminal are rendered from real data, so they skip previz entirely.</td></tr>
+        <tr><td>Frames 01–03</td><td>Real terminal typography; a particle rain driven by the client's actual HTML and CSS tokens; audit and scoping agents run live</td><td>Record the agents' real output. The diagnosis line and the estimate are not written by a copywriter.</td></tr>
+        <tr><td>Frames 04–05</td><td>Generative design system from the brief; brand-learning pass on the client's published material; engine render of the white room</td><td>The racks are the real component library, exported as line art.</td></tr>
+        <tr><td>Frame 06</td><td>Layout generation with a designer in the loop, screen-captured; the dojo rendered in the engine</td><td>Three real correction rounds become the three strikes.</td></tr>
+        <tr><td>Frames 07–08</td><td>Code-generation agent with its diff streamed to the rain; DOM-to-depth capture for the layered page; automated review (axe, Lighthouse class) annotated in 3D</td><td>The orbit is a camera move through the real page's layers.</td></tr>
+        <tr><td>Frame 09</td><td>QA agents (Playwright class) on real browsers and budgets; engine corridor</td><td>Each agent's actual finding becomes its label.</td></tr>
+        <tr><td>Frames 10–11</td><td>One-command deploy on CI; device previews; analytics agent; daylight render or a real capture of the live site</td><td>LIVE is the real deploy log. The results wait for real numbers.</td></tr>
+        <tr><td>Frame 12</td><td>Procedural animation from the logo vectors; PBR</td><td>Shared with ONE INCH and ONE UP.</td></tr>
+        <tr><td>Sound</td><td>Generative score from a tempo map; recorded keys, floor and strikes; voice synthesis</td><td>No film audio of any kind.</td></tr>
+        <tr><td>Finish</td><td>Conform and grade in Resolve; master 4K 16:9, plus 9:16 and 1:1</td><td>The terminal frames reflow to vertical cleanly; the bullet-time orbit is re-staged for 9:16.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="guard-h">
+  <header><h2 id="guard-h">Guardrails and your calls</h2><p>What the piece deliberately avoids so the homage is safe to run commercially, and the decisions only you can make.</p></header>
+  <div class="cols">
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">What we do not do</p>
+      <ul class="list">
+        <li><strong>No characters.</strong> No faces, no sunglasses, no coats, no bodies in black. The only figure is your numeral.</li>
+        <li><strong>No dialogue.</strong> Nothing on screen is a quotation. "Wake up" is two generic words; the construct line, the upload line and the spoon line are paraphrases in the studio's own words.</li>
+        <li><strong>No katakana.</strong> The rain's glyphs are HTML tags, CSS tokens and the 1.</li>
+        <li><strong>No pills, no phone, no title.</strong> The choice is two buttons, the exit is a prompt, and the film's name appears nowhere.</li>
+        <li><strong>No film audio.</strong> No score, no effects, nothing sampled.</li>
+        <li><strong>Green is quarantined.</strong> The old world and the bugs only. Never on the lockup, never after the choice.</li>
+        <li><strong>Bruce Lee stays a wink.</strong> The dojo is a wooden floor and three strikes; no likeness, no costume, no line.</li>
+      </ul>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Decisions for you</p>
+      <ol class="list">
+        <li><strong>The three paraphrases.</strong> "We need components.", "I know your brand." and "There is no template." are the lines closest to the film's. Keep all, some, or none.</li>
+        <li><strong>Green or no green.</strong> The green is the recognizable signal. A version in brand colors only still works; the rain would be steel.</li>
+        <li><strong>The client.</strong> Feature the Forge &amp; Frame demo, a real client, or a fictional one.</li>
+        <li><strong>Length.</strong> Forty-five seconds for the site and pitches; the ten-second cut for social. A thirty-second middle cut is possible by dropping frames 02, 06 and 09.</li>
+        <li><strong>The voice.</strong> Your own voice cloned (consent and a short recording), a cast synthetic voice, or none.</li>
+        <li><strong>The numbers.</strong> The results in frame 11 must be real before the film ships, or the ticker is cut.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="alts-h">
+  <header><h2 id="alts-h">Other directions considered</h2><p>Three ways to tell the same process that lost to the rain, and what each one still lends.</p></header>
+  <div class="alts">
+    <div><h3>The glitch</h3><p>The whole film as a déjà vu loop: the old site keeps repeating until the 1 breaks the loop. Clever, but it spends twenty seconds on the problem. It survives as the four agents in frame 09.</p></div>
+    <div><h3>Operator</h3><p>Told entirely from the operator's screen: a wall of terminals watching the build happen. Very on-brand for a studio, but it keeps the viewer outside the work. It survives as the terminal bookends in frames 01 and 10.</p></div>
+    <div><h3>Red pill, literally</h3><p>The client swallows the red and wakes up inside the finished site. The most quotable, and the one most likely to read as a copy of the scene rather than a nod. Set aside; the two buttons carry the idea.</p></div>
+  </div>
+</section>
+
+<footer>
+  <p>THE ONE · storyboard v1 · third of three · prepared for One Inch Media · 2026-10-07</p>
+  <p>Previz drawn live in canvas. The frames describe shots that do not exist yet.</p>
+</footer>
+</div>
+
+<script>
+// ---------- drawing primitives ----------
+const PR = (function () {
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const ease = {
+    out: t => 1 - Math.pow(1 - t, 3),
+    in: t => t * t * t,
+    inOut: t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+    outExpo: t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t),
+    outBack: t => { const c = 1.70158, d = c + 1; return 1 + d * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); },
+  };
+  function rng(seed) { let s = (seed >>> 0) || 1; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  const win = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
+  const SANS = 'Montserrat, "Helvetica Neue", Arial, sans-serif';
+  const DIDONE = '"Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif';
+  const MONO = '"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace';
+  function font(ctx, size, weight) { ctx.font = `${weight || 700} ${size}px ${SANS}`; }
+  function numeral(ctx, size, weight) { ctx.font = `${weight || 700} ${size}px ${DIDONE}`; }
+  function mono(ctx, size) { ctx.font = `500 ${size}px ${MONO}`; }
+  function vignette(ctx, W, H, strength) {
+    const g = ctx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.95);
+    g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, `rgba(0,0,0,${strength == null ? 0.6 : strength})`);
+    ctx.save(); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();
+  }
+  function grain(ctx, W, H, amount, seed) {
+    const r = rng(seed || 7); ctx.save(); ctx.globalAlpha = amount || 0.05; ctx.fillStyle = '#fff';
+    const n = Math.floor(W * H / 1100);
+    for (let i = 0; i < n; i++) ctx.fillRect(r() * W, r() * H, 1, 1);
+    ctx.restore();
+  }
+  function ruler(ctx, x0, x1, y, inch, color, alpha, labelStart, below) {
+    ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha; ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke();
+    const sub = inch / 8; let k = 0;
+    for (let x = x0; x <= x1 + 0.5; x += sub, k++) {
+      const h = k % 8 === 0 ? inch * 0.12 : k % 4 === 0 ? inch * 0.075 : k % 2 === 0 ? inch * 0.05 : inch * 0.03;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - h); ctx.stroke();
+      if (labelStart != null && k % 8 === 0) { const v = k / 8 + labelStart; if (v === 0 || v === 1) { numeral(ctx, Math.max(11, inch * 0.085)); ctx.textAlign = 'center'; if (below) { ctx.textBaseline = 'top'; ctx.fillText(String(v), x, y + inch * 0.04); } else { ctx.textBaseline = 'alphabetic'; ctx.fillText(String(v), x, y - inch * 0.16); } } }
+    }
+    ctx.restore();
+  }
+  function shockwave(ctx, cx, cy, p, maxR, color, width, count) {
+    const n = count || 1;
+    for (let i = 0; i < n; i++) {
+      const q = clamp(p - i * 0.12, 0, 1); if (q <= 0) continue;
+      const r = maxR * ease.outExpo(q);
+      ctx.save(); ctx.globalAlpha = (1 - q) * 0.9; ctx.strokeStyle = color; ctx.lineWidth = (width || 6) * (1 - q * 0.8) + 0.5;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+    }
+  }
+  function burst(ctx, cx, cy, p, n, maxR, color, seed, size) {
+    const r = rng(seed || 3); ctx.save(); ctx.fillStyle = color;
+    for (let i = 0; i < n; i++) {
+      const a = r() * Math.PI * 2, sp = 0.4 + r() * 0.6, s = (size || 3) * (0.5 + r());
+      const d = maxR * sp * ease.outExpo(p), x = cx + Math.cos(a) * d, y = cy + Math.sin(a) * d + p * p * 60 * r();
+      ctx.globalAlpha = (1 - p) * 0.9; ctx.fillRect(x, y, s, s);
+    }
+    ctx.restore();
+  }
+  // wide-tracked caps in the wordmark's manner; reveal clips left to right
+  function title(ctx, text, x, y, size, color, opts) {
+    const o = opts || {}; ctx.save(); font(ctx, size, o.weight || 600); ctx.fillStyle = color; ctx.textBaseline = 'middle';
+    const chars = Array.from(text); const tr = o.tracking == null ? size * 0.28 : o.tracking;
+    const w = chars.reduce((a, ch) => a + ctx.measureText(ch).width + tr, -tr);
+    const left = o.align === 'left' ? x : o.align === 'right' ? x - w : x - w / 2;
+    if (o.alpha != null) ctx.globalAlpha = o.alpha;
+    if (o.reveal != null && o.reveal < 1) { ctx.beginPath(); ctx.rect(left - 4, y - size, (w + 8) * o.reveal, size * 2); ctx.clip(); }
+    ctx.textAlign = 'left'; let cx = left; for (const ch of chars) { ctx.fillText(ch, cx, y); cx += ctx.measureText(ch).width + tr; }
+    ctx.restore();
+  }
+  function bigNumber(ctx, text, x, y, size, color, opts) {
+    const o = opts || {}; ctx.save(); numeral(ctx, size, 700); ctx.fillStyle = color; ctx.textBaseline = 'middle'; ctx.textAlign = o.align || 'center'; if (o.alpha != null) ctx.globalAlpha = o.alpha; ctx.fillText(text, x, y); ctx.restore();
+  }
+  function label(ctx, text, x, y, color, size, align, alpha) {
+    ctx.save(); mono(ctx, size || 11); ctx.fillStyle = color; ctx.textAlign = align || 'left'; ctx.textBaseline = 'middle'; if (alpha != null) ctx.globalAlpha = alpha; ctx.fillText(text, x, y); ctx.restore();
+  }
+  function glow(ctx, cx, cy, r, color, alpha) {
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r); g.addColorStop(0, color); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.save(); ctx.globalAlpha = alpha == null ? 0.5 : alpha; ctx.fillStyle = g; ctx.fillRect(cx - r, cy - r, r * 2, r * 2); ctx.restore();
+  }
+  function speedlines(ctx, cx, cy, p, n, color, seed, W, H) {
+    const r = rng(seed || 9); ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 1.2;
+    for (let i = 0; i < n; i++) { const a = r() * Math.PI * 2, r0 = H * 0.12 + r() * H * 0.2, len = H * 0.1 + r() * Math.max(W, H) * p; ctx.globalAlpha = (0.1 + r() * 0.4) * (1 - p); ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0); ctx.lineTo(cx + Math.cos(a) * (r0 + len), cy + Math.sin(a) * (r0 + len)); ctx.stroke(); }
+    ctx.restore();
+  }
+  // the brand's slash: a translucent band plus a crisp line, rotated to the mark's angle, centered on (cx, cy)
+  function slash(ctx, cx, cy, ang, bandW, len, color, bandAlpha, lineAlpha, lineW) {
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(ang);
+    if (bandAlpha > 0) { const g = ctx.createLinearGradient(0, -bandW, 0, bandW); g.addColorStop(0, 'rgba(231,39,34,0)'); g.addColorStop(0.5, `rgba(231,39,34,${bandAlpha})`); g.addColorStop(1, 'rgba(231,39,34,0)'); ctx.fillStyle = g; ctx.fillRect(-len, -bandW, len * 2, bandW * 2); }
+    if (lineAlpha > 0) { ctx.globalAlpha = lineAlpha; ctx.fillStyle = color; ctx.fillRect(-len, -(lineW || 1.5) / 2, len * 2, lineW || 1.5); }
+    ctx.restore();
+  }
+  return { clamp, lerp, ease, rng, win, font, numeral, mono, vignette, grain, ruler, shockwave, burst, title, bigNumber, label, glow, speedlines, slash };
+})();
+
+// ---------- the film's palette (fixed; the page theme does not change the screen) ----------
+const C = { screen: '#0B0B0B', bone: '#EFE9DE', red: '#E72722', steel: '#8C939B', steelDark: '#2B2E32', steelMid: '#4A4F55', wood: '#C9A26B' };
+const GEO = { hw: 0.82958, markCy: 0.26295, tagLeft: 0.047845, tagW: 0.90431, tagTop: 0.89838, tagH: 0.035192, ang: -42 * Math.PI / 180 };
+const { ease, win, clamp, lerp } = PR;
+const LOGO = new Image(), TAG = new Image();
+const ready = img => img.complete && img.naturalWidth > 0;
+
+function room(ctx, W, H, hy) {
+  const wall = ctx.createLinearGradient(0, 0, 0, hy); wall.addColorStop(0, '#121314'); wall.addColorStop(1, '#232527'); ctx.fillStyle = wall; ctx.fillRect(0, 0, W, hy);
+  const floor = ctx.createLinearGradient(0, hy, 0, H); floor.addColorStop(0, '#2E3134'); floor.addColorStop(1, '#141619'); ctx.fillStyle = floor; ctx.fillRect(0, hy, W, H - hy);
+  ctx.save(); ctx.fillStyle = C.bone; ctx.globalAlpha = 0.15; ctx.fillRect(0, hy, W, 1); ctx.restore();
+}
+function drawLockup(ctx, g, alpha) {
+  ctx.save(); ctx.globalAlpha = alpha;
+  if (ready(LOGO)) ctx.drawImage(LOGO, g.imgX, g.imgY, g.imgW, g.imgH);
+  else { PR.title(ctx, 'ONE INCH', g.cx, g.imgY + g.imgW * 0.6, g.imgW * 0.11, C.bone, { weight: 600, tracking: g.imgW * 0.045 }); PR.title(ctx, 'MEDIA', g.cx, g.imgY + g.imgW * 0.75, g.imgW * 0.07, C.red, { weight: 500, tracking: g.imgW * 0.045 }); }
+  ctx.restore();
+}
+function drawTagline(ctx, g, reveal, alpha) {
+  const x = g.imgX + GEO.tagLeft * g.imgW, y = g.imgY + GEO.tagTop * g.imgW, w = GEO.tagW * g.imgW, h = GEO.tagH * g.imgW;
+  ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha; ctx.beginPath(); ctx.rect(x - 2, y - 2, (w + 4) * reveal, h + 4); ctx.clip();
+  if (ready(TAG)) ctx.drawImage(TAG, x, y, w, h);
+  else PR.title(ctx, 'SMALL DETAILS. BIG IMPACT.', g.cx, y + h / 2, h * 0.85, C.bone, { weight: 600 });
+  ctx.restore();
+}
+function lockupGeomB(W, H) {
+  const inch = W * 0.4, x0 = W / 2 - inch / 2; const imgW = inch, imgH = imgW * GEO.hw, imgX = x0, imgY = H * 0.15;
+  return { inch, x0, x1: x0 + inch, imgW, imgH, imgX, imgY, markCy: imgY + GEO.markCy * imgW, cx: W / 2, cy: imgY + imgH / 2 };
+}
+function fLockupB(ctx, p, W, H) {
+  const g = lockupGeomB(W, H); const r = 0.272 * g.imgW, cx = g.cx, cy = g.markCy;
+  const conv = ease.outBack(win(p, 0.04, 0.4)), xf = win(p, 0.42, 0.6);
+  if (p > 0.3) PR.shockwave(ctx, cx, cy, win(p, 0.3, 0.9), W * 0.45, C.red, 6, 2);
+  if (xf < 1) {
+    ctx.save(); ctx.globalAlpha = 1 - xf; ctx.translate(cx, cy);
+    for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3 + (1 - conv) * Math.PI * (i % 2 ? 1 : -1) * 0.8, d = (1 - conv) * r * 2.2; ctx.save(); ctx.rotate(a); ctx.translate(0, -d); ctx.strokeStyle = C.bone; ctx.lineWidth = r * 0.3; ctx.beginPath(); ctx.arc(0, 0, r * 0.85, -Math.PI / 2 - 0.42, -Math.PI / 2 + 0.42); ctx.stroke(); ctx.restore(); }
+    drawOne(ctx, 0, r * 0.55, r * 1.15, 0, C.bone, ease.out(win(p, 0.1, 0.3)));
+    ctx.restore();
+  }
+  if (xf > 0) drawLockup(ctx, g, ease.out(xf));
+  const sl = win(p, 0.4, 0.62); if (sl > 0 && sl < 1) PR.slash(ctx, cx, cy, GEO.ang, H * 0.05, ease.out(sl) * g.imgW * 0.7, C.red, 0.25 * (1 - sl), 0.95 * (1 - sl), 2);
+  if (p < 0.06) { ctx.save(); ctx.fillStyle = C.bone; ctx.globalAlpha = 1 - p / 0.06; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 18);
+}
+
+// ---------- THE ONE frames ----------
+C.ink = '#0B0B0B';
+const G = { green: '#33E05C', greenDim: '#1E8F3A', ink: '#0B0B0B' };
+const GLYPHS = ['<', '>', '/', '1', '{', '}', '=', '"', '#', ';', '(', ')', '0', '1', '1', '*', '+', '.', ':', '[', ']'];
+function rain(ctx, W, H, p, speed, color, head, seed, trail, up) {
+  const cw = Math.max(10, W * 0.014), cols = Math.ceil(W / cw), r = PR.rng(seed || 3);
+  ctx.save(); PR.mono(ctx, cw * 0.9); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (let c = 0; c < cols; c++) {
+    const off = r() * H * 2, sp = (0.5 + r()) * speed, gseed = Math.floor(r() * 1000), span = H + trail * cw;
+    let y = (off + p * H * sp) % span - trail * cw * 0.5; if (up) y = H - y;
+    for (let k = 0; k < trail; k++) {
+      const gy = up ? y + k * cw : y - k * cw; if (gy < -cw || gy > H + cw) continue;
+      ctx.globalAlpha = k === 0 ? 1 : (1 - k / trail) * 0.75; ctx.fillStyle = k === 0 ? head : color;
+      ctx.fillText(GLYPHS[(gseed + k + Math.floor(p * 20)) % GLYPHS.length], c * cw + cw / 2, gy);
+    }
+  }
+  ctx.restore();
+}
+function crt(ctx, W, H, tint) {
+  ctx.save(); ctx.globalAlpha = 0.14; ctx.fillStyle = '#000'; for (let y = 0; y < H; y += 3) ctx.fillRect(0, y, W, 1); ctx.restore();
+  if (tint) PR.glow(ctx, W / 2, H / 2, H * 0.9, tint, 0.3);
+  PR.vignette(ctx, W, H, 0.65);
+}
+function typed(ctx, lines, x, y, size, color, progress, lineH, blink, prompt) {
+  const total = lines.reduce((a, l) => a + l.length, 0); let budget = Math.floor(progress * total);
+  ctx.save(); PR.mono(ctx, size); ctx.textAlign = 'left'; ctx.textBaseline = 'middle'; let cur = null;
+  lines.forEach((l, i) => {
+    const n = Math.max(0, Math.min(l.length, budget)); budget -= n; const s = l.slice(0, n);
+    ctx.fillStyle = prompt && l.startsWith('$') ? C.red : color; ctx.fillText(s, x, y + i * lineH);
+    if (cur == null && n < l.length) cur = [x + ctx.measureText(s).width + size * 0.2, y + i * lineH];
+  });
+  if (cur == null) cur = [x + ctx.measureText(lines[lines.length - 1]).width + size * 0.2, y + (lines.length - 1) * lineH];
+  if (blink) { ctx.fillStyle = color; ctx.fillRect(cur[0], cur[1] - size * 0.55, size * 0.55, size * 1.1); }
+  ctx.restore();
+}
+function drawOne(ctx, x, y, size, lean, color, alpha) {
+  ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha; ctx.translate(x, y); ctx.transform(1, 0, -(lean || 0), 1, 0, 0);
+  PR.numeral(ctx, size, 700); ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillText('1', 0, 0); ctx.restore();
+}
+function hudText(ctx, text, W, H, color) { PR.label(ctx, text, H * 0.05, H * 0.08, color || C.red, Math.max(9, W * 0.012), 'left', 0.95); }
+function siteWire(ctx, x, y, w, h, color, alpha, jitter, seed) {
+  const r = PR.rng(seed || 9); const j = () => (r() - 0.5) * jitter;
+  ctx.save(); ctx.globalAlpha = alpha; ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 1;
+  ctx.strokeRect(x + j(), y + j(), w, h);
+  ctx.strokeRect(x + w * 0.04 + j(), y + h * 0.03 + j(), w * 0.92, h * 0.07);
+  for (let k = 0; k < 4; k++) ctx.fillRect(x + w * (0.55 + k * 0.1) + j(), y + h * 0.055, w * 0.06, 2);
+  ctx.strokeRect(x + w * 0.04 + j(), y + h * 0.13 + j(), w * 0.92, h * 0.34);
+  ctx.beginPath(); ctx.moveTo(x + w * 0.52, y + h * 0.16); ctx.lineTo(x + w * 0.94, y + h * 0.44); ctx.moveTo(x + w * 0.94, y + h * 0.16); ctx.lineTo(x + w * 0.52, y + h * 0.44); ctx.stroke();
+  ctx.fillRect(x + w * 0.08 + j(), y + h * 0.2, w * 0.36, h * 0.04); ctx.fillRect(x + w * 0.08 + j(), y + h * 0.27, w * 0.28, h * 0.03); ctx.strokeRect(x + w * 0.08 + j(), y + h * 0.35, w * 0.14, h * 0.06);
+  for (let k = 0; k < 3; k++) { const cx = x + w * (0.04 + k * 0.31) + j(); ctx.strokeRect(cx, y + h * 0.52 + j(), w * 0.28, h * 0.3); ctx.fillRect(cx + w * 0.03, y + h * 0.58, w * 0.2, h * 0.025); ctx.fillRect(cx + w * 0.03, y + h * 0.64, w * 0.16, h * 0.02); }
+  ctx.strokeRect(x + w * 0.04 + j(), y + h * 0.87 + j(), w * 0.92, h * 0.09);
+  ctx.restore();
+}
+
+function fWake(ctx, p, W, H) {
+  typed(ctx, ['Wake up.', 'Your website is from 2016.'], W * 0.08, H * 0.42, Math.max(12, W * 0.028), G.green, win(p, 0.05, 0.85), W * 0.055, Math.floor(p * 6) % 2 === 0);
+  crt(ctx, W, H, 'rgba(51,224,92,0.22)'); PR.grain(ctx, W, H, 0.03, 21);
+}
+function fOldSite(ctx, p, W, H) {
+  const z = lerp(1, 1.15, ease.in(p)); ctx.save(); ctx.translate(W / 2, H / 2); ctx.scale(z, z); ctx.translate(-W / 2, -H / 2);
+  siteWire(ctx, W * 0.22, H * 0.08, W * 0.56, H * 0.84, G.green, 0.9 * (1 - ease.in(win(p, 0.25, 1)) * 0.95), 0, 9);
+  ctx.restore();
+  rain(ctx, W, H, p, 1.4, G.greenDim, G.green, 5, 14, false);
+  crt(ctx, W, H, 'rgba(51,224,92,0.18)'); PR.grain(ctx, W, H, 0.03, 22);
+}
+function fChoice(ctx, p, W, H) {
+  const die = ease.in(win(p, 0.7, 0.92));
+  ctx.save(); ctx.globalAlpha = 0.35 * (1 - die); rain(ctx, W, H, p * 0.6 + 0.4, 1, G.greenDim, G.green, 5, 10, false); ctx.restore();
+  const bw = W * 0.3, bh = H * 0.15, y = H * 0.46, lx = W * 0.27, rx = W * 0.73, fs = Math.max(9, W * 0.014);
+  ctx.save(); ctx.globalAlpha = 1 - die; ctx.strokeStyle = G.green; ctx.lineWidth = 1.5; ctx.strokeRect(lx - bw / 2, y - bh / 2, bw, bh); PR.label(ctx, 'KEEP THE TEMPLATE', lx, y, G.green, fs, 'center'); ctx.restore();
+  const pop = ease.outBack(win(p, 0.15, 0.32)); const clicked = p > 0.62 && p < 0.7;
+  ctx.save(); ctx.translate(rx, y); ctx.scale(pop, pop); ctx.fillStyle = clicked ? C.bone : C.red; ctx.fillRect(-bw / 2, -bh / 2, bw, bh); ctx.restore();
+  if (pop > 0) PR.label(ctx, 'BUILD IT RIGHT', rx, y, clicked ? C.red : C.bone, fs, 'center');
+  PR.label(ctx, '6 pages · 10 days · one team', rx, y + bh * 0.85, C.red, Math.max(8, W * 0.011), 'center', ease.out(win(p, 0.66, 0.8)));
+  const m = ease.inOut(win(p, 0.35, 0.6)); const cx = lerp(W / 2, rx + bw * 0.1, m), cy = lerp(H * 0.8, y + bh * 0.15, m);
+  ctx.save(); ctx.fillStyle = C.bone; ctx.strokeStyle = C.ink; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx, cy + H * 0.045); ctx.lineTo(cx + H * 0.012, cy + H * 0.034); ctx.lineTo(cx + H * 0.02, cy + H * 0.05); ctx.lineTo(cx + H * 0.026, cy + H * 0.046); ctx.lineTo(cx + H * 0.018, cy + H * 0.03); ctx.lineTo(cx + H * 0.033, cy + H * 0.03); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.restore();
+  crt(ctx, W, H, die < 1 ? 'rgba(51,224,92,0.12)' : null); PR.grain(ctx, W, H, 0.03, 23);
+}
+function fConstruct(ctx, p, W, H) {
+  ctx.fillStyle = C.bone; ctx.fillRect(0, 0, W, H);
+  const labels = ['NAV', 'HERO', 'CARD', 'FORM', 'FOOTER', 'BUTTON', 'MODAL', 'TABLE', 'QUOTE', 'GALLERY'];
+  ctx.save(); ctx.strokeStyle = C.ink; ctx.lineWidth = 1.2;
+  labels.forEach((l, i) => {
+    const s = ease.outBack(win(p, 0.05 + i * 0.06, 0.05 + i * 0.06 + 0.35)); if (s <= 0) return;
+    const side = i % 2 ? 1 : -1, k = Math.floor(i / 2), sk = 0.55 + k * 0.13;
+    const fx = W / 2 + side * (W * 0.09 + k * W * 0.095), fy = H * 0.47 - k * H * 0.03;
+    const x = lerp(W / 2, fx, s), y = lerp(H * 0.45, fy, s), w = s * sk * W * 0.085, h = s * sk * H * 0.26;
+    ctx.globalAlpha = Math.min(1, s); ctx.strokeRect(x - w / 2, y - h / 2, w, h);
+    ctx.fillStyle = C.ink; ctx.fillRect(x - w / 2 + w * 0.1, y - h / 2 + h * 0.15, w * 0.8, h * 0.08); ctx.fillRect(x - w / 2 + w * 0.1, y - h / 2 + h * 0.32, w * 0.5, h * 0.05); ctx.strokeRect(x - w / 2 + w * 0.1, y - h / 2 + h * 0.45, w * 0.8, h * 0.35);
+    PR.label(ctx, l, x, y + h / 2 + H * 0.025, C.ink, Math.max(8, W * 0.01), 'center', Math.min(1, s));
+  });
+  ctx.restore();
+  ctx.save(); ctx.fillStyle = C.ink; ctx.globalAlpha = 0.15; ctx.fillRect(0, H * 0.84, W, 1); ctx.restore();
+  drawOne(ctx, W / 2, H * 0.84, H * 0.2, 0.02, C.ink, 1);
+  PR.title(ctx, 'WE NEED COMPONENTS.', W / 2, H * 0.12, Math.max(10, W * 0.02), C.ink, { weight: 600, reveal: ease.out(win(p, 0.08, 0.4)) });
+  PR.grain(ctx, W, H, 0.02, 24);
+}
+function fLoaded(ctx, p, W, H) {
+  const lines = ['LOADING  brand voice', 'LOADING  212 photos', 'LOADING  type and spacing', 'LOADING  tone', 'LOADING  every page you ever wrote'];
+  drawOne(ctx, W * 0.62, H * 0.78, H * 0.62, 0, C.bone, 1);
+  PR.slash(ctx, W * 0.62, H * 0.5, GEO.ang, H * 0.03, H * 0.5, C.red, 0.15, 0.95, 2);
+  lines.forEach((l, i) => { const q = win(p, 0.04 + i * 0.13, 0.04 + i * 0.13 + 0.3); if (q <= 0 || q >= 1) return; const x = lerp(W * 0.05, W * 0.5, ease.in(q)); PR.label(ctx, l, x, H * (0.3 + i * 0.09), C.bone, Math.max(9, W * 0.013), 'left', 1 - q * q); });
+  const bar = ease.out(win(p, 0.05, 0.78)); ctx.save(); ctx.fillStyle = '#2A2A2A'; ctx.fillRect(W * 0.05, H * 0.88, W * 0.42, 3); ctx.fillStyle = C.red; ctx.fillRect(W * 0.05, H * 0.88, W * 0.42 * bar, 3); ctx.restore();
+  PR.label(ctx, bar >= 1 ? 'LOADED.' : Math.round(bar * 100) + '%', W * 0.05, H * 0.83, C.red, Math.max(9, W * 0.012), 'left');
+  PR.title(ctx, 'I KNOW YOUR BRAND.', W * 0.05, H * 0.14, Math.max(10, W * 0.022), C.bone, { align: 'left', weight: 600, reveal: ease.out(win(p, 0.8, 0.97)) });
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 25);
+}
+function dojo(ctx, W, H, hy) {
+  ctx.fillStyle = '#121212'; ctx.fillRect(0, 0, W, hy);
+  const g = ctx.createLinearGradient(0, hy, 0, H); g.addColorStop(0, '#5B4630'); g.addColorStop(1, '#2A2016'); ctx.fillStyle = g; ctx.fillRect(0, hy, W, H - hy);
+  ctx.save(); ctx.strokeStyle = 'rgba(239,233,222,0.14)'; ctx.lineWidth = 1; for (let k = -8; k <= 8; k++) { ctx.beginPath(); ctx.moveTo(W / 2 + k * W * 0.06, hy); ctx.lineTo(W / 2 + k * W * 0.22, H); ctx.stroke(); } for (let y = hy + 6; y < H; y += (y - hy) * 0.35 + 6) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); } ctx.restore();
+}
+function fSpar(ctx, p, W, H) {
+  const hy = H * 0.6; dojo(ctx, W, H, hy);
+  const hits = [0.25, 0.5, 0.75]; const done = hits.filter(h => p > h).length; const jitter = (3 - done) * W * 0.012;
+  siteWire(ctx, W * 0.56, H * 0.12, W * 0.34, H * 0.66, C.bone, 0.95, jitter, 9 + done);
+  drawOne(ctx, W * 0.28, hy + H * 0.12, H * 0.42, 0.25, C.bone, 1);
+  let flash = 0; hits.forEach(h => { const d = p - h; if (d > 0 && d < 0.08) flash = Math.max(flash, 1 - d / 0.08); });
+  if (flash > 0) { PR.slash(ctx, W * 0.6, H * 0.45, GEO.ang, H * 0.05, H * 0.5, C.red, 0.3 * flash, 0.95 * flash, 2.5); ctx.save(); ctx.strokeStyle = C.red; ctx.globalAlpha = 0.7 * flash; ctx.lineWidth = 1; for (let k = 0; k <= 12; k++) { const x = W * 0.56 + W * 0.34 * k / 12; ctx.beginPath(); ctx.moveTo(x, H * 0.12); ctx.lineTo(x, H * 0.78); ctx.stroke(); } ctx.restore(); }
+  hudText(ctx, 'DESIGN · grid 12 · 8 px · scale 1.25 · ' + done + '/3', W, H);
+  PR.vignette(ctx, W, H, 0.55); PR.grain(ctx, W, H, 0.03, 26);
+}
+function fRainUp(ctx, p, W, H) {
+  const tilt = ease.inOut(p) * H * 0.18; ctx.save(); ctx.translate(0, tilt);
+  const x = W * 0.25, w = W * 0.5, y = H * 0.02, h = H * 1.1;
+  const secs = [[0.9, 0.1], [0.72, 0.17], [0.54, 0.17], [0.36, 0.17], [0.07, 0.28], [0, 0.065]];
+  ctx.strokeStyle = C.bone; ctx.lineWidth = 1;
+  secs.forEach(([t, hh], i) => { const q = ease.out(win(p, 0.08 + i * 0.14, 0.08 + i * 0.14 + 0.18)); if (q <= 0) return; ctx.save(); ctx.globalAlpha = q; const sy = y + h * t, sh = h * hh; ctx.strokeRect(x + w * 0.03, sy, w * 0.94, sh); ctx.fillStyle = i === 4 ? C.red : C.bone; ctx.fillRect(x + w * 0.08, sy + sh * 0.3, w * (i === 4 ? 0.3 : 0.5), Math.max(2, sh * 0.08)); ctx.fillStyle = C.bone; ctx.fillRect(x + w * 0.08, sy + sh * 0.55, w * 0.35, Math.max(2, sh * 0.05)); ctx.restore(); });
+  ctx.restore();
+  rain(ctx, W, H, p, 1.6, '#6B675F', C.red, 7, 12, true);
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 27);
+}
+function fBullet(ctx, p, W, H) {
+  const a = p > 0.85 ? 0 : lerp(-1.05, 1.05, ease.inOut(win(p, 0.1, 0.8))); const sx = 0.5 + 0.5 * Math.cos(a), sh = Math.sin(a);
+  const layers = [[0, '#1C1C1C', 'bg'], [1, '#2E3A45', 'img'], [2, C.bone, 'text'], [3, C.red, 'btn'], [4, C.bone, 'nav']];
+  const cx = W / 2, cy = H * 0.5, pw = W * 0.42, ph = H * 0.68;
+  layers.forEach(([d, color, kind]) => {
+    ctx.save(); ctx.translate(cx + sh * d * W * 0.06, cy); ctx.scale(sx, 1); ctx.globalAlpha = 1;
+    if (kind === 'bg') { ctx.fillStyle = color; ctx.fillRect(-pw / 2, -ph / 2, pw, ph); ctx.strokeStyle = 'rgba(239,233,222,0.3)'; ctx.strokeRect(-pw / 2, -ph / 2, pw, ph); }
+    if (kind === 'img') { const g = ctx.createLinearGradient(0, -ph * 0.4, 0, ph * 0.1); g.addColorStop(0, '#2C3E55'); g.addColorStop(1, '#C96A3A'); ctx.fillStyle = g; ctx.fillRect(-pw / 2 + pw * 0.04, -ph / 2 + ph * 0.12, pw * 0.92, ph * 0.4); }
+    if (kind === 'text') { ctx.fillStyle = color; ctx.fillRect(-pw / 2 + pw * 0.08, ph * 0.08, pw * 0.5, ph * 0.05); ctx.fillRect(-pw / 2 + pw * 0.08, ph * 0.17, pw * 0.36, ph * 0.03); }
+    if (kind === 'btn') { ctx.fillStyle = color; ctx.fillRect(-pw / 2 + pw * 0.08, ph * 0.26, pw * 0.2, ph * 0.08); }
+    if (kind === 'nav') { ctx.fillStyle = color; for (let k = 0; k < 4; k++) ctx.fillRect(pw * (0.05 + k * 0.1), -ph / 2 + ph * 0.05, pw * 0.06, 2); ctx.fillRect(-pw / 2 + pw * 0.06, -ph / 2 + ph * 0.045, pw * 0.1, 3); }
+    ctx.restore();
+  });
+  const notes = [['CONTRAST 4.6:1', 0.3, W * 0.1, H * 0.22], ['LCP 1.2 S', 0.45, W * 0.72, H * 0.3], ['COPY: SHORTER', 0.6, W * 0.1, H * 0.72]];
+  const flat = p > 0.85;
+  notes.forEach(([t, at, nx, ny]) => { const q = ease.out(win(p, at, at + 0.12)); if (q <= 0) return; ctx.save(); ctx.globalAlpha = q; ctx.strokeStyle = flat ? C.bone : C.red; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(nx + (nx < W / 2 ? W * 0.14 : 0), ny); ctx.lineTo(cx, cy); ctx.stroke(); ctx.restore(); PR.label(ctx, flat ? '✓ ' + t : t, nx, ny, flat ? C.bone : C.red, Math.max(9, W * 0.012), 'left', q); });
+  hudText(ctx, flat ? 'REVIEW · resolved' : 'REVIEW · frozen', W, H, flat ? C.bone : C.red);
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 28);
+}
+function fAgents(ctx, p, W, H) {
+  const vx = W * 0.62, vy = H * 0.44;
+  ctx.save(); ctx.strokeStyle = 'rgba(239,233,222,0.12)'; ctx.lineWidth = 1; for (let k = 0; k < 12; k++) { const a = k / 12 * Math.PI * 2; ctx.beginPath(); ctx.moveTo(vx, vy); ctx.lineTo(vx + Math.cos(a) * W, vy + Math.sin(a) * W); ctx.stroke(); } ctx.restore();
+  const labels = ['SAFARI 15', '3.8 S LOAD', 'BROKEN FORM', '404 × 12'];
+  let hits = 0;
+  labels.forEach((l, i) => {
+    const t0 = i * 0.22, hit = t0 + 0.22, s = ease.out(win(p, t0, hit)), after = win(p, hit, hit + 0.2); if (p < t0) return; if (p > hit) hits++;
+    const x = lerp(vx, W * (0.36 + i * 0.13), s), y = lerp(vy, H * (0.5 + (i % 2) * 0.16), s), w = lerp(W * 0.02, W * 0.22, s), h = lerp(H * 0.02, H * 0.17, s);
+    ctx.save(); ctx.globalAlpha = 1 - after * 0.9; ctx.translate(0, -after * H * 0.3);
+    if (p <= hit) { ctx.fillStyle = C.ink; ctx.fillRect(x - w / 2, y - h / 2, w, h); ctx.strokeStyle = G.green; ctx.lineWidth = 1.5; ctx.strokeRect(x - w / 2, y - h / 2, w, h); if (s > 0.4) PR.label(ctx, l, x, y, G.green, Math.max(8, W * 0.013), 'center'); }
+    else { PR.label(ctx, '✓  ' + l, x, y, C.bone, Math.max(9, W * 0.014), 'center'); }
+    ctx.restore();
+    const d = p - hit; if (d > 0 && d < 0.07) PR.slash(ctx, x, y, GEO.ang, H * 0.05, H * 0.4, C.red, 0.3 * (1 - d / 0.07), 0.95 * (1 - d / 0.07), 2.5);
+  });
+  drawOne(ctx, W * 0.16, H * 0.92, H * 0.4, 0.25, C.bone, 1);
+  hudText(ctx, 'QA · AGENTS ' + hits + '/4', W, H);
+  PR.vignette(ctx, W, H, 0.55); PR.grain(ctx, W, H, 0.03, 29);
+}
+function fDeploy(ctx, p, W, H) {
+  typed(ctx, ['$ deploy', '> building · 212 files', '> DEPLOY? [y/N] y', '> LIVE.'], W * 0.06, H * 0.2, Math.max(11, W * 0.02), C.bone, win(p, 0, 0.55), W * 0.045, Math.floor(p * 6) % 2 === 0 && p < 0.55, true);
+  const bar = ease.out(win(p, 0.15, 0.45)); ctx.save(); ctx.fillStyle = '#2A2A2A'; ctx.fillRect(W * 0.06, H * 0.36, W * 0.3, 3); ctx.fillStyle = C.red; ctx.fillRect(W * 0.06, H * 0.36, W * 0.3 * bar, 3); ctx.restore();
+  PR.title(ctx, 'LIVE.', W * 0.06, H * 0.78, Math.max(18, W * 0.07), C.red, { align: 'left', weight: 700, alpha: ease.out(win(p, 0.55, 0.65)) });
+  const devs = [[W * 0.62, H * 0.18, W * 0.08, H * 0.36, 10], [W * 0.73, H * 0.32, W * 0.22, H * 0.3, 4], [W * 0.62, H * 0.64, W * 0.33, H * 0.2, 2]];
+  devs.forEach(([x, y, w, h, r], i) => { const s = ease.outBack(win(p, 0.6 + i * 0.1, 0.72 + i * 0.1)); if (s <= 0) return; ctx.save(); ctx.translate(x + w / 2, y + h / 2); ctx.scale(s, s); ctx.translate(-(x + w / 2), -(y + h / 2)); ctx.strokeStyle = C.bone; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); ctx.stroke(); ctx.fillStyle = C.red; ctx.fillRect(x + w * 0.1, y + h * 0.12, w * 0.8, h * 0.28); ctx.fillStyle = C.bone; ctx.fillRect(x + w * 0.1, y + h * 0.5, w * 0.6, Math.max(2, h * 0.05)); ctx.fillRect(x + w * 0.1, y + h * 0.62, w * 0.45, Math.max(2, h * 0.04)); ctx.restore(); });
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 30);
+}
+function fReal(ctx, p, W, H) {
+  ctx.fillStyle = C.bone; ctx.fillRect(0, 0, W, H);
+  const drift = p * W * 0.02;
+  ctx.save(); ctx.beginPath(); ctx.rect(0, H * 0.2, W, H * 0.5); ctx.clip(); const g = ctx.createLinearGradient(0, H * 0.2, 0, H * 0.7); g.addColorStop(0, '#2C3E55'); g.addColorStop(0.6, '#8A6A4A'); g.addColorStop(1, '#C96A3A'); ctx.fillStyle = g; ctx.fillRect(-drift, H * 0.2, W * 1.04, H * 0.5);
+  ctx.fillStyle = '#1E2126'; ctx.beginPath(); ctx.moveTo(-drift, H * 0.7); ctx.lineTo(W * 0.25 - drift, H * 0.42); ctx.lineTo(W * 0.45 - drift, H * 0.56); ctx.lineTo(W * 0.7 - drift, H * 0.36); ctx.lineTo(W * 1.04 - drift, H * 0.7); ctx.closePath(); ctx.fill(); ctx.restore();
+  ctx.fillStyle = C.ink; for (let k = 0; k < 4; k++) ctx.fillRect(W * (0.6 + k * 0.09), H * 0.11, W * 0.05, 2); ctx.fillRect(W * 0.06, H * 0.1, W * 0.1, 3);
+  ctx.fillStyle = C.bone; ctx.fillRect(W * 0.06, H * 0.32, W * 0.42, H * 0.07); ctx.fillRect(W * 0.06, H * 0.42, W * 0.3, H * 0.045);
+  ctx.fillStyle = C.red; ctx.fillRect(W * 0.06, H * 0.52, W * 0.14, H * 0.08);
+  PR.title(ctx, 'THERE IS NO TEMPLATE.', W / 2, H * 0.84, Math.max(10, W * 0.022), C.ink, { weight: 600, reveal: ease.out(win(p, 0.15, 0.5)) });
+  const n = ease.out(win(p, 0.3, 0.9)); PR.label(ctx, 'LIGHTHOUSE ' + Math.round(100 * n) + ' · ' + (0.9 + 2.1 * (1 - n)).toFixed(1) + ' S · +' + Math.round(38 * n) + '% LEADS', W / 2, H * 0.93, C.ink, Math.max(9, W * 0.012), 'center', 0.8);
+  PR.grain(ctx, W, H, 0.02, 31);
+}
+function fTheOne(ctx, p, W, H) {
+  fLockupB(ctx, Math.min(1, p / 0.55), W, H);
+  if (p > 0.56) { const g = lockupGeomB(W, H); drawTagline(ctx, g, ease.out(win(p, 0.58, 0.8)), 1); }
+}
+
+const DRAW = { 1: fWake, 2: fOldSite, 3: fChoice, 4: fConstruct, 5: fLoaded, 6: fSpar, 7: fRainUp, 8: fBullet, 9: fAgents, 10: fDeploy, 11: fReal, 12: fTheOne };
+const TITLES = { 1: 'Wake up', 2: 'The old site', 3: 'The choice', 4: 'The construct', 5: 'Loaded', 6: 'The sparring program', 7: 'The rain, reversed', 8: 'Bullet time', 9: 'Agents', 10: 'Deploy', 11: 'The real world', 12: 'The One' };
+const THUMB_AT = { 1: 0.9, 2: 0.4, 3: 0.55, 4: 0.75, 5: 0.6, 6: 0.52, 7: 0.7, 8: 0.3, 9: 0.5, 10: 0.85, 11: 0.7, 12: 0.85 };
+const POSTER = { draw: (ctx, W, H) => fBullet(ctx, 0.3, W, H), label: 'Poster · frame 8, bullet time. Play runs the cut from 0:00.' };
+const ACTS = [['I', 0, 9], ['II', 9, 21], ['III', 21, 33], ['IV', 33, 45]];
+const DUR = 45;
+function build(list) { let t = 0; return list.map(([n, d, draw]) => { const f = { n, t0: t, t1: t + d, title: TITLES[n], draw: draw || DRAW[n] }; t += d; return f; }); }
+const CUTS = {
+  full: build([[1, 3], [2, 3], [3, 3], [4, 4], [5, 4], [6, 4], [7, 4], [8, 4], [9, 4], [10, 4], [11, 4], [12, 4]]),
+  short: build([[1, 1], [3, 1.5], [7, 2], [8, 1.5], [10, 1.5], [12, 2.5]]),
+};
+
+// ---------- player ----------
+(function () {
+  const canvas = document.getElementById('animatic'), ctx = canvas.getContext('2d');
+  const playBtn = document.getElementById('play'), scrub = document.getElementById('scrub'), readout = document.getElementById('readout'), frameLabel = document.getElementById('frame-label'), chipsEl = document.getElementById('chips');
+  let FR = CUTS.full, TOTAL = CUTS.full[CUTS.full.length - 1].t1, T = 0, playing = false, last = 0, raf = 0, W = 0, H = 0, poster = true;
+  const leavePoster = () => { poster = false; };
+  const fmt = s => { const m = Math.floor(s / 60), r = s - m * 60; return m + ':' + (r < 10 ? '0' : '') + r.toFixed(1); };
+  const frameAt = t => { for (let i = 0; i < FR.length; i++) if (t < FR[i].t1) return i; return FR.length - 1; };
+  function chips() { chipsEl.innerHTML = ''; FR.forEach(f => { const b = document.createElement('button'); b.type = 'button'; b.dataset.jump = f.n; b.textContent = (f.n < 10 ? '0' : '') + f.n + ' ' + f.title; b.addEventListener('click', () => { leavePoster(); pause(); T = f.t0 + 0.01; render(); }); chipsEl.appendChild(b); }); }
+  function size() { const r = canvas.getBoundingClientRect(); const dpr = Math.min(2, window.devicePixelRatio || 1); W = Math.max(1, Math.round(r.width)); H = Math.round(W * 9 / 16); canvas.width = W * dpr; canvas.height = H * dpr; canvas.style.height = H + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); render(); }
+  function render() {
+    ctx.save(); ctx.fillStyle = C.screen; ctx.fillRect(0, 0, W, H); ctx.restore();
+    if (poster) {
+      ctx.save(); POSTER.draw(ctx, W, H); ctx.restore();
+      scrub.value = '0'; readout.textContent = fmt(0) + ' / ' + fmt(TOTAL); frameLabel.textContent = POSTER.label;
+      chipsEl.querySelectorAll('button').forEach(c => c.classList.remove('is-active'));
+      return;
+    }
+    const i = frameAt(T), f = FR[i], p = clamp((T - f.t0) / (f.t1 - f.t0), 0, 1);
+    ctx.save(); f.draw(ctx, p, W, H); ctx.restore();
+    scrub.value = String(T); readout.textContent = fmt(T) + ' / ' + fmt(TOTAL); frameLabel.textContent = 'Frame ' + f.n + ' · ' + f.title + ' · ' + fmt(f.t0) + ' to ' + fmt(f.t1);
+    chipsEl.querySelectorAll('button').forEach(c => c.classList.toggle('is-active', Number(c.dataset.jump) === f.n));
+  }
+  function tick(now) { if (!playing) return; const dt = Math.min(0.1, (now - last) / 1000); last = now; T += dt; if (T >= TOTAL) { T = TOTAL; playing = false; playBtn.textContent = 'Replay'; playBtn.setAttribute('aria-pressed', 'false'); render(); return; } render(); raf = requestAnimationFrame(tick); }
+  function play() { leavePoster(); if (T >= TOTAL) T = 0; playing = true; last = performance.now(); playBtn.textContent = 'Pause'; playBtn.setAttribute('aria-pressed', 'true'); cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); }
+  function pause() { playing = false; playBtn.textContent = 'Play'; playBtn.setAttribute('aria-pressed', 'false'); cancelAnimationFrame(raf); }
+  function setCut(key) { pause(); poster = true; FR = CUTS[key]; TOTAL = FR[FR.length - 1].t1; T = 0; scrub.max = String(TOTAL); document.getElementById('cut-full').setAttribute('aria-pressed', String(key === 'full')); document.getElementById('cut-short').setAttribute('aria-pressed', String(key === 'short')); chips(); render(); }
+  playBtn.addEventListener('click', () => playing ? pause() : play());
+  scrub.addEventListener('input', () => { leavePoster(); pause(); T = Number(scrub.value); render(); });
+  document.getElementById('cut-full').addEventListener('click', () => setCut('full'));
+  document.getElementById('cut-short').addEventListener('click', () => setCut('short'));
+  document.addEventListener('keydown', e => {
+    if (e.target && /input|textarea|select|button/i.test(e.target.tagName) && e.key !== ' ') return;
+    if (/^(Arrow(Left|Right|Up|Down)| )$/.test(e.key)) leavePoster();
+    if (e.key === ' ' && !(e.target && /input|textarea|select/i.test(e.target.tagName))) { e.preventDefault(); playing ? pause() : play(); }
+    if (e.key === 'ArrowRight') { pause(); T = Math.min(TOTAL, T + 0.5); render(); }
+    if (e.key === 'ArrowLeft') { pause(); T = Math.max(0, T - 0.5); render(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); pause(); T = FR[Math.min(FR.length - 1, frameAt(T) + 1)].t0 + 0.01; render(); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); pause(); const i = frameAt(T), f = FR[i]; T = (T - f.t0 > 0.6 ? f.t0 : FR[Math.max(0, i - 1)].t0) + 0.01; render(); }
+  });
+  function thumbs() {
+    document.querySelectorAll('canvas[data-thumb]').forEach(c => {
+      const n = Number(c.dataset.thumb), draw = DRAW[n]; if (!draw) return;
+      const r = c.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1), w = Math.max(1, Math.round(r.width)), h = Math.round(w * 9 / 16);
+      c.width = w * dpr; c.height = h * dpr; c.style.height = h + 'px';
+      const cx = c.getContext('2d'); cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.fillStyle = C.screen; cx.fillRect(0, 0, w, h); cx.save(); draw(cx, THUMB_AT[n], w, h); cx.restore();
+    });
+  }
+  function timelineSvg() {
+    const svg = document.getElementById('timeline'); if (!svg) return; const NS = 'http://www.w3.org/2000/svg'; const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+    const L = 40, R = 990, y0 = 34, h = 36, sx = s => L + (R - L) * s / DUR;
+    const acts = ACTS;
+    acts.forEach(([n, a, b]) => { svg.appendChild(el('rect', { class: 'act', x: sx(a), y: y0 - 16, width: sx(b) - sx(a), height: h + 32 })); const t = el('text', { x: sx(a) + 6, y: y0 - 4, 'font-size': 10 }); t.textContent = n; svg.appendChild(t); });
+    CUTS.full.forEach((f, i) => { const red = i % 2 === 1; svg.appendChild(el('rect', { class: 'seg', x: sx(f.t0), y: y0, width: sx(f.t1) - sx(f.t0), height: h, fill: red ? '#E72722' : '#8C939B', opacity: red ? 0.95 : 0.6 })); const t = el('text', { x: sx(f.t0) + 4, y: y0 + h - 6, 'font-size': 11, fill: red ? '#FFFFFF' : '#0B0B0B', 'font-weight': 600 }); t.textContent = (f.n < 10 ? '0' : '') + f.n; svg.appendChild(t); });
+    for (let s = 0; s <= DUR; s += 5) { svg.appendChild(el('line', { x1: sx(s), y1: y0 + h + 18, x2: sx(s), y2: y0 + h + 26, stroke: 'currentColor', opacity: 0.5 })); const t = el('text', { x: sx(s), y: y0 + h + 40, 'font-size': 10, 'text-anchor': 'middle' }); t.textContent = '0:' + (s < 10 ? '0' : '') + s; svg.appendChild(t); }
+  }
+  const refresh = () => { render(); thumbs(); };
+  LOGO.addEventListener('load', refresh); TAG.addEventListener('load', refresh);
+  LOGO.src = 'assets/lockup-dark.png'; TAG.src = 'assets/tagline-dark.png';
+  window.addEventListener('resize', () => { size(); thumbs(); });
+  scrub.max = String(TOTAL); chips(); size(); thumbs(); timelineSvg();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+})();
+</script>
+
+</body>
+</html>
