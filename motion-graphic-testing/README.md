@@ -1,6 +1,6 @@
 # Motion graphic testing
 
-Exploratory motion work for the One Inch Media brand. Three companion storyboards, all built on the real lockup and all ending on the same logo and line. Nothing in this folder is part of the Forge & Frame site build; the folder is ignored by the Next.js app.
+Exploratory motion work for the One Inch Media brand. Four companion storyboards, all built on the real lockup and all ending on the same logo and line. Nothing in this folder is part of the Forge & Frame site build; the folder is ignored by the Next.js app.
 
 ## one-inch-storyboard.html
 
@@ -17,3 +17,7 @@ Storyboard v1 for **ONE UP**, the companion piece: the 1 from the mark sprints u
 ## the-one-storyboard.html
 
 Storyboard v1 for **THE ONE**, a forty-five-second process film: a website built start to finish (audit, the choice, design system, brand learning, design, code, review, QA, deploy, results) through a Matrix lens. The old template site lives in green rain; the brand red is the choice; everything after is in the brand's palette, and the serif 1 is the One. Same page format, ten-second cutdown, AI technique per step, guardrails and open decisions. Shares the `assets` folder.
+
+## one-shot-storyboard.html
+
+Storyboard v1 for **ONE SHOT**, a twelve-second logo opening for the website redesign service, in the shape of the famous gun barrel sequence with every element replaced by the brand's: the barrel is the aperture, the figure is the serif 1 rigged with legs and an arm (Agent 1), the shot is the slash, the blood is the brand red, and the closing iris is the mark. Includes a looping walk, turn and fire cycle for the character, a four-second sting, and the 007-specific guardrails. Shares the `assets` folder.

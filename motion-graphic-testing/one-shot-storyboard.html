@@ -1,0 +1,799 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>One Shot Storyboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Bodoni+Moda:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a dark screening room in the brand's black, white and red. One column, max 1120px. The animatic is the hero; the board runs two-up beneath it; notes follow in quieter sections. */
+:root {
+  --bg: #0B0B0B; --bg-2: #141414; --bg-3: #1C1C1C; --line: #2A2A2A; --line-2: #3A3A3A;
+  --fg: #F2F0EC; --fg-2: #B5B2AC; --muted: #807D78;
+  --accent: #E72722; --accent-text: #F25C55; --accent-fg: #FFFFFF; --steel: #8C939B;
+  --show-light: none; --show-dark: block;
+  --display: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --numeral: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #F4F2EE; --bg-2: #FBFAF8; --bg-3: #E9E6E0; --line: #D9D5CE; --line-2: #C6C1B8;
+    --fg: #0B0B0B; --fg-2: #4A4845; --muted: #6E6B66;
+    --accent: #E72722; --accent-text: #C11E19; --accent-fg: #FFFFFF; --steel: #5B636B;
+    --show-light: block; --show-dark: none;
+    color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #F4F2EE; --bg-2: #FBFAF8; --bg-3: #E9E6E0; --line: #D9D5CE; --line-2: #C6C1B8;
+  --fg: #0B0B0B; --fg-2: #4A4845; --muted: #6E6B66;
+  --accent: #E72722; --accent-text: #C11E19; --accent-fg: #FFFFFF; --steel: #5B636B;
+  --show-light: block; --show-dark: none;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 28px 80px; padding-inline: clamp(16px, 4vw, 40px); }
+h1, h2, h3 { font-family: var(--display); text-transform: uppercase; margin: 0; text-wrap: balance; }
+h1 { font-weight: 800; font-size: clamp(44px, 11vw, 150px); letter-spacing: 0.16em; line-height: 1; }
+h2 { font-weight: 700; font-size: clamp(20px, 2.6vw, 30px); letter-spacing: 0.14em; line-height: 1.2; }
+h3 { font-weight: 600; font-size: 16px; letter-spacing: 0.12em; line-height: 1.3; }
+p { margin: 0; }
+a { color: var(--accent-text); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+.prose { max-width: 62ch; color: var(--fg-2); }
+.prose strong { color: var(--fg); font-weight: 600; }
+section { padding-block: 44px; border-top: 1px solid var(--line); }
+section > header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px; margin-bottom: 22px; }
+section > header p { color: var(--fg-2); max-width: 58ch; }
+button:focus-visible, input:focus-visible, [tabindex]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* masthead */
+.masthead { display: grid; gap: 16px; padding-block: 8px 36px; }
+.logo { width: 170px; height: auto; max-width: 100%; }
+.logo--light { display: var(--show-light); }
+.logo--dark { display: var(--show-dark); }
+.logline { font-size: clamp(17px, 2vw, 22px); line-height: 1.4; max-width: 36ch; color: var(--fg); text-wrap: balance; }
+.specs { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.specs li { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; padding: 6px 10px; border: 1px solid var(--line-2); color: var(--fg-2); }
+.specs li.hot { border-color: var(--accent); color: var(--accent-text); }
+
+/* notice */
+.notice { border: 1px dashed var(--line-2); background: var(--bg-2); padding: 18px 20px; display: grid; gap: 10px; margin-bottom: 36px; }
+.notice ul { margin: 0; padding-left: 18px; color: var(--fg-2); }
+.notice li + li { margin-top: 4px; }
+.notice strong { color: var(--fg); font-weight: 600; }
+
+/* player */
+.player { border-top: 0; padding-top: 0; }
+.player-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.toggle { display: inline-flex; border: 1px solid var(--line-2); }
+.toggle button { font: 500 12px/1 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; background: transparent; color: var(--fg-2); border: 0; padding: 10px 14px; cursor: pointer; }
+.toggle button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg); }
+.screen { position: relative; background: #0B0B0B; border: 1px solid var(--line-2); }
+#animatic { display: block; width: 100%; max-width: 100%; }
+.controls { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+#play { font: 700 12px/1 var(--display); letter-spacing: 0.14em; text-transform: uppercase; background: var(--accent); color: var(--accent-fg); border: 0; padding: 13px 18px; min-width: 96px; cursor: pointer; }
+#scrub { flex: 1; min-width: 0; accent-color: var(--accent); }
+#readout { font-size: 13px; color: var(--fg-2); white-space: nowrap; }
+#frame-label { margin-top: 8px; font-size: 13px; color: var(--accent-text); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.chips button { font: 500 12px/1 var(--mono); background: var(--bg-2); color: var(--fg-2); border: 1px solid var(--line); padding: 8px 10px; cursor: pointer; }
+.chips button.is-active { border-color: var(--accent); color: var(--accent-text); }
+.hint { margin-top: 14px; font-size: 13px; color: var(--muted); max-width: 70ch; }
+
+/* structure timeline */
+.timeline { width: 100%; height: auto; display: block; }
+.timeline text { font-family: var(--mono); fill: var(--fg-2); }
+.timeline .act { fill: var(--bg-3); stroke: var(--line-2); }
+.timeline .seg { stroke: var(--bg); stroke-width: 1; }
+.acts { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px 28px; margin-top: 22px; }
+.acts p { color: var(--fg-2); font-size: 14px; margin-top: 6px; }
+.acts .eyebrow { margin-bottom: 6px; }
+
+/* board */
+.board-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 36px 32px; }
+.frame { display: grid; gap: 14px; min-width: 0; }
+.frame canvas { width: 100%; max-width: 100%; display: block; background: #0B0B0B; border: 1px solid var(--line-2); }
+.frame-head { display: grid; grid-template-columns: auto 1fr; gap: 2px 16px; align-items: baseline; }
+.frame-head .n { font-family: var(--numeral); font-weight: 700; font-size: 40px; line-height: 1; color: var(--accent-text); font-variant-numeric: lining-nums; }
+.frame-head .tc { font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; color: var(--muted); }
+.frame-head h3 { grid-column: 2; }
+.frame dl { margin: 0; display: grid; grid-template-columns: 7.5em 1fr; gap: 8px 14px; font-size: 14px; }
+.frame dt { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+.frame dd { margin: 0; color: var(--fg-2); min-width: 0; }
+.frame dd.ai { color: var(--fg); }
+.frame dd .q { font-family: var(--mono); color: var(--accent-text); }
+.frame dd.ref { font-style: italic; }
+
+/* notes */
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 28px 40px; }
+.list { margin: 0; padding-left: 18px; color: var(--fg-2); display: grid; gap: 10px; font-size: 14px; }
+.list li::marker { color: var(--muted); font-family: var(--mono); }
+.list strong { color: var(--fg); font-weight: 600; }
+.caps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 14px; }
+.caps li { display: grid; grid-template-columns: 3.2em 1fr; gap: 12px; align-items: baseline; color: var(--fg-2); }
+.caps .f { font-family: var(--mono); font-size: 12px; color: var(--accent-text); letter-spacing: 0.06em; }
+.caps strong { color: var(--fg); font-weight: 600; }
+
+/* palette and type */
+.swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.swatch { border: 1px solid var(--line-2); }
+.swatch i { display: block; height: 64px; }
+.swatch div { padding: 10px 12px; display: grid; gap: 2px; }
+.swatch b { font-family: var(--mono); font-weight: 500; font-size: 12px; letter-spacing: 0.06em; }
+.swatch span { font-size: 12px; color: var(--fg-2); line-height: 1.45; }
+.specimen { display: grid; gap: 12px; border: 1px solid var(--line); padding: 18px 20px; background: var(--bg-2); }
+.specimen .d { font-family: var(--display); font-weight: 600; text-transform: uppercase; letter-spacing: 0.3em; font-size: clamp(22px, 3.4vw, 40px); line-height: 1.1; }
+.specimen .one { font-family: var(--numeral); font-weight: 700; font-size: clamp(72px, 10vw, 120px); line-height: 0.9; }
+.specimen .m { font-family: var(--mono); font-size: 14px; color: var(--fg-2); }
+.specimen .b { font-size: 14px; color: var(--fg-2); max-width: 46ch; }
+.specimen small { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+/* cutdown */
+.cut { display: grid; gap: 14px; }
+.cut-strip { display: grid; grid-template-columns: 2fr 1fr 0.5fr 2.5fr 1fr; gap: 3px; }
+.cut-strip div { background: var(--bg-3); border: 1px solid var(--line-2); padding: 10px 8px; min-width: 0; }
+.cut-strip b { display: block; font-family: var(--numeral); font-weight: 700; font-size: 22px; line-height: 1; }
+.cut-strip span { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* stack table */
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 12px 14px; border-top: 1px solid var(--line); }
+th { font-family: var(--mono); font-weight: 500; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); border-top: 0; background: var(--bg-2); }
+td:first-child { font-weight: 600; white-space: nowrap; color: var(--fg); }
+td { color: var(--fg-2); }
+
+/* considered */
+.alts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px 28px; }
+.alts div { border-top: 1px solid var(--line-2); padding-top: 12px; }
+.alts p { color: var(--fg-2); font-size: 14px; margin-top: 6px; }
+
+footer { padding-top: 32px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; display: grid; gap: 4px; }
+@media (max-width: 640px) {
+  .frame dl { grid-template-columns: 1fr; gap: 2px 0; }
+  .frame dt { padding-top: 10px; }
+  .cut-strip { grid-template-columns: repeat(5, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+
+<div class="wrap">
+<header class="masthead">
+  <img class="logo logo--light" src="assets/lockup-light-full.png" alt="One Inch Media. Small details. Big impact." width="900" height="840">
+  <img class="logo logo--dark" src="assets/lockup-dark-full.png" alt="" width="900" height="840">
+  <p class="eyebrow">Logo opening · website redesign · One Inch Media · fourth of four</p>
+  <h1>One Shot</h1>
+  <p class="logline">A twelve-second logo opening: the dots, a barrel that is really your aperture, a 1 that walks, turns and fires the slash, the red that falls, and an iris that closes into your mark.</p>
+  <ul class="specs">
+    <li>12 s</li><li>16:9 · 24 fps</li><li>6 frames</li><li>4 s sting</li><li class="hot">007 homage, no likeness, no gun</li><li class="hot">Built on the real lockup</li><li>Character: Agent 1</li>
+  </ul>
+</header>
+
+<aside class="notice" aria-label="How this one works">
+  <p class="eyebrow">How this one works</p>
+  <ul>
+    <li><strong>Every element of the famous opening is replaced with one of yours.</strong> The barrel is the aperture, six straight blades repeated into a tunnel. The figure is the serif 1 from the mark, given legs and an arm. The shot is the slash. The blood is the brand red. The iris that closes at the end is the mark itself, and the 1 walks into the middle of it.</li>
+    <li><strong>It says what you do.</strong> At the far end of the barrel sits a tired template website. Agent 1 walks the barrel to deal with it, turns, fires, and the red takes the old site with it. The end card can carry a service line under the lockup.</li>
+    <li><strong>The character is the point.</strong> Agent 1 is rigged from the logo's own numeral: a walk with lean and bob, a turn that flips through the stem, an arm that comes up, a strike that is the slash. The loop below shows the cycle.</li>
+    <li><strong>Still open:</strong> whether the shot is ever a literal pistol (the board says no), the service line, fonts and voice. Type here is matched by stand-ins.</li>
+  </ul>
+</aside>
+
+<section class="player" aria-labelledby="animatic-h">
+  <div class="player-head">
+    <h2 id="animatic-h">Animatic</h2>
+    <div class="toggle" role="group" aria-label="Cut length">
+      <button type="button" id="cut-full" aria-pressed="true">Full 12 s</button>
+      <button type="button" id="cut-short" aria-pressed="false">Sting 4 s</button>
+    </div>
+  </div>
+  <div class="screen"><canvas id="animatic" aria-label="Animatic preview of One Shot"></canvas></div>
+  <div class="controls">
+    <button type="button" id="play" aria-pressed="false">Play</button>
+    <input id="scrub" type="range" min="0" max="12" step="0.05" value="0" aria-label="Scrub the timeline">
+    <span id="readout" class="mono">0:00.0 / 0:12.0</span>
+  </div>
+  <p id="frame-label" class="mono">Poster · frame 3, the turn. Play runs the cut from 0:00.</p>
+  <div class="chips" id="chips"></div>
+  <p class="hint">Space plays and pauses. Left and right step half a second; up and down jump a frame. The canvas is a previz drawn live in the browser; it stands in for the finished render described below.</p>
+</section>
+
+<section aria-labelledby="char-h">
+  <header><h2 id="char-h">Agent 1</h2><p>The character, rigged from the mark's numeral. This loop runs the three moves the opening needs: the walk, the turn, the fire.</p></header>
+  <div class="cols">
+    <div class="screen" style="align-self:start"><canvas id="walkcycle" aria-label="Agent 1 walk, turn and fire loop"></canvas></div>
+    <div>
+      <ul class="caps">
+        <li><span class="f">Body</span><span><strong>The serif 1, untouched.</strong> The base serif reads as the hips; the flag reads as a head. Nothing is redrawn, so the character is always the real mark.</span></li>
+        <li><span class="f">Legs</span><span><strong>Two-segment legs under the base</strong>, with a knee that bends on the swing and a foot that points the way it walks. Stride 1.6 steps a second, a 6° forward lean, a 3.5% bob.</span></li>
+        <li><span class="f">Arm</span><span><strong>One arm at the shoulder</strong>, swinging opposite the legs. It rises to horizontal in eight frames for the fire.</span></li>
+        <li><span class="f">Turn</span><span><strong>A flip through the stem</strong>: the numeral scales through zero and comes back facing the other way, seventeen frames, with the walk dying out underneath.</span></li>
+        <li><span class="f">Fire</span><span><strong>The slash is the shot.</strong> A red glow at the hand, then the brand's diagonal grows from the hand to fill the frame in five frames. No pistol.</span></li>
+        <li><span class="f">Settle</span><span><strong>Legs retract, arm drops</strong>, and the character becomes the numeral in the lockup. The walk-in at the end is the rig returning to being a logo.</span></li>
+      </ul>
+      <p class="prose" style="margin-top:16px">In production the rig is built from the logo vector: the stem and base serif as the parent, legs and arm as children, with the same timings as the previz. A motion prior tuned on hand-animated walk cycles gives the stride its weight.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="structure-h">
+  <header><h2 id="structure-h">Structure</h2><p>Three movements, like the original: the dots, the barrel, the shot and what follows. Ours ends on the mark instead of a title.</p></header>
+  <svg class="timeline" id="timeline" viewBox="0 0 1000 118" role="img" aria-label="Timeline of the six frames across twelve seconds"></svg>
+  <div class="acts">
+    <div><p class="eyebrow">I · 0:00–0:02</p><h3>The dots</h3><p>Six dots cross the black, one shutter click each. The last one stops and opens.</p></div>
+    <div><p class="eyebrow">II · 0:02–0:07.5</p><h3>The barrel</h3><p>The aperture tunnel. Agent 1 walks it, tracked by the iris, stops, turns, and raises the arm.</p></div>
+    <div><p class="eyebrow">III · 0:07.5–0:12</p><h3>The shot</h3><p>The slash. The red falls. The iris closes to black and reopens as the mark with the 1 walking into it.</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="board-h">
+  <header><h2 id="board-h">The board</h2><p>Six frames. Timings sum to twelve seconds exactly. The sting is the last three frames re-timed.</p></header>
+  <div class="board-grid">
+
+    <article class="frame">
+      <canvas data-thumb="1" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">01</span><span class="tc">0:00 – 0:02 · 2 s</span><h3>The dots</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Black. Six bone dots travel left to right across the center line, evenly spaced. The last one stops at center and opens into a small six-sided iris with steel inside.</dd>
+        <dt>Motion</dt><dd>Constant speed, no easing, the way a shutter chain moves. The opening takes eight frames.</dd>
+        <dt>On screen</dt><dd>None.</dd>
+        <dt>Audio</dt><dd>A camera shutter per dot, six clicks. A single low bass note starts on the sixth and holds.</dd>
+        <dt>AI</dt><dd class="ai">Generative sound design: six real shutter recordings, pitched and timed by an agent to the dot spacing, so the clicks are the rhythm track.</dd>
+        <dt>Reference</dt><dd class="ref">The traveling dots, by rhythm. Ours are shutter clicks, not a drum.</dd>
+        <dt>Out</dt><dd>The iris keeps opening into frame 02.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="2" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">02</span><span class="tc">0:02 – 0:05 · 3 s</span><h3>The barrel</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>The iris opens to a view down a tunnel made of the aperture repeated in depth: six straight steel blades, ring after ring, slowly turning. At the far end, small and grey: a template website. Agent 1 enters from the right and walks left along the floor of the tunnel, and the iris tracks it.</dd>
+        <dt>Motion</dt><dd>The iris opens over 18 frames. The walk is 1.6 steps a second with lean and bob. The rings turn a quarter-turn across the shot. The iris pans with the character.</dd>
+        <dt>On screen</dt><dd>None.</dd>
+        <dt>Audio</dt><dd>Footsteps on steel, every step a different ring. The bass note holds.</dd>
+        <dt>AI</dt><dd class="ai">Procedural geometry from the mark: the tunnel is the logo's own blade shape instanced into depth. The character is rigged from the logo vector and walked by a motion prior, so no one keyframes a stride.</dd>
+        <dt>Reference</dt><dd class="ref">The barrel, by composition. No rifling, no spiral, no gun metal: the aperture's straight blades, which look like nothing else.</dd>
+        <dt>Out</dt><dd>Agent 1 reaches center and stops.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="3" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">03</span><span class="tc">0:05 – 0:06.5 · 1.5 s</span><h3>The turn</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>The walk dies out. Agent 1 turns to camera: the numeral flips through its own stem and comes back facing us. The arm comes up to horizontal. The iris tightens slightly on it.</dd>
+        <dt>Motion</dt><dd>Settle in seven frames, flip in seventeen, arm up in eight. The iris closes by 8%.</dd>
+        <dt>On screen</dt><dd>None.</dd>
+        <dt>Audio</dt><dd>Footsteps stop. The bass note swells. Silence for the last six frames.</dd>
+        <dt>AI</dt><dd class="ai">The turn is the hardest beat for a flat character; a generated in-between pass produces the squash through the stem and the secondary motion on the legs and arm, from two drawn poses.</dd>
+        <dt>Reference</dt><dd class="ref">The turn and the raise, by timing. No silhouette of a man, no hat, no suit.</dd>
+        <dt>Out</dt><dd>Hold one frame on the raised arm.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="4" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">04</span><span class="tc">0:06.5 – 0:07.5 · 1 s</span><h3>The shot</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>A red glow at the hand, then the slash: the brand's diagonal grows from the hand to fill the frame. One frame of bone flash. The frame kicks. The old site at the end of the tunnel is gone.</dd>
+        <dt>Motion</dt><dd>Glow in two frames, slash across in five, a seven-frame shake that decays. Agent 1 leans back 5° on the recoil and returns.</dd>
+        <dt>On screen</dt><dd>None.</dd>
+        <dt>Audio</dt><dd>One dry snap, no reverb. The ring from the other films starts under it.</dd>
+        <dt>AI</dt><dd class="ai">The slash as a volumetric light simulation, rendered, so it has depth inside the tunnel instead of sitting on top of the frame.</dd>
+        <dt>Reference</dt><dd class="ref">The shot, by consequence only. There is no gun in the film. The slash is what this brand fires.</dd>
+        <dt>Out</dt><dd>Red begins at the top of frame.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="5" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">05</span><span class="tc">0:07.5 – 0:09.5 · 2 s</span><h3>The red</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>The brand red falls from the top edge and covers everything, the barrel, the character, the old site, with a dripping lower edge that reads as liquid without being gore. On solid red, the iris closes: six blades turn and shut to black.</dd>
+        <dt>Motion</dt><dd>The red accelerates as it falls, 30 frames. The iris closes in 14 frames with a slow rotation.</dd>
+        <dt>On screen</dt><dd>None.</dd>
+        <dt>Audio</dt><dd>A swell as the red falls. A shutter click on the close. The ring holds.</dd>
+        <dt>AI</dt><dd class="ai">Fluid simulation for the falling edge, tuned to read as paint rather than blood: higher viscosity, no spatter. The iris is the logo geometry again.</dd>
+        <dt>Reference</dt><dd class="ref">The red wash, by motion. A clean wipe in the brand color, not blood.</dd>
+        <dt>Out</dt><dd>Black.</dd>
+      </dl>
+    </article>
+
+    <article class="frame">
+      <canvas data-thumb="6" aria-hidden="true"></canvas>
+      <div class="frame-head"><span class="n">06</span><span class="tc">0:09.5 – 0:12 · 2.5 s</span><h3>The mark</h3></div>
+      <dl>
+        <dt>Visual</dt><dd>Out of black, the six blades of the mark rotate in and lock into the ring. Agent 1 walks in from the right, steps into the center of the ring, the walk settles, the legs retract, the arm drops: it is the 1 of the logo now. The slash cuts through. ONE INCH and MEDIA resolve, the line wipes in beneath, and under it, small and red: <span class="q">WEBSITE REDESIGN</span>.</dd>
+        <dt>Motion</dt><dd>Blades with overshoot over ten frames; a one-second walk-in; the settle in six frames; the slash in one; the type over eight; the wipe over twelve.</dd>
+        <dt>On screen</dt><dd>The lockup, <span class="q">SMALL DETAILS. BIG IMPACT.</span> and the service line.</dd>
+        <dt>Audio</dt><dd>Two last footsteps. The hit. The ring decays to silence.</dd>
+        <dt>AI</dt><dd class="ai">Procedural animation from the logo vectors, shared with the other three films, plus the rig returning to rest. End-cards generated for every aspect ratio with the service line safe-framed.</dd>
+        <dt>Reference</dt><dd class="ref">Where the original cuts to a title, ours becomes the mark. The character walking into the logo is the whole idea.</dd>
+        <dt>Out</dt><dd>Hold, then black.</dd>
+      </dl>
+    </article>
+
+  </div>
+</section>
+
+<section aria-labelledby="caps-h">
+  <header><h2 id="caps-h">What the piece proves about AI</h2><p>A short film, so a short list. Each item is something a studio could not do this quickly by hand.</p></header>
+  <div class="cols">
+    <ul class="caps">
+      <li><span class="f">F01</span><span><strong>Generative sound design</strong> from real shutter recordings, timed to the picture.</span></li>
+      <li><span class="f">F02</span><span><strong>Procedural geometry from the mark</strong>, and a <strong>character rig from the logo vector</strong> walked by a motion prior.</span></li>
+      <li><span class="f">F03</span><span><strong>Generated in-betweens</strong> for the flip through the stem.</span></li>
+    </ul>
+    <ul class="caps">
+      <li><span class="f">F04</span><span><strong>Volumetric light simulation</strong> for the slash inside the tunnel.</span></li>
+      <li><span class="f">F05</span><span><strong>Fluid simulation</strong> tuned to read as paint.</span></li>
+      <li><span class="f">F06</span><span><strong>Procedural logo animation</strong> and automatic end-cards for every ratio.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section aria-labelledby="look-h">
+  <header><h2 id="look-h">Look, type and sound</h2><p>Black, bone and red, with steel for the barrel. The sound is where this homage has to be most careful.</p></header>
+  <div class="cols">
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Palette · from the kit</p>
+      <div class="swatches">
+        <div class="swatch"><i style="background:#0B0B0B"></i><div><b>BLACK · #0B0B0B</b><span>The black around the iris. The close.</span></div></div>
+        <div class="swatch"><i style="background:#E72722"></i><div><b>RED · #E72722</b><span>The slash, the glow at the hand, the red that falls.</span></div></div>
+        <div class="swatch"><i style="background:#FFFFFF; border-bottom:1px solid #D9D5CE"></i><div><b>WHITE · #FFFFFF</b><span>The one-frame flash on the shot.</span></div></div>
+      </div>
+      <p class="eyebrow" style="margin:18px 0 10px">Added for the film · proposal</p>
+      <div class="swatches">
+        <div class="swatch"><i style="background:#EFE9DE"></i><div><b>BONE · #EFE9DE</b><span>The dots, the character, the iris edge.</span></div></div>
+        <div class="swatch"><i style="background:#8C939B"></i><div><b>STEEL · #8C939B</b><span>The blades of the tunnel, the old site at the end of it.</span></div></div>
+      </div>
+      <p class="prose" style="margin-top:14px">The original is black, white and one red. So is your brand. That is why this homage works without borrowing a single color.</p>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Type · matched to the lockup</p>
+      <div class="specimen">
+        <small>The numeral · the character · stand-in: Bodoni Moda</small>
+        <p class="one">1</p>
+        <small>Wordmark face · the service line · stand-in: Montserrat</small>
+        <p class="d">Website redesign</p>
+        <p class="b">Almost no type on screen until the lockup. The character carries the piece. The lockup itself is the artwork, never re-set.</p>
+      </div>
+      <p class="eyebrow" style="margin:22px 0 8px">Sound</p>
+      <p class="prose">No theme. Not the riff, not the brass, not a surf guitar anywhere near it. Six shutter clicks as the rhythm, footsteps on steel, one bass note that holds and swells, a dry snap for the shot, a swell for the red, a shutter for the close, and the hit and the ring the other three films end on. Everything generated or recorded for this piece.</p>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="slots-h">
+  <header><h2 id="slots-h">Brand slots</h2><p>What the lockups filled, and what is still to come.</p></header>
+  <div class="cols">
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Filled</p>
+      <ol class="list">
+        <li><strong>Lockup</strong> · frame 06 uses the primary stacked mark, reversed for black. The character is the mark's own numeral.</li>
+        <li><strong>Accent</strong> · the red from the kit is the shot and the wash.</li>
+        <li><strong>The line</strong> · "Small details. Big impact." closes the piece.</li>
+      </ol>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Open</p>
+      <ol class="list" start="4">
+        <li><strong>Vector logo files</strong> · the rig parents to the real stem and base serif.</li>
+        <li><strong>The service line</strong> · "Website redesign" is the proposal. Could be "Websites, redesigned." or nothing.</li>
+        <li><strong>Fonts and voice</strong> · as on the other boards. This one needs no voice at all.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="cut-h">
+  <header><h2 id="cut-h">The 4-second sting</h2><p>The shot, the red, the mark. For the end of every video you post, and the start of every pitch.</p></header>
+  <div class="cut">
+    <div class="cut-strip" aria-label="Sting timeline" style="grid-template-columns: 1fr 2fr 5fr;">
+      <div><b>04</b><span>0:00–0:00.5 · shot</span></div>
+      <div><b>05</b><span>0:00.5–0:01.5 · red, close</span></div>
+      <div><b>06</b><span>0:01.5–0:04 · the mark</span></div>
+    </div>
+    <p class="prose">The sting skips the dots and the walk. It is the slash, the red and the character stepping into the logo, which is enough to be recognized once the full version has been seen.</p>
+  </div>
+</section>
+
+<section aria-labelledby="stack-h">
+  <header><h2 id="stack-h">Production stack</h2><p>Small film, small stack. Most of it is rig and render.</p></header>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Stage</th><th>Tooling</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td>Rig</td><td>Logo vector into a 2D rig (After Effects, Cavalry or a custom rig): stem and base serif as the parent, legs and arm as children</td><td>Timings from this previz. A motion prior tuned on hand-animated walks for the stride.</td></tr>
+        <tr><td>Frames 01–03</td><td>Procedural tunnel from the blade geometry in Blender; iris as a six-blade shutter rig; camera tracking the character</td><td>The old site at the far end is a real template, screenshot and greyed.</td></tr>
+        <tr><td>Frames 04–05</td><td>Volumetric slash in the path tracer; fluid simulation for the red with paint viscosity; iris close from the same shutter rig</td><td>Render the red as a separate pass so its edge can be tuned without re-rendering the barrel.</td></tr>
+        <tr><td>Frame 06</td><td>Procedural lockup build shared with the other films; the rig's settle; end-card generation</td><td>The character's final pose must match the logo's 1 to the pixel. Measure, do not eyeball.</td></tr>
+        <tr><td>Sound</td><td>Recorded shutters and footsteps; a generated bass note and swell; the shared hit and ring</td><td>Nothing composed that could be mistaken for the theme.</td></tr>
+        <tr><td>Finish</td><td>Conform and grade; master 4K 16:9, plus 9:16 and 1:1</td><td>In vertical the tunnel is re-staged taller and the character walks a shorter distance.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="guard-h">
+  <header><h2 id="guard-h">Guardrails and your calls</h2><p>The gun barrel opening is one of the most protected sequences in film. This is how the homage stays an homage.</p></header>
+  <div class="cols">
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">What we do not do</p>
+      <ul class="list">
+        <li><strong>No gun.</strong> Nothing in the film is a pistol. The shot is the slash.</li>
+        <li><strong>No man.</strong> No silhouette, no tuxedo, no hat, no walk that imitates a person. The character is a numeral with legs.</li>
+        <li><strong>No rifling.</strong> The barrel is the aperture: straight blades, no spiral grooves.</li>
+        <li><strong>No blood.</strong> The red is a clean wipe in the brand color with a paint edge, and it reads as a wipe.</li>
+        <li><strong>No theme, no numerals, no title.</strong> No riff, no brass, no "007", no gun logo, no "will return" card.</li>
+        <li><strong>Original audio only.</strong> Shutters, footsteps, one bass note, the hit, the ring.</li>
+      </ul>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:10px">Decisions for you</p>
+      <ol class="list">
+        <li><strong>Pistol or slash.</strong> The board fires the slash. A literal pistol is where the homage becomes a copy and where a web studio's logo carries a weapon. Your call, and the board's answer is no.</li>
+        <li><strong>The service line.</strong> "Website redesign" under the lockup, a different line, or nothing.</li>
+        <li><strong>The old site in the barrel.</strong> Keep it so the opening says what you do, or keep the barrel clean.</li>
+        <li><strong>The walk.</strong> The lean-and-bob in the loop above has character. A straighter, cooler walk is a different personality. Watch the loop and pick.</li>
+        <li><strong>The full and the sting.</strong> Twelve seconds for the site and pitches, four for everything else.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="alts-h">
+  <header><h2 id="alts-h">Other directions considered</h2><p>Two other ways into the same world that lost to the barrel.</p></header>
+  <div class="alts">
+    <div><h3>The briefing</h3><p>Agent 1 gets its assignment: a dossier on the old site, the gadgets of a redesign laid out on a desk. Charming, but it is a scene, not an opening, and it runs long. The old site at the end of the barrel keeps the idea in one glance.</p></div>
+    <div><h3>The titles</h3><p>A title-sequence treatment with silhouettes and liquid shapes. The famous version of that trope is one the brand should not go near, and without it the idea has no spine. Set aside.</p></div>
+  </div>
+</section>
+
+<footer>
+  <p>ONE SHOT · storyboard v1 · fourth of four · prepared for One Inch Media · 2026-10-07</p>
+  <p>Previz drawn live in canvas. The frames describe a render that does not exist yet.</p>
+</footer>
+</div>
+
+<script>
+// ---------- drawing primitives ----------
+const PR = (function () {
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const ease = {
+    out: t => 1 - Math.pow(1 - t, 3),
+    in: t => t * t * t,
+    inOut: t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+    outExpo: t => t >= 1 ? 1 : 1 - Math.pow(2, -10 * t),
+    outBack: t => { const c = 1.70158, d = c + 1; return 1 + d * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); },
+  };
+  function rng(seed) { let s = (seed >>> 0) || 1; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
+  const win = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
+  const SANS = 'Montserrat, "Helvetica Neue", Arial, sans-serif';
+  const DIDONE = '"Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif';
+  const MONO = '"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace';
+  function font(ctx, size, weight) { ctx.font = `${weight || 700} ${size}px ${SANS}`; }
+  function numeral(ctx, size, weight) { ctx.font = `${weight || 700} ${size}px ${DIDONE}`; }
+  function mono(ctx, size) { ctx.font = `500 ${size}px ${MONO}`; }
+  function vignette(ctx, W, H, strength) {
+    const g = ctx.createRadialGradient(W / 2, H / 2, H * 0.25, W / 2, H / 2, H * 0.95);
+    g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, `rgba(0,0,0,${strength == null ? 0.6 : strength})`);
+    ctx.save(); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();
+  }
+  function grain(ctx, W, H, amount, seed) {
+    const r = rng(seed || 7); ctx.save(); ctx.globalAlpha = amount || 0.05; ctx.fillStyle = '#fff';
+    const n = Math.floor(W * H / 1100);
+    for (let i = 0; i < n; i++) ctx.fillRect(r() * W, r() * H, 1, 1);
+    ctx.restore();
+  }
+  function ruler(ctx, x0, x1, y, inch, color, alpha, labelStart, below) {
+    ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha; ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke();
+    const sub = inch / 8; let k = 0;
+    for (let x = x0; x <= x1 + 0.5; x += sub, k++) {
+      const h = k % 8 === 0 ? inch * 0.12 : k % 4 === 0 ? inch * 0.075 : k % 2 === 0 ? inch * 0.05 : inch * 0.03;
+      ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - h); ctx.stroke();
+      if (labelStart != null && k % 8 === 0) { const v = k / 8 + labelStart; if (v === 0 || v === 1) { numeral(ctx, Math.max(11, inch * 0.085)); ctx.textAlign = 'center'; if (below) { ctx.textBaseline = 'top'; ctx.fillText(String(v), x, y + inch * 0.04); } else { ctx.textBaseline = 'alphabetic'; ctx.fillText(String(v), x, y - inch * 0.16); } } }
+    }
+    ctx.restore();
+  }
+  function shockwave(ctx, cx, cy, p, maxR, color, width, count) {
+    const n = count || 1;
+    for (let i = 0; i < n; i++) {
+      const q = clamp(p - i * 0.12, 0, 1); if (q <= 0) continue;
+      const r = maxR * ease.outExpo(q);
+      ctx.save(); ctx.globalAlpha = (1 - q) * 0.9; ctx.strokeStyle = color; ctx.lineWidth = (width || 6) * (1 - q * 0.8) + 0.5;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+    }
+  }
+  function burst(ctx, cx, cy, p, n, maxR, color, seed, size) {
+    const r = rng(seed || 3); ctx.save(); ctx.fillStyle = color;
+    for (let i = 0; i < n; i++) {
+      const a = r() * Math.PI * 2, sp = 0.4 + r() * 0.6, s = (size || 3) * (0.5 + r());
+      const d = maxR * sp * ease.outExpo(p), x = cx + Math.cos(a) * d, y = cy + Math.sin(a) * d + p * p * 60 * r();
+      ctx.globalAlpha = (1 - p) * 0.9; ctx.fillRect(x, y, s, s);
+    }
+    ctx.restore();
+  }
+  // wide-tracked caps in the wordmark's manner; reveal clips left to right
+  function title(ctx, text, x, y, size, color, opts) {
+    const o = opts || {}; ctx.save(); font(ctx, size, o.weight || 600); ctx.fillStyle = color; ctx.textBaseline = 'middle';
+    const chars = Array.from(text); const tr = o.tracking == null ? size * 0.28 : o.tracking;
+    const w = chars.reduce((a, ch) => a + ctx.measureText(ch).width + tr, -tr);
+    const left = o.align === 'left' ? x : o.align === 'right' ? x - w : x - w / 2;
+    if (o.alpha != null) ctx.globalAlpha = o.alpha;
+    if (o.reveal != null && o.reveal < 1) { ctx.beginPath(); ctx.rect(left - 4, y - size, (w + 8) * o.reveal, size * 2); ctx.clip(); }
+    ctx.textAlign = 'left'; let cx = left; for (const ch of chars) { ctx.fillText(ch, cx, y); cx += ctx.measureText(ch).width + tr; }
+    ctx.restore();
+  }
+  function bigNumber(ctx, text, x, y, size, color, opts) {
+    const o = opts || {}; ctx.save(); numeral(ctx, size, 700); ctx.fillStyle = color; ctx.textBaseline = 'middle'; ctx.textAlign = o.align || 'center'; if (o.alpha != null) ctx.globalAlpha = o.alpha; ctx.fillText(text, x, y); ctx.restore();
+  }
+  function label(ctx, text, x, y, color, size, align, alpha) {
+    ctx.save(); mono(ctx, size || 11); ctx.fillStyle = color; ctx.textAlign = align || 'left'; ctx.textBaseline = 'middle'; if (alpha != null) ctx.globalAlpha = alpha; ctx.fillText(text, x, y); ctx.restore();
+  }
+  function glow(ctx, cx, cy, r, color, alpha) {
+    const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r); g.addColorStop(0, color); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.save(); ctx.globalAlpha = alpha == null ? 0.5 : alpha; ctx.fillStyle = g; ctx.fillRect(cx - r, cy - r, r * 2, r * 2); ctx.restore();
+  }
+  function speedlines(ctx, cx, cy, p, n, color, seed, W, H) {
+    const r = rng(seed || 9); ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 1.2;
+    for (let i = 0; i < n; i++) { const a = r() * Math.PI * 2, r0 = H * 0.12 + r() * H * 0.2, len = H * 0.1 + r() * Math.max(W, H) * p; ctx.globalAlpha = (0.1 + r() * 0.4) * (1 - p); ctx.beginPath(); ctx.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0); ctx.lineTo(cx + Math.cos(a) * (r0 + len), cy + Math.sin(a) * (r0 + len)); ctx.stroke(); }
+    ctx.restore();
+  }
+  // the brand's slash: a translucent band plus a crisp line, rotated to the mark's angle, centered on (cx, cy)
+  function slash(ctx, cx, cy, ang, bandW, len, color, bandAlpha, lineAlpha, lineW) {
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(ang);
+    if (bandAlpha > 0) { const g = ctx.createLinearGradient(0, -bandW, 0, bandW); g.addColorStop(0, 'rgba(231,39,34,0)'); g.addColorStop(0.5, `rgba(231,39,34,${bandAlpha})`); g.addColorStop(1, 'rgba(231,39,34,0)'); ctx.fillStyle = g; ctx.fillRect(-len, -bandW, len * 2, bandW * 2); }
+    if (lineAlpha > 0) { ctx.globalAlpha = lineAlpha; ctx.fillStyle = color; ctx.fillRect(-len, -(lineW || 1.5) / 2, len * 2, lineW || 1.5); }
+    ctx.restore();
+  }
+  return { clamp, lerp, ease, rng, win, font, numeral, mono, vignette, grain, ruler, shockwave, burst, title, bigNumber, label, glow, speedlines, slash };
+})();
+
+// ---------- the film's palette (fixed; the page theme does not change the screen) ----------
+const C = { screen: '#0B0B0B', bone: '#EFE9DE', red: '#E72722', steel: '#8C939B', steelDark: '#2B2E32', steelMid: '#4A4F55', wood: '#C9A26B' };
+const GEO = { hw: 0.82958, markCy: 0.26295, tagLeft: 0.047845, tagW: 0.90431, tagTop: 0.89838, tagH: 0.035192, ang: -42 * Math.PI / 180 };
+const { ease, win, clamp, lerp } = PR;
+const LOGO = new Image(), TAG = new Image();
+const ready = img => img.complete && img.naturalWidth > 0;
+
+function drawLockup(ctx, g, alpha) {
+  ctx.save(); ctx.globalAlpha = alpha;
+  if (ready(LOGO)) ctx.drawImage(LOGO, g.imgX, g.imgY, g.imgW, g.imgH);
+  else { PR.title(ctx, 'ONE INCH', g.cx, g.imgY + g.imgW * 0.6, g.imgW * 0.11, C.bone, { weight: 600, tracking: g.imgW * 0.045 }); PR.title(ctx, 'MEDIA', g.cx, g.imgY + g.imgW * 0.75, g.imgW * 0.07, C.red, { weight: 500, tracking: g.imgW * 0.045 }); }
+  ctx.restore();
+}
+function drawTagline(ctx, g, reveal, alpha) {
+  const x = g.imgX + GEO.tagLeft * g.imgW, y = g.imgY + GEO.tagTop * g.imgW, w = GEO.tagW * g.imgW, h = GEO.tagH * g.imgW;
+  ctx.save(); ctx.globalAlpha = alpha == null ? 1 : alpha; ctx.beginPath(); ctx.rect(x - 2, y - 2, (w + 4) * reveal, h + 4); ctx.clip();
+  if (ready(TAG)) ctx.drawImage(TAG, x, y, w, h);
+  else PR.title(ctx, 'SMALL DETAILS. BIG IMPACT.', g.cx, y + h / 2, h * 0.85, C.bone, { weight: 600 });
+  ctx.restore();
+}
+function lockupGeomB(W, H) {
+  const inch = W * 0.4, x0 = W / 2 - inch / 2; const imgW = inch, imgH = imgW * GEO.hw, imgX = x0, imgY = H * 0.15;
+  return { inch, x0, x1: x0 + inch, imgW, imgH, imgX, imgY, markCy: imgY + GEO.markCy * imgW, cx: W / 2, cy: imgY + imgH / 2 };
+}
+function siteWire(ctx, x, y, w, h, color, alpha, jitter, seed) {
+  const r = PR.rng(seed || 9); const j = () => (r() - 0.5) * jitter;
+  ctx.save(); ctx.globalAlpha = alpha; ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 1;
+  ctx.strokeRect(x + j(), y + j(), w, h);
+  ctx.strokeRect(x + w * 0.04 + j(), y + h * 0.03 + j(), w * 0.92, h * 0.07);
+  for (let k = 0; k < 4; k++) ctx.fillRect(x + w * (0.55 + k * 0.1) + j(), y + h * 0.055, w * 0.06, 2);
+  ctx.strokeRect(x + w * 0.04 + j(), y + h * 0.13 + j(), w * 0.92, h * 0.34);
+  ctx.beginPath(); ctx.moveTo(x + w * 0.52, y + h * 0.16); ctx.lineTo(x + w * 0.94, y + h * 0.44); ctx.moveTo(x + w * 0.94, y + h * 0.16); ctx.lineTo(x + w * 0.52, y + h * 0.44); ctx.stroke();
+  ctx.fillRect(x + w * 0.08 + j(), y + h * 0.2, w * 0.36, h * 0.04); ctx.fillRect(x + w * 0.08 + j(), y + h * 0.27, w * 0.28, h * 0.03); ctx.strokeRect(x + w * 0.08 + j(), y + h * 0.35, w * 0.14, h * 0.06);
+  for (let k = 0; k < 3; k++) { const cx = x + w * (0.04 + k * 0.31) + j(); ctx.strokeRect(cx, y + h * 0.52 + j(), w * 0.28, h * 0.3); ctx.fillRect(cx + w * 0.03, y + h * 0.58, w * 0.2, h * 0.025); ctx.fillRect(cx + w * 0.03, y + h * 0.64, w * 0.16, h * 0.02); }
+  ctx.strokeRect(x + w * 0.04 + j(), y + h * 0.87 + j(), w * 0.92, h * 0.09);
+  ctx.restore();
+}
+
+// ---------- ONE SHOT frames ----------
+C.ink = '#0B0B0B';
+// Agent 1: the mark's numeral with legs and an arm. (x, y) is the ground under the feet; h is the numeral's height.
+function agentOne(ctx, x, y, h, phase, o) {
+  o = o || {}; const walk = o.walk == null ? 1 : o.walk, legs = o.legs == null ? 1 : o.legs, color = o.color || C.bone, face = o.face == null ? 1 : o.face;
+  const legL = h * 0.28 * legs, bob = Math.abs(Math.sin(phase)) * h * 0.035 * walk;
+  ctx.save(); ctx.globalAlpha = o.alpha == null ? 1 : o.alpha; ctx.translate(x, y - legL - bob); ctx.scale(face, 1);
+  ctx.strokeStyle = color; ctx.lineWidth = Math.max(2, h * 0.045); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  if (legs > 0.02) for (const s of [1, -1]) {
+    const ph = phase + (s > 0 ? 0 : Math.PI), a = Math.sin(ph) * 0.55 * walk, bend = Math.max(0, Math.cos(ph)) * 0.9 * walk;
+    const hx = s * h * 0.05, kx = Math.sin(a) * legL * 0.5, ky = Math.cos(a) * legL * 0.5;
+    const fx = kx + Math.sin(a - bend) * legL * 0.5, fy = ky + Math.cos(a - bend) * legL * 0.5;
+    ctx.beginPath(); ctx.moveTo(hx, 0); ctx.lineTo(hx + kx, ky); ctx.lineTo(hx + fx, fy); ctx.lineTo(hx + fx + h * 0.07, fy); ctx.stroke();
+  }
+  ctx.save(); ctx.transform(1, 0, -(o.lean || 0), 1, 0, 0); PR.numeral(ctx, h, 700); ctx.fillStyle = color; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic'; ctx.fillText('1', 0, 0); ctx.restore();
+  const armL = h * 0.3, sh = -h * 0.6, up = o.armUp || 0, swing = Math.sin(phase + Math.PI) * 0.5 * walk;
+  const ang = lerp(swing, Math.PI / 2, up), ex = h * 0.04 + Math.sin(ang) * armL, ey = sh + Math.cos(ang) * armL;
+  if (legs > 0.02) { ctx.beginPath(); ctx.moveTo(h * 0.04, sh); ctx.lineTo(ex, ey); ctx.stroke(); ctx.beginPath(); ctx.arc(ex, ey, h * 0.035, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill(); }
+  ctx.restore();
+  return { handX: x + face * ex, handY: y - legL - bob + ey };
+}
+function blades(ctx, cx, cy, r, rot, color, width, alpha) {
+  ctx.save(); ctx.globalAlpha = alpha; ctx.translate(cx, cy); ctx.rotate(rot); ctx.strokeStyle = color; ctx.lineWidth = width; ctx.lineCap = 'butt';
+  for (let i = 0; i < 6; i++) { ctx.beginPath(); ctx.arc(0, 0, r, i * Math.PI / 3 - 0.44, i * Math.PI / 3 + 0.44); ctx.stroke(); }
+  ctx.restore();
+}
+function irisPath(ctx, cx, cy, r, rot) { ctx.beginPath(); for (let i = 0; i < 6; i++) { const a = rot + i * Math.PI / 3, x = cx + Math.cos(a) * r, y = cy + Math.sin(a) * r; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.closePath(); }
+function barrelView(ctx, cx, cy, ro, rot, twist, inner) {
+  ctx.save(); irisPath(ctx, cx, cy, ro, rot); ctx.clip();
+  const g = ctx.createRadialGradient(cx, cy, ro * 0.1, cx, cy, ro); g.addColorStop(0, '#0C0D0E'); g.addColorStop(1, '#2B3035'); ctx.fillStyle = g; ctx.fillRect(cx - ro, cy - ro, ro * 2, ro * 2);
+  for (let k = 8; k >= 0; k--) { const r = ro / (1 + k * 0.32); blades(ctx, cx, cy, r * 0.88, twist * (1 + k * 0.12) + k * 0.1, k % 2 ? '#6E757C' : '#9CA3AB', Math.max(1.5, r * 0.22), 0.9 - k * 0.08); }
+  const rf = ro / (1 + 8 * 0.32); ctx.fillStyle = '#060606'; ctx.beginPath(); ctx.arc(cx, cy, rf * 0.76, 0, Math.PI * 2); ctx.fill();
+  siteWire(ctx, cx - rf * 0.42, cy - rf * 0.42, rf * 0.84, rf * 0.84, C.steel, 0.85, 0, 9);
+  ctx.save(); ctx.strokeStyle = 'rgba(239,233,222,0.18)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(cx - ro, cy + ro * 0.55); ctx.lineTo(cx + ro, cy + ro * 0.55); ctx.stroke(); ctx.restore();
+  if (inner) inner();
+  ctx.restore();
+  ctx.save(); irisPath(ctx, cx, cy, ro, rot); ctx.strokeStyle = C.bone; ctx.lineWidth = 2; ctx.globalAlpha = 0.9; ctx.stroke(); ctx.restore();
+}
+function fDots(ctx, p, W, H) {
+  const r = W * 0.014, n = 6;
+  for (let i = 0; i < n; i++) { let x = (p * 1.7 - i * 0.13) * W - W * 0.05; if (i === n - 1) x = Math.min(x, W * 0.5); if (x < -r || x > W + r) continue; ctx.fillStyle = C.bone; ctx.beginPath(); ctx.arc(x, H / 2, r, 0, Math.PI * 2); ctx.fill(); }
+  const open = ease.out(win(p, 0.82, 1)); if (open > 0) barrelView(ctx, W * 0.5, H / 2, lerp(r, W * 0.06, open), 0, 0, null);
+  PR.vignette(ctx, W, H, 0.4); PR.grain(ctx, W, H, 0.03, 41);
+}
+function fBarrel(ctx, p, W, H) {
+  const ro = lerp(W * 0.06, H * 0.44, ease.out(win(p, 0, 0.3))), ax = lerp(W * 0.74, W * 0.42, win(p, 0.08, 1)), cx = ax + W * 0.03, cy = H / 2;
+  barrelView(ctx, cx, cy, ro, p * 0.2, p * 0.8, () => { agentOne(ctx, ax, cy + ro * 0.55, ro * 0.9, p * Math.PI * 2 * 3.2, { face: -1, lean: 0.1 }); });
+  PR.vignette(ctx, W, H, 0.4); PR.grain(ctx, W, H, 0.03, 42);
+}
+function fTurn(ctx, p, W, H) {
+  const ro = H * 0.44 * lerp(1, 0.92, ease.inOut(p)), ax = W * 0.42, cx = W * 0.45, cy = H / 2;
+  const walk = 1 - ease.out(win(p, 0, 0.3)), q = win(p, 0.25, 0.55), face = -Math.cos(Math.PI * q) || 0.01, armUp = ease.out(win(p, 0.6, 0.95));
+  barrelView(ctx, cx, cy, ro, 0.2 + p * 0.05, 0.8 + p * 0.15, () => { agentOne(ctx, ax, cy + ro * 0.55, ro * 0.9, Math.PI * 2 * 3.2 + p * 2, { face, lean: 0.1 * walk, walk, armUp }); });
+  PR.vignette(ctx, W, H, 0.4); PR.grain(ctx, W, H, 0.03, 43);
+}
+function fShot(ctx, p, W, H) {
+  const ro = H * 0.44 * 0.92, ax = W * 0.42, cx = W * 0.45, cy = H / 2; const q = win(p, 0, 0.3); const shake = q < 1 ? (1 - q) * 7 : 0;
+  ctx.save(); ctx.translate(Math.sin(p * 120) * shake, Math.cos(p * 90) * shake);
+  let hand = null;
+  barrelView(ctx, cx, cy, ro, 0.25, 0.95, () => { hand = agentOne(ctx, ax, cy + ro * 0.55, ro * 0.9, Math.PI * 2 * 3.2 + 2, { face: 1, walk: 0, armUp: 1, lean: -0.08 * (1 - q) }); });
+  if (hand) { PR.glow(ctx, hand.handX, hand.handY, ro * 0.35, 'rgba(231,39,34,0.8)', 0.9 * (1 - q)); PR.slash(ctx, hand.handX, hand.handY, GEO.ang, H * 0.02 + ease.out(q) * H * 0.07, ease.out(q) * W * 1.2, C.red, 0.45 * (1 - q * 0.6), 0.95, 2.5); }
+  ctx.restore();
+  const flash = p > 0.04 && p < 0.16 ? 1 - Math.abs((p - 0.1) / 0.06) : 0; if (flash > 0) { ctx.save(); ctx.globalAlpha = flash * 0.9; ctx.fillStyle = C.bone; ctx.fillRect(0, 0, W, H); ctx.restore(); }
+  PR.vignette(ctx, W, H, 0.4); PR.grain(ctx, W, H, 0.03, 44);
+}
+function fWash(ctx, p, W, H) {
+  const ro = H * 0.44 * 0.92, ax = W * 0.42, cx = W * 0.45, cy = H / 2;
+  barrelView(ctx, cx, cy, ro, 0.25, 0.95, () => { agentOne(ctx, ax, cy + ro * 0.55, ro * 0.9, Math.PI * 2 * 3.2 + 2, { face: 1, walk: 0, armUp: 1 }); });
+  PR.slash(ctx, cx, cy, GEO.ang, H * 0.01, W, C.red, 0, 0.6 * (1 - win(p, 0, 0.4)), 1.5);
+  const fall = ease.in(win(p, 0, 0.6)) * H * 1.2; const r = PR.rng(45);
+  ctx.save(); ctx.fillStyle = C.red; ctx.beginPath(); ctx.moveTo(0, -10); ctx.lineTo(W, -10);
+  for (let x = W; x >= 0; x -= W / 40) { const d = (0.4 + 0.6 * r()) * H * 0.14 * Math.min(1, fall / (H * 0.3)); ctx.lineTo(x, fall - d * Math.abs(Math.sin(x * 0.11 + 1.3))); }
+  ctx.closePath(); ctx.fill(); ctx.restore();
+  const close = ease.in(win(p, 0.6, 0.97)); if (close > 0) { ctx.save(); ctx.fillStyle = C.screen; ctx.beginPath(); ctx.rect(0, 0, W, H); const R = Math.hypot(W, H) * 0.62 * (1 - close); for (let i = 0; i < 6; i++) { const a = close * 0.7 + i * Math.PI / 3, x = cx + Math.cos(a) * R, y = cy + Math.sin(a) * R; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.closePath(); ctx.fill('evenodd'); ctx.restore(); }
+  PR.grain(ctx, W, H, 0.03, 46);
+}
+function fMarkIn(ctx, p, W, H) {
+  const g = lockupGeomB(W, H); const r = 0.272 * g.imgW, cx = g.cx, cy = g.markCy;
+  const conv = ease.outBack(win(p, 0.05, 0.4)), xf = win(p, 0.62, 0.78);
+  if (p > 0.6) PR.shockwave(ctx, cx, cy, win(p, 0.6, 0.95), W * 0.45, C.red, 6, 2);
+  if (xf < 1) {
+    ctx.save(); ctx.globalAlpha = 1 - xf; ctx.translate(cx, cy);
+    for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3 + (1 - conv) * Math.PI * (i % 2 ? 1 : -1) * 0.8, d = (1 - conv) * r * 2.2; ctx.save(); ctx.rotate(a); ctx.translate(0, -d); ctx.strokeStyle = C.bone; ctx.lineWidth = r * 0.3; ctx.beginPath(); ctx.arc(0, 0, r * 0.85, -Math.PI / 2 - 0.42, -Math.PI / 2 + 0.42); ctx.stroke(); ctx.restore(); }
+    ctx.restore();
+    const wx = lerp(W * 0.78, cx, win(p, 0, 0.42)), walk = 1 - ease.out(win(p, 0.4, 0.5)), legs = 1 - ease.out(win(p, 0.5, 0.62));
+    ctx.save(); ctx.globalAlpha = 1 - xf; agentOne(ctx, wx, cy + r * 0.55, r * 1.15, p * Math.PI * 2 * 3, { face: -1, lean: 0.1 * walk, walk, legs }); ctx.restore();
+  }
+  if (xf > 0) drawLockup(ctx, g, ease.out(xf));
+  const sl = win(p, 0.6, 0.8); if (sl > 0 && sl < 1) PR.slash(ctx, cx, cy, GEO.ang, H * 0.05, ease.out(sl) * g.imgW * 0.7, C.red, 0.25 * (1 - sl), 0.95 * (1 - sl), 2);
+  if (p > 0.8) drawTagline(ctx, g, ease.out(win(p, 0.8, 0.95)), 1);
+  PR.label(ctx, 'WEBSITE REDESIGN', W / 2, g.imgY + (GEO.tagTop + GEO.tagH) * g.imgW + H * 0.06, C.red, Math.max(9, W * 0.012), 'center', ease.out(win(p, 0.9, 1)));
+  PR.vignette(ctx, W, H, 0.5); PR.grain(ctx, W, H, 0.03, 47);
+}
+
+const DRAW = { 1: fDots, 2: fBarrel, 3: fTurn, 4: fShot, 5: fWash, 6: fMarkIn };
+const TITLES = { 1: 'The dots', 2: 'The barrel', 3: 'The turn', 4: 'The shot', 5: 'The red', 6: 'The mark' };
+const THUMB_AT = { 1: 0.6, 2: 0.6, 3: 0.95, 4: 0.12, 5: 0.45, 6: 0.85 };
+const POSTER = { draw: (ctx, W, H) => fTurn(ctx, 0.95, W, H), label: 'Poster · frame 3, the turn. Play runs the cut from 0:00.' };
+const ACTS = [['I', 0, 2], ['II', 2, 7.5], ['III', 7.5, 12]];
+const DUR = 12, TICK = 2;
+function build(list) { let t = 0; return list.map(([n, d, draw]) => { const f = { n, t0: t, t1: t + d, title: TITLES[n], draw: draw || DRAW[n] }; t += d; return f; }); }
+const CUTS = {
+  full: build([[1, 2], [2, 3], [3, 1.5], [4, 1], [5, 2], [6, 2.5]]),
+  short: build([[4, 0.5], [5, 1], [6, 2.5]]),
+};
+
+// ---------- player ----------
+(function () {
+  const canvas = document.getElementById('animatic'), ctx = canvas.getContext('2d');
+  const playBtn = document.getElementById('play'), scrub = document.getElementById('scrub'), readout = document.getElementById('readout'), frameLabel = document.getElementById('frame-label'), chipsEl = document.getElementById('chips');
+  let FR = CUTS.full, TOTAL = CUTS.full[CUTS.full.length - 1].t1, T = 0, playing = false, last = 0, raf = 0, W = 0, H = 0, poster = true;
+  const leavePoster = () => { poster = false; };
+  const fmt = s => { const m = Math.floor(s / 60), r = s - m * 60; return m + ':' + (r < 10 ? '0' : '') + r.toFixed(1); };
+  const frameAt = t => { for (let i = 0; i < FR.length; i++) if (t < FR[i].t1) return i; return FR.length - 1; };
+  function chips() { chipsEl.innerHTML = ''; FR.forEach(f => { const b = document.createElement('button'); b.type = 'button'; b.dataset.jump = f.n; b.textContent = (f.n < 10 ? '0' : '') + f.n + ' ' + f.title; b.addEventListener('click', () => { leavePoster(); pause(); T = f.t0 + 0.01; render(); }); chipsEl.appendChild(b); }); }
+  function size() { const r = canvas.getBoundingClientRect(); const dpr = Math.min(2, window.devicePixelRatio || 1); W = Math.max(1, Math.round(r.width)); H = Math.round(W * 9 / 16); canvas.width = W * dpr; canvas.height = H * dpr; canvas.style.height = H + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); render(); }
+  function render() {
+    ctx.save(); ctx.fillStyle = C.screen; ctx.fillRect(0, 0, W, H); ctx.restore();
+    if (poster) {
+      ctx.save(); POSTER.draw(ctx, W, H); ctx.restore();
+      scrub.value = '0'; readout.textContent = fmt(0) + ' / ' + fmt(TOTAL); frameLabel.textContent = POSTER.label;
+      chipsEl.querySelectorAll('button').forEach(c => c.classList.remove('is-active'));
+      return;
+    }
+    const i = frameAt(T), f = FR[i], p = clamp((T - f.t0) / (f.t1 - f.t0), 0, 1);
+    ctx.save(); f.draw(ctx, p, W, H); ctx.restore();
+    scrub.value = String(T); readout.textContent = fmt(T) + ' / ' + fmt(TOTAL); frameLabel.textContent = 'Frame ' + f.n + ' · ' + f.title + ' · ' + fmt(f.t0) + ' to ' + fmt(f.t1);
+    chipsEl.querySelectorAll('button').forEach(c => c.classList.toggle('is-active', Number(c.dataset.jump) === f.n));
+  }
+  function tick(now) { if (!playing) return; const dt = Math.min(0.1, (now - last) / 1000); last = now; T += dt; if (T >= TOTAL) { T = TOTAL; playing = false; playBtn.textContent = 'Replay'; playBtn.setAttribute('aria-pressed', 'false'); render(); return; } render(); raf = requestAnimationFrame(tick); }
+  function play() { leavePoster(); if (T >= TOTAL) T = 0; playing = true; last = performance.now(); playBtn.textContent = 'Pause'; playBtn.setAttribute('aria-pressed', 'true'); cancelAnimationFrame(raf); raf = requestAnimationFrame(tick); }
+  function pause() { playing = false; playBtn.textContent = 'Play'; playBtn.setAttribute('aria-pressed', 'false'); cancelAnimationFrame(raf); }
+  function setCut(key) { pause(); poster = true; FR = CUTS[key]; TOTAL = FR[FR.length - 1].t1; T = 0; scrub.max = String(TOTAL); document.getElementById('cut-full').setAttribute('aria-pressed', String(key === 'full')); document.getElementById('cut-short').setAttribute('aria-pressed', String(key === 'short')); chips(); render(); }
+  playBtn.addEventListener('click', () => playing ? pause() : play());
+  scrub.addEventListener('input', () => { leavePoster(); pause(); T = Number(scrub.value); render(); });
+  document.getElementById('cut-full').addEventListener('click', () => setCut('full'));
+  document.getElementById('cut-short').addEventListener('click', () => setCut('short'));
+  document.addEventListener('keydown', e => {
+    if (e.target && /input|textarea|select|button/i.test(e.target.tagName) && e.key !== ' ') return;
+    if (/^(Arrow(Left|Right|Up|Down)| )$/.test(e.key)) leavePoster();
+    if (e.key === ' ' && !(e.target && /input|textarea|select/i.test(e.target.tagName))) { e.preventDefault(); playing ? pause() : play(); }
+    if (e.key === 'ArrowRight') { pause(); T = Math.min(TOTAL, T + 0.5); render(); }
+    if (e.key === 'ArrowLeft') { pause(); T = Math.max(0, T - 0.5); render(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); pause(); T = FR[Math.min(FR.length - 1, frameAt(T) + 1)].t0 + 0.01; render(); }
+    if (e.key === 'ArrowDown') { e.preventDefault(); pause(); const i = frameAt(T), f = FR[i]; T = (T - f.t0 > 0.6 ? f.t0 : FR[Math.max(0, i - 1)].t0) + 0.01; render(); }
+  });
+  function thumbs() {
+    document.querySelectorAll('canvas[data-thumb]').forEach(c => {
+      const n = Number(c.dataset.thumb), draw = DRAW[n]; if (!draw) return;
+      const r = c.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1), w = Math.max(1, Math.round(r.width)), h = Math.round(w * 9 / 16);
+      c.width = w * dpr; c.height = h * dpr; c.style.height = h + 'px';
+      const cx = c.getContext('2d'); cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.fillStyle = C.screen; cx.fillRect(0, 0, w, h); cx.save(); draw(cx, THUMB_AT[n], w, h); cx.restore();
+    });
+  }
+  function timelineSvg() {
+    const svg = document.getElementById('timeline'); if (!svg) return; const NS = 'http://www.w3.org/2000/svg'; const el = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+    const L = 40, R = 990, y0 = 34, h = 36, sx = s => L + (R - L) * s / DUR;
+    const acts = ACTS;
+    acts.forEach(([n, a, b]) => { svg.appendChild(el('rect', { class: 'act', x: sx(a), y: y0 - 16, width: sx(b) - sx(a), height: h + 32 })); const t = el('text', { x: sx(a) + 6, y: y0 - 4, 'font-size': 10 }); t.textContent = n; svg.appendChild(t); });
+    CUTS.full.forEach((f, i) => { const red = i % 2 === 1; svg.appendChild(el('rect', { class: 'seg', x: sx(f.t0), y: y0, width: sx(f.t1) - sx(f.t0), height: h, fill: red ? '#E72722' : '#8C939B', opacity: red ? 0.95 : 0.6 })); const t = el('text', { x: sx(f.t0) + 4, y: y0 + h - 6, 'font-size': 11, fill: red ? '#FFFFFF' : '#0B0B0B', 'font-weight': 600 }); t.textContent = (f.n < 10 ? '0' : '') + f.n; svg.appendChild(t); });
+    for (let s = 0; s <= DUR; s += TICK) { svg.appendChild(el('line', { x1: sx(s), y1: y0 + h + 18, x2: sx(s), y2: y0 + h + 26, stroke: 'currentColor', opacity: 0.5 })); const t = el('text', { x: sx(s), y: y0 + h + 40, 'font-size': 10, 'text-anchor': 'middle' }); t.textContent = '0:' + (s < 10 ? '0' : '') + s; svg.appendChild(t); }
+  }
+  const refresh = () => { render(); thumbs(); };
+  LOGO.addEventListener('load', refresh); TAG.addEventListener('load', refresh);
+  LOGO.src = 'assets/lockup-dark.png'; TAG.src = 'assets/tagline-dark.png';
+  window.addEventListener('resize', () => { size(); thumbs(); });
+  scrub.max = String(TOTAL); chips(); size(); thumbs(); timelineSvg();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(refresh);
+})();
+
+// ---------- the character loop (walk, turn, fire) ----------
+(function () {
+  const c = document.getElementById('walkcycle'); if (!c) return; const ctx = c.getContext('2d');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; let W = 0, H = 0, t0 = 0;
+  function size() { const r = c.getBoundingClientRect(); const dpr = Math.min(2, window.devicePixelRatio || 1); W = Math.max(1, Math.round(r.width)); H = Math.round(W * 9 / 16); c.width = W * dpr; c.height = H * dpr; c.style.height = H + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  function draw(t) {
+    const T = t % 5; ctx.fillStyle = C.screen; ctx.fillRect(0, 0, W, H);
+    const h = H * 0.5, y = H * 0.82; ctx.save(); ctx.strokeStyle = 'rgba(239,233,222,0.2)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); ctx.restore();
+    const r = PR.rng(3); ctx.save(); ctx.fillStyle = 'rgba(239,233,222,0.25)'; for (let i = 0; i < 14; i++) { const x = ((r() * W) + (T < 2.5 ? T * W * 0.25 : 2.5 * W * 0.25)) % W; ctx.fillRect(x, y + 6, 10, 1); } ctx.restore();
+    let hand;
+    if (T < 2.5) { hand = agentOne(ctx, W / 2, y, h, T * Math.PI * 2 * 1.6, { face: -1, lean: 0.1 }); PR.label(ctx, 'WALK · 1.6 steps per second · lean 6° · bob 3.5%', 16, 20, C.steel, Math.max(9, W * 0.014)); }
+    else if (T < 3.2) { const q = (T - 2.5) / 0.7, walk = 1 - PR.ease.out(Math.min(1, q * 2)); hand = agentOne(ctx, W / 2, y, h, 2.5 * Math.PI * 2 * 1.6 + q, { face: -Math.cos(Math.PI * q) || 0.01, walk, lean: 0.1 * walk }); PR.label(ctx, 'TURN · a flip through the stem · 17 frames', 16, 20, C.steel, Math.max(9, W * 0.014)); }
+    else if (T < 3.9) { const q = (T - 3.2) / 0.7, up = PR.ease.out(Math.min(1, q * 1.6)); hand = agentOne(ctx, W / 2, y, h, 0, { face: 1, walk: 0, armUp: up, lean: q > 0.7 ? -0.06 : 0 }); if (q > 0.7) { const s = (q - 0.7) / 0.3; PR.glow(ctx, hand.handX, hand.handY, h * 0.3, 'rgba(231,39,34,0.8)', 0.9 * (1 - s)); PR.slash(ctx, hand.handX, hand.handY, GEO.ang, H * 0.02 + s * H * 0.05, s * W, C.red, 0.4 * (1 - s * 0.5), 0.95, 2.5); } PR.label(ctx, 'FIRE · the arm, then the slash · 5 frames', 16, 20, C.steel, Math.max(9, W * 0.014)); }
+    else { hand = agentOne(ctx, W / 2, y, h, 0, { face: 1, walk: 0, armUp: 1, lean: -0.03 }); PR.slash(ctx, hand.handX, hand.handY, GEO.ang, H * 0.01, W, C.red, 0, 0.6 * (1 - (T - 3.9) / 1.1), 1.5); PR.label(ctx, 'HOLD · then the loop resets', 16, 20, C.steel, Math.max(9, W * 0.014)); }
+    PR.grain(ctx, W, H, 0.03, 48);
+  }
+  size(); window.addEventListener('resize', size);
+  if (reduce) { draw(0.8); return; }
+  function loop(now) { if (!t0) t0 = now; draw((now - t0) / 1000); requestAnimationFrame(loop); }
+  requestAnimationFrame(loop);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => draw(0));
+})();
+</script>
+
+</body>
+</html>
