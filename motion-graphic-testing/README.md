@@ -25,3 +25,7 @@ Storyboard v1 for **ONE SHOT**, a twelve-second logo opening for the website red
 ## the-arena-storyboard.html
 
 Storyboard v1 for **THE ARENA**, a forty-second brand film in first person about why a brand refreshes: a stick-figure arena, three bouts against what a stale brand faces (its 2019 self, the template, the algorithm), a crowd that decides with a thumb, a throne of old logos the hero refuses to sit in, and the planted slash becoming the mark. Nobody falls; every strike refreshes. Written under one rule: no armies, no flags, no salutes, nothing lines up. Includes a first-person loop of one bout and an eight-second cutdown. Shares the `assets` folder.
+
+## render/
+
+ONE INCH rendered for real: a 30-second, 1920×1080, 30 fps MP4 with a code-generated soundtrack. The picture is JavaScript on a canvas (`render/render.html`), the sound is synthesized in `render/score.mjs`, Playwright captures every frame and FFmpeg encodes, muxes and pulls a contact sheet (`render/render.mjs`). The finished file is `render/out/one-inch.mp4`; the sheet is `render/out/contact-sheet.png`. See `render/README.md` to run it.
