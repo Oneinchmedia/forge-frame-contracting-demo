@@ -1,0 +1,8 @@
+{
+  "name": "one-inch-render-v2",
+  "private": true,
+  "type": "module",
+  "description": "ONE INCH v2 · a 30-second brand ident rendered from a JavaScript canvas with Playwright and FFmpeg, soundtrack generated in code.",
+  "scripts": { "render": "node render.mjs", "sheet": "node render.mjs sheet", "build": "node render.mjs build", "score": "node score.mjs out/score.wav" },
+  "dependencies": { "playwright": "^1.56.1" }
+}

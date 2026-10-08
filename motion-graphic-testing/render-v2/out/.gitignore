@@ -1,0 +1,7 @@
+frames/
+video.mp4
+score.wav
+render.log
+one-inch-v2.mp4
+*.png
+!contact-sheet.png
