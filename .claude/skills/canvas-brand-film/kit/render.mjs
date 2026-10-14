@@ -19,7 +19,7 @@ fs.mkdirSync(WORK, { recursive: true });
 
 // ── 1 + 2: build and capture ──
 const html = path.join(WORK, 'film.html'), b = build(html);
-log(`build: ${b.shots.length} shots, ${b.fonts.length} font files, images: ${b.images.join(', ') || 'none'}`);
+log(`build: ${b.shots.length} shot files, ${film.shots.length} shots, ${b.fonts.length} font files, images: ${b.images.join(', ') || 'none'}`);
 const haveFrames = () => fs.existsSync(FRAMES) && fs.readdirSync(FRAMES).filter(f => f.endsWith('.png')).length === total;
 let browserVersion = 'not launched';
 if (a['reuse-frames'] && haveFrames()) log(`frames: reusing ${total} frames in ${path.relative(ROOT, FRAMES)}`);
@@ -61,7 +61,7 @@ for (let pass = 1; pass <= 6; pass++) {
 }
 const limiting = raw.TP + gainDb - ceiling;
 log(`audio: raw mix ${raw.I.toFixed(1)} LUFS / ${raw.TP.toFixed(1)} dBTP → ${got.I.toFixed(1)} LUFS / ${got.TP.toFixed(2)} dBTP; the limiter takes up to ${Math.max(0, limiting).toFixed(1)} dB off the loudest peaks`
-  + (limiting > 8 ? ' (a lot: the hits will sound squashed; lower the beds or raise the strike in the mix)' : ''));
+  + (limiting > 6 ? ' (a lot: the loudest hits will sound squashed; lower the strike a few dB in the score, or raise the beds)' : ''));
 
 // ── 5: encode every deliverable straight from the PNG frames ──
 const BT709 = ['-color_primaries', 'bt709', '-color_trc', 'bt709', '-colorspace', 'bt709', '-color_range', 'tv'];

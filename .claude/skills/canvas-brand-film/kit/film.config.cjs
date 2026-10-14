@@ -26,13 +26,15 @@
 
   // ── shots: contiguous, in order. blur = sub-frame motion blur: samples per frame (a number, or a function of film time so the
   //    fastest moments get more), shutter as a fraction of the frame (0.5 = a 180° shutter) ──
-  // more samples right after an impact, when rings and sparks move hundreds of pixels a frame
-  const burst = (t0, dur, hi, lo) => t => (t >= t0 && t < t0 + dur ? hi : lo);
+  // more samples right after an impact, when rings and sparks move hundreds of pixels a frame:
+  // bursts(lo, [t0, dur, hi], [t0, dur, hi], ...) → `hi` samples inside each window, `lo` elsewhere
+  const bursts = (lo, ...wins) => t => { for (const [t0, dur, hi] of wins) if (t >= t0 && t < t0 + dur) return hi; return lo; };
   const shots = [
     { name: 'open',   start: 0,             end: cues.hit.t },
-    { name: 'strike', start: cues.hit.t,    end: F(3.30), blur: { samples: burst(cues.hit.t, 0.4, 24, 8) } },
+    { name: 'strike', start: cues.hit.t,    end: F(3.30), blur: { samples: bursts(8, [cues.hit.t, 0.4, 24]) } },
     { name: 'slide',  start: F(3.30),       end: cues.sweep.t, blur: { samples: 12, shutter: 0.5 } },
-    { name: 'lockup', start: cues.sweep.t,  end: F(8.00), blur: { samples: burst(cues.land.t, 0.35, 24, 6) } },
+    // finish: a lighter vignette on the lockup so the logo keeps its exact colours (any shot can override the finish, or set finish: false)
+    { name: 'lockup', start: cues.sweep.t,  end: F(8.00), blur: { samples: bursts(6, [cues.land.t, 0.35, 24]) }, finish: { vignette: 0.3 } },
   ];
 
   // ── shared motion: functions of film time that both the picture and the score evaluate ──
@@ -66,7 +68,7 @@
     logoMark: { cx: 0.505, cy: 0.317, r: 0.257, slashX: 0.539, slashY: 0.353, slashHalf: 0.337 },
     cues, shots,
     motion: { slide, slideAt },
-    // applied once per frame after motion blur, so grain is never smeared and matches across shots
+    // applied once per frame after motion blur, so grain is never smeared and matches across shots. A shot's own `finish` overrides it.
     finish: { grain: 0.16, vignette: 0.55 },
     motionBlur: { samples: 1, shutter: 0.5 },
     audio: { sampleRate: 48000, lufs: -14, truePeak: -1.0 },

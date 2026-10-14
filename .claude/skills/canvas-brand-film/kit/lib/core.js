@@ -4,8 +4,11 @@
 // and the replacement is what renders. Nothing captures a function reference at load time.
 //
 // A shot is fn(ctx, s), where s = { t, frameT, local, dur, p, W, H, frame, fps, cue(name), since(name), B (brand), F (FILM) }.
-// It paints a complete opaque frame (the background is already filled with brand.screen). It must not call grain or vignette:
-// the dispatcher applies the finish once per frame, after motion blur.
+// It paints a complete opaque frame (the background is already filled with brand.screen). It does not add grain or a vignette:
+// the dispatcher applies the finish once per frame, after motion blur. To change the finish for one shot (for example a lighter
+// vignette so a logo keeps its exact colours), set `finish: { vignette, grain }` on that shot in film.config.cjs, or `finish: false`.
+// Helpers shared by several shots go in a file that registers no shot, e.g. shots/00-common.js: all shot files share one global
+// scope and load in filename order. Prefix its globals (COMMON_..., or an object) so they cannot collide with another file's.
 
 const SHOTS = Object.create(null);
 function shot(name, draw) { SHOTS[name] = draw; }
@@ -39,17 +42,28 @@ const K = (function () {
   const FALLBACK = { display: '"Helvetica Neue", Arial, sans-serif', numeral: 'Didot, "Bodoni 72", Georgia, serif', mono: 'ui-monospace, Menlo, Consolas, monospace' };
   const family = role => `"${FILM.fonts[role] || FILM.fonts.display}", ${FALLBACK[role] || FALLBACK.display}`;
   function font(ctx, role, size, weight) { ctx.font = `${weight || 700} ${size}px ${family(role)}`; }
-  // Tracked caps, drawn letter by letter. o: { size, role, weight, tracking (px), align, color, alpha, reveal 0..1 (wipes in left to right) }.
-  // Returns the drawn width.
+  // Where each letter of a tracked line will sit, with its visible ink box (from the font's actual glyph bounds), so effects can
+  // be placed on a letter (a glow on an ampersand, a spark from a dot). o: same options as text(). Returns { w, left, chars: [...] },
+  // each char { ch, x, w, ink: { left, right, top, bottom, cx, cy } } in canvas pixels.
+  function textLayout(ctx, str, x, y, o = {}) {
+    const size = o.size || 40; ctx.save(); font(ctx, o.role || 'display', size, o.weight || 600); ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+    const tr = o.tracking == null ? size * 0.25 : o.tracking, chars = Array.from(str).map(ch => ({ ch, m: ctx.measureText(ch) }));
+    const w = chars.reduce((a, c) => a + c.m.width + tr, -tr), left = o.align === 'left' ? x : o.align === 'right' ? x - w : x - w / 2;
+    let cx = left; const out = chars.map(({ ch, m }) => {
+      const ink = { left: cx - m.actualBoundingBoxLeft, right: cx + m.actualBoundingBoxRight, top: y - m.actualBoundingBoxAscent, bottom: y + m.actualBoundingBoxDescent };
+      ink.cx = (ink.left + ink.right) / 2; ink.cy = (ink.top + ink.bottom) / 2;
+      const c = { ch, x: cx, w: m.width, ink }; cx += m.width + tr; return c;
+    });
+    ctx.restore(); return { w, left, size, chars: out };
+  }
+  // Tracked caps, drawn letter by letter. o: { size, role, weight, tracking (px), align, color, alpha, reveal 0..1 (wipes in left to right),
+  // colorOf(ch, i) to colour single letters }. Returns the layout (see textLayout).
   function text(ctx, str, x, y, o = {}) {
-    const size = o.size || 40; ctx.save(); font(ctx, o.role || 'display', size, o.weight || 600);
-    const chars = Array.from(str), tr = o.tracking == null ? size * 0.25 : o.tracking;
-    const w = chars.reduce((a, ch) => a + ctx.measureText(ch).width + tr, -tr);
-    const left = o.align === 'left' ? x : o.align === 'right' ? x - w : x - w / 2;
-    if (o.reveal != null && o.reveal < 1) { ctx.beginPath(); ctx.rect(left - 4, y - size, (w + 8) * clamp(o.reveal, 0, 1), size * 2); ctx.clip(); }
-    ctx.globalAlpha *= o.alpha == null ? 1 : o.alpha; ctx.fillStyle = o.color || B.bone; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
-    let cx = left; for (const ch of chars) { ctx.fillText(ch, cx, y); cx += ctx.measureText(ch).width + tr; }
-    ctx.restore(); return w;
+    const L = textLayout(ctx, str, x, y, o), size = L.size; ctx.save(); font(ctx, o.role || 'display', size, o.weight || 600);
+    if (o.reveal != null && o.reveal < 1) { ctx.beginPath(); ctx.rect(L.left - 4, y - size, (L.w + 8) * clamp(o.reveal, 0, 1), size * 2); ctx.clip(); }
+    ctx.globalAlpha *= o.alpha == null ? 1 : o.alpha; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+    L.chars.forEach((c, i) => { ctx.fillStyle = (o.colorOf && o.colorOf(c.ch, i)) || o.color || B.bone; ctx.fillText(c.ch, c.x, y); });
+    ctx.restore(); return L;
   }
 
   // ── light ──
@@ -174,14 +188,15 @@ const K = (function () {
     ctx.translate(-Math.floor(r() * 512), -Math.floor(r() * 512)); ctx.fillStyle = ctx.createPattern(tile, 'repeat'); ctx.fillRect(0, 0, W + 512, H + 512);
     ctx.restore();
   }
+  // Darkens toward the corners and leaves a clear centre (radius 0.42·H), so centred type and logos keep their colours.
   function vignette(ctx, W, H, strength) {
     if (!strength) return;
-    const g = ctx.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, Math.hypot(W, H) * 0.55);
+    const g = ctx.createRadialGradient(W / 2, H / 2, H * 0.42, W / 2, H / 2, Math.hypot(W, H) * 0.55);
     g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, `rgba(0,0,0,${strength})`);
     ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();
   }
 
-  return { B, ANG, clamp, lerp, win, smooth, ease, rng, hex, rgba, mix, font, text, glow, bloomLine, ring, slash, shake, applyShake, camera, boxWorld, drawBox, dot, norm, IMG, img, grain, vignette };
+  return { B, ANG, clamp, lerp, win, smooth, ease, rng, hex, rgba, mix, font, textLayout, text, glow, bloomLine, ring, slash, shake, applyShake, camera, boxWorld, drawBox, dot, norm, IMG, img, grain, vignette };
 })();
 
 const FRAMES = (function () {

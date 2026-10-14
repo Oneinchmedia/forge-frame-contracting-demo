@@ -1,6 +1,8 @@
 // lib/synth.mjs: a small offline DSP kit for scoring a film in code. No samples, no external files, deterministic (every noise source is seeded).
 // createSynth({ sampleRate, duration }) returns the kit bound to one mix. Levels are in dB relative to the strike, which peaks at 0 dB;
 // render.mjs sets the final loudness, so write the mix by feel (relative levels), not by absolute dBFS.
+// Most sounds come in two forms: xxxSig(...) returns a normalised mono signal you can layer, filter and place yourself;
+// xxx(t0, ...) places it on the mix. Combine layers with sum(), then normalize() and place().
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -97,10 +99,17 @@ export function createSynth({ sampleRate: SR = 48000, duration: DUR, fps = 30 })
     const x = new Float64Array(S(0.07)); slap.forEach((v, i) => x[i] += v); c1.forEach((v, i) => x[S(0.048) + i] += v); c2.forEach((v, i) => x[S(0.052) + i] += v);
     return normalize(x);
   }
-  // the strike = hit + shutter, built once and normalised to peak 1.0, so every strike in the film is sample-identical
-  const STRIKE = normalize(sum(hitSig(), gain(shutterSig(200), 0.4)));
-  // a strike at t0: one frame of silence before it (it lands harder), and nothing else on the main bus under its first quarter second
-  const strike = (t0, level = 0, send = 0.18) => { hush(t0 - FRAME, t0 + 0.25); place(STRIKE, t0, db(level), 0, send); };
+  // A strike is the hit plus optional extra layers, normalised to peak 1.0 and built once, so every strike in a film is sample-identical.
+  // The default layers a camera shutter in: One Inch Media's photographic motif. For another brand set shutter: 0 and add its own layer
+  // (a knock, a chime, a crackle) via `extra` (a mono signal starting at the hit).
+  function buildStrike({ shutter = 0.4, extra = null, extraGain = 0.5 } = {}) {
+    const layers = [hitSig()]; if (shutter) layers.push(gain(shutterSig(200), shutter)); if (extra) layers.push(gain(normalize(Float64Array.from(extra)), extraGain));
+    return normalize(sum(...layers));
+  }
+  const STRIKE = buildStrike();
+  // a strike at t0: one frame of silence before it (it lands harder), and nothing else on the main bus under its first quarter second.
+  // Pass sig to use your own buildStrike() result.
+  const strike = (t0, level = 0, send = 0.18, sig = STRIKE) => { hush(t0 - FRAME, t0 + 0.25); place(sig, t0, db(level), 0, send); };
   // struck steel: ten inharmonic partials with beating partners; the fundamental decays slowest. Goes on the ring bus.
   const STEEL = [[1, 1, 4.2], [1.59, 0.55, 2.6], [2.14, 0.5, 1.7], [2.76, 0.3, 1.25], [3.52, 0.32, 0.95], [4.07, 0.18, 0.7], [5.09, 0.2, 0.52], [6.25, 0.12, 0.37], [7.46, 0.09, 0.26], [9.12, 0.05, 0.19]];
   function ring(t0, dur, { f = 523.25, level = -20, seed = 300 } = {}) { placeStereo(modal(dur, STEEL.map(([r, a, tau]) => [f * r, db(level) * a, tau]), { seed, beat: 0.9, spread: 0.5 }), t0, 1, 0.06, bus.ring); }
@@ -109,28 +118,32 @@ export function createSynth({ sampleRate: SR = 48000, duration: DUR, fps = 30 })
   function tick(t0, { level = -22, f = 2400, pan = 0, seed = 400 } = {}) { place(sum(osc(S(0.05), f, t => Math.exp(-t / 0.012)), shape(svf(white(S(0.004), seed), 4000, 0.7, 'hp'), () => 0.8)), t0, db(level), pan, 0.08); }
   // knocked wood or a block meeting concrete: modal body plus a click; pitch and hardness controls; a second contact `gap` later
   const WOOD = [[196, 1, 0.05], [287, 0.6, 0.04], [433, 0.55, 0.03], [612, 0.35, 0.022], [948, 0.3, 0.014], [1380, 0.2, 0.009], [2100, 0.1, 0.006]];
+  // one contact: modal body plus a click, normalised mono
+  function knockSig({ pitch = 1, hard = 0.5, seed = 500, modes = WOOD, dur = 0.6 } = {}) {
+    const m = modes.map(([f, a, tau]) => [f * pitch, a * (f >= 600 ? 0.4 + 0.6 * hard : 1), tau]);
+    const [L, R] = modal(dur, m, { seed, spread: 0.1 });
+    const click = shape(svf(white(S(0.003), seed + 10), 4000, 0.7, 'lp'), t => Math.exp(-t / 0.0008) * 0.9 * hard);
+    return normalize(sum(L, R, click));
+  }
   function knock(t0, { level = -16, pitch = 1, hard = 0.5, pan = 0, contacts = 1, gap = 0.013, seed = 500, modes = WOOD } = {}) {
-    for (let l = 0; l < contacts; l++) {
-      const m = modes.map(([f, a, tau]) => [f * pitch * (l ? 1.06 : 1), a * (f >= 600 ? 0.4 + 0.6 * hard : 1), tau]);
-      const [L, R] = modal(0.6, m, { seed: seed + l, spread: 0.1 });
-      const click = shape(svf(white(S(0.003), seed + 10 + l), 4000, 0.7, 'lp'), t => Math.exp(-t / 0.0008) * 0.9 * hard);
-      place(normalize(sum(L, R, click)), t0 + l * gap, db(level) * (l ? 0.75 : 1), pan, 0.3);
-    }
+    for (let l = 0; l < contacts; l++) place(knockSig({ pitch: pitch * (l ? 1.06 : 1), hard, seed: seed + l, modes }), t0 + l * gap, db(level) * (l ? 0.75 : 1), pan, 0.3);
   }
   // a whoosh: resonant noise whose band rises lo → hi Hz over the duration, shaped by a swell, panned by a function of local time
-  function whoosh(t0, dur, { lo = 400, hi = 3200, level = -14, pan = 0, seed = 600, q = 2.4 } = {}) {
+  function whooshSig(dur, { lo = 400, hi = 3200, seed = 600, q = 2.4 } = {}) {
     const n = S(dur), u = t => t / dur, x = svf(white(n, seed), t => lo * Math.pow(hi / lo, u(t)), q, 'bp');
-    place(shape(x, t => Math.pow(Math.sin(Math.PI * clamp(u(t) * 0.92 + 0.04, 0, 1)), 0.7) * rc(u(t) / 0.15)), t0, db(level) / (peakOf(x) || 1), pan, 0.1);
+    return normalize(shape(x, t => Math.pow(Math.sin(Math.PI * clamp(u(t) * 0.92 + 0.04, 0, 1)), 0.7) * rc(u(t) / 0.15)));
   }
+  function whoosh(t0, dur, { level = -14, pan = 0, ...o } = {}) { place(whooshSig(dur, o), t0, db(level), pan, 0.1); }
   // a sub bed: one low note and its octave, swelling with `env(u)` (u = 0..1 across the duration)
   function bed(t0, dur, { f = 40, level = -16, env = u => Math.pow(u, 1.8) } = {}) {
     const n = S(dur), e = t => env(t / dur) * rc(t / 0.3);
     place(osc(n, f, e), t0, db(level)); place(osc(n, 2 * f, e), t0, db(level - 11));
   }
-  // a quiet tonal pad: two notes (a dyad), each a slightly detuned pair with an octave whisper
-  function dyad(t0, dur, [fa, fb], { level = -30, attack = 0.35, release = 0.6 } = {}) {
+  // a quiet tonal pad: two notes (a dyad), each with a quieter, slightly detuned partner (shallow, slow beating that never pumps)
+  // and an octave whisper
+  function dyad(t0, dur, [fa, fb], { level = -30, attack = 0.35, release = 0.6, detune = 0.12 } = {}) {
     const n = S(dur), env = t => rc(t / attack) * (1 - rc((t - (dur - release)) / release));
-    for (const [f, g, pan] of [[fa, 1, -0.25], [fb, 0.7, 0.25]]) place(sum(osc(n, f - 0.4, env), osc(n, f + 0.4, env, 0.7), osc(n, 2 * f, t => env(t) * 0.12)), t0, db(level) * g, pan, 0.25);
+    for (const [f, g, pan] of [[fa, 1, -0.25], [fb, 0.7, 0.25]]) place(sum(osc(n, f, env), osc(n, f + detune, t => env(t) * 0.35, 0.7), osc(n, 2 * f, t => env(t) * 0.12)), t0, db(level) * g, pan, 0.25);
   }
   // room tone: decorrelated noise, lowpassed, breathing slowly, at an RMS level
   function roomTone(t0, dur, { level = -42, fadeIn = 0.03, fadeOut = 0.5, seed = 11 } = {}) {
@@ -165,5 +178,5 @@ export function createSynth({ sampleRate: SR = 48000, duration: DUR, fps = 30 })
   }
 
   return { SR, N, DUR, FRAME, TAU, clamp, lerp, win, rc, db, toDb, S, rng, white, slowNoise, osc, shape, sum, gain, peakOf, rmsOf, normalize, svf, modal, reverb,
-    bus, panLR, place, placeStereo, hush, hitSig, shutterSig, STRIKE, strike, STEEL, ring, cutRing, tick, knock, WOOD, whoosh, bed, dyad, roomTone, heart, mixdown, writeWav };
+    bus, panLR, place, placeStereo, hush, hitSig, shutterSig, buildStrike, STRIKE, strike, STEEL, ring, cutRing, tick, knockSig, knock, WOOD, whooshSig, whoosh, bed, dyad, roomTone, heart, mixdown, writeWav };
 }

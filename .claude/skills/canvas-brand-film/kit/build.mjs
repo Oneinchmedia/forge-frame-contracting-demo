@@ -54,5 +54,5 @@ export function build(outFile = path.join(WORK, 'film.html')) {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const r = build(process.argv[2] ? path.resolve(process.argv[2]) : undefined);
-  console.log(`built ${path.relative(ROOT, r.file)} · ${(r.bytes / 1024).toFixed(0)} KB · shots ${r.shots.join(', ')} · fonts ${r.fonts.length} · images ${r.images.join(', ') || 'none'}`);
+  console.log(`built ${path.relative(ROOT, r.file)} · ${(r.bytes / 1024).toFixed(0)} KB · shot files ${r.shots.join(', ')} · fonts ${r.fonts.length} · images ${r.images.join(', ') || 'none'}`);
 }

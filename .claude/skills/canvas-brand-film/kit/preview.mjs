@@ -46,7 +46,7 @@ for (const r of req) {
   const png = await page.evaluate(() => FILMPAGE.png());
   const f = path.join(outDir, `${String(files.length).padStart(3, '0')}_t${r.t.toFixed(3)}_f${String(r.n).padStart(4, '0')}_${res.shot}.png`);
   savePng(png, f); files.push(f); hashes.push(crypto.createHash('sha1').update(png).digest('hex'));
-  console.log(`t ${r.t.toFixed(3)}s  frame ${String(r.n).padStart(4)}  ${res.shot.padEnd(10)} ${res.ms.toFixed(0).padStart(4)} ms`);
+  console.log(`t ${r.t.toFixed(3)}s  frame ${String(r.n).padStart(4)}  ${res.shot.padEnd(10)} ${res.ms.toFixed(0).padStart(4)} ms${files.length === 1 ? '  (includes one-time setup: caches, grain tiles)' : ''}`);
 }
 if (a.determinism) { // render the same moments again in reverse order; any difference is a determinism bug (random, time, or order-dependent state)
   const diffs = [];

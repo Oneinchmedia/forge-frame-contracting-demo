@@ -13,6 +13,7 @@ A film made of code: you write each shot as a JavaScript function of time and th
 
 ```bash
 cp -r <this skill>/kit <project>/film && cd <project>/film
+rm -rf out node_modules     # in case the skill folder carries renders from an earlier run; they are not part of the kit
 npm install                 # pins Playwright 1.56.1 exactly (the lockfile is part of reproducing a render)
 npx playwright install chromium   # only if no Chromium is available; see Troubleshooting for sandboxes
 node render.mjs             # renders the 8-second example sting; must end with "ALL QC PASSED"
@@ -39,7 +40,7 @@ This file is the film's contract. It holds the format, the brand, the **shots** 
 
 ### 3. Build the shots, looking at every iteration
 
-One file per shot in `shots/` (loaded in filename order), each registering `shot('name', (ctx, s) => { ... })`. The kit's API is in **Kit reference** below; motion craft is in `references/craft.md`.
+One file per shot in `shots/` (loaded in filename order), each registering `shot('name', (ctx, s) => { ... })`. Helpers that several shots share (a layout, a particle system, cached type) go in a file that registers no shot, such as `shots/00-common.js`. All shot files share one global scope, so prefix that file's globals (`COMMON_...`, or one object) to avoid collisions. The kit's API is in **Kit reference** below; motion craft is in `references/craft.md`.
 
 Preview constantly. It renders through the same page as the final render, with every shot loaded:
 
@@ -51,7 +52,7 @@ node preview.mjs --sheet                               # every shot at start, mi
 node preview.mjs --t 4.9,5.0 --determinism             # render twice, reversed, compare hashes
 ```
 
-Each run empties `out/preview/` and writes numbered PNGs plus `strip.png`. **Open the PNGs with the Read tool and look at them**, at full size for anything detailed. Work as a motion director would: change, render, look, criticise, change again, at least three times on any hero shot. Check neighbouring frames (`--frames`) for jitter and pops, and cue frames (`--cue`) for exact timing. Add `--no-blur` for fast drafts and remove it before judging motion. The reported milliseconds include rasterisation, so they are the real cost per frame.
+Each run empties `out/preview/` and writes numbered PNGs plus `strip.png`. The first frame's time includes one-time setup (caches, grain tiles), so judge cost from the frames after it. **Open the PNGs with the Read tool and look at them**, at full size for anything detailed. Work as a motion director would: change, render, look, criticise, change again, at least three times on any hero shot. Check neighbouring frames (`--frames`) for jitter and pops, and cue frames (`--cue`) for exact timing. Add `--no-blur` for fast drafts and remove it before judging motion. The reported milliseconds include rasterisation, so they are the real cost per frame.
 
 ### 4. Score it
 
@@ -93,13 +94,13 @@ Send the delivery MP4 (and the web or ProRes files if useful), with a short note
 
 - **One clock.** All times live in the cue sheet. A time typed into a shot or the score will drift the next time someone edits the other side.
 - **Deterministic frames.** A frame is a pure function of time. Seed every random with `K.rng(seed)` and never use `Math.random`, `Date` or `performance.now` in a shot. Inside loops, draw every random number before any `continue`, so each particle keeps its identity from frame to frame. Check with `preview.mjs --determinism`.
-- **Shots paint complete opaque frames; the kit adds the finish.** Grain and vignette are applied once per frame after motion blur, so grain is never smeared and matches across shots. Grain blends with overlay, so true black stays black and fades end clean.
+- **Shots paint complete opaque frames; the kit adds the finish.** Grain and vignette are applied once per frame after motion blur, so grain is never smeared and matches across shots. Grain blends with overlay, so true black stays black and fades end clean. The vignette leaves a clear centre but still darkens anything near the edges. For a shot whose logo or type must keep its exact brand colours, set a lighter vignette on that shot in the config (`finish: { vignette: 0.3 }`, as the example lockup does), or `finish: false`. Then check the colour in a PNG frame.
 - **Real motion blur.** `blur: { samples, shutter }` on a shot averages several renders across the open shutter. Fast moments need more samples: a samples function such as `burst(cue, 0.35, 24, 6)` raises them right after an impact. Anything that must stay sharp (readouts, counters, type) should use `s.frameT`, the frame's own time, not `s.t`. Rule of thumb: samples ≥ pixels moved per frame ÷ 3 for the fastest element.
 - **Shots are looked up by name at draw time.** Register with `shot()`; never store a reference to another shot's function. The audited film's first scaffold bound functions at load time, and all five agents' overrides silently did nothing until each found and patched it.
 - **Everything is inlined.** `build.mjs` embeds fonts and images as data URIs, so the canvas stays untainted and `toDataURL` works from `file://`. The page refuses to start if a font or an image fails to load, so a fallback typeface never ships unnoticed.
 - **Colour is tagged.** Untagged HD video is assumed to be BT.709 by most players. Encoding with FFmpeg's default BT.601 matrix and no tags shifted the audited film's #E72722 visibly toward orange. The kit converts with the BT.709 matrix and writes the tags; the QC checks them.
 - **Loudness is mastered, then measured after encoding.** -14 LUFS is the web and social norm; use -23 for broadcast (EBU R128). Keep the strike a few dB under the top of the mix (the example uses -4) so the limiter isn't crushing it.
-- **Measure real cost.** Timings include a forced rasterise. Cost per frame is roughly samples × draw time. Cache static layers in an offscreen canvas (see `paintRoom` in the example slide shot) and prefer gradients over `ctx.filter` blurs inside blurred shots.
+- **Measure real cost.** Timings include a forced rasterise. Cost per frame is roughly samples × draw time. Cache static layers in an offscreen canvas (see `paintRoom` in the example slide shot), and crop each cache to its content: a full-frame `drawImage` is expensive in headless Chromium, and motion blur multiplies it. Prefer gradients over `ctx.filter` blurs inside blurred shots. Give the fastest moments many samples (`bursts(lo, [t0, dur, hi], ...)` in the config) and the rest few.
 
 ## Kit reference
 
@@ -119,7 +120,7 @@ Send the delivery MP4 (and the web or ProRes files if useful), with a short note
 **`K`, the drawing kit:**
 - Maths: `clamp`, `lerp`, `win(x,a,b)` (0..1 window), `smooth`, `ease.{out,in,inOut,outExpo,outBack,spring}`, `rng(seed)`.
 - Colour: `rgba(hex,a)`, `mix(h1,h2,u)`.
-- Type: `font(ctx,role,size,weight)` with roles from `FILM.fonts`; `text(ctx,str,x,y,{size,role,weight,tracking,align,color,alpha,reveal})`.
+- Type: `font(ctx,role,size,weight)` with roles from `FILM.fonts`; `text(ctx,str,x,y,{size,role,weight,tracking,align,color,colorOf,alpha,reveal})`. `textLayout(...)` takes the same arguments and returns each letter's position and visible ink box, for effects placed on a letter.
 - Light: `glow`, `bloomLine`, `ring`, `slash(ctx,cx,cy,halfLen,{band,bandAlpha,core,bloom,alpha,coreColor})` at the brand angle `K.ANG`.
 - Camera: `shake(t,t0,amp,decay,seed)` with `applyShake`.
 - 3D: `camera({x,y,z,yaw,pitch,focal,W,H}).project([x,y,z])`, `drawBox(ctx,cam,{pos,size,yaw,tilt,pivot},{color,dark,light,ambient,gradient,edge,mirror,alpha,decal})`.
@@ -129,15 +130,16 @@ Send the delivery MP4 (and the web or ProRes files if useful), with a short note
 **Sound (`createSynth`):**
 - Building blocks: `osc`, `svf` (lp/bp/hp, modulatable), `white`, `slowNoise`, `modal`, `reverb`, `shape`, `sum`, `gain`, `normalize`.
 - Mixing: `place` and `placeStereo` (with pan functions and reverb send), `hush`, `mixdown({silence:[cue times]})`.
-- Vocabulary: `strike` (hit plus shutter, sample-identical every time, with one frame of silence before), `ring`/`cutRing` (struck steel on its own bus), `tick`, `knock`, `whoosh`, `bed`, `dyad`, `roomTone`, `heart`.
+- Vocabulary: `strike` (sample-identical every time, with one frame of silence before), `ring`/`cutRing` (struck steel on its own bus), `tick`, `knock`, `whoosh`, `bed`, `dyad`, `roomTone`, `heart`.
+- Layering: `hitSig`, `knockSig`, `whooshSig` and `shutterSig` return normalised mono signals; combine them with `sum`, then `normalize` and `place`. `buildStrike({ shutter, extra })` makes a strike for a new brand. The default strike layers in a camera shutter, which is One Inch Media's photographic motif: use `buildStrike({ shutter: 0, extra: A.knockSig({ pitch: 0.6 }) })` or similar and pass the result to `strike(t, level, send, sig)`.
 
 ## Making it the user's film
 
 1. **Brand:** set `brand` colours, the slash or accent angle if the brand has one, and `fonts` roles.
 2. **Fonts:** put the files in `assets/fonts/` named `<Family_Name>-<weight>.woff2`, or `<Family_Name>-100_900.woff2` for a variable font, with `-italic` where needed. Use the brand's real fonts. A licensed font the user supplies stays in their project and is never published.
-3. **Images:** list logos in `images`. To find a logo's geometry, view the PNG, read off the pixel coordinates of the mark's centre (and of its slash or other features you will animate against), divide by the image size, and record them in `logoMark`. Check a preview frame where the animation touches the logo at full size.
+3. **Images:** for a type-only brand (no logo file), delete `images` and `logoMark` from the config and set the name with `K.text`. Otherwise, list logos in `images`. To find a logo's geometry, view the PNG, read off the pixel coordinates of the mark's centre (and of its slash or other features you will animate against), divide by the image size, and record them in `logoMark`. Check a preview frame where the animation touches the logo at full size.
 4. **Shots:** replace the example shots with the storyboard's, keeping the patterns: cues from `s.cue`, `frameT` for type, seeded randomness, cached static layers.
-5. **Score:** rewrite `score.mjs` for the new cues. Keep `strike()` for any hit that must be identical every time.
+5. **Score:** rewrite `score.mjs` for the new cues. Use `strike()` for any hit that must be identical every time, with a strike built for this brand (`buildStrike`; the default's camera shutter belongs to One Inch).
 6. **Format:** change `width`, `height` and `fps`. For vertical social video use 1080×1920; `render.mjs` sizes the web version from the height.
 
 ## Scaling up
